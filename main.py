@@ -48,8 +48,6 @@ class Player(pygame.sprite.Sprite):
         self.rect.top += dy
 
     def dir_change(self):
-        pass
-
         if self.dir == 0:
             self.image = self.imageL
         elif self.dir == 1:
@@ -76,7 +74,7 @@ def main():
     running = True
     while running:
         roads.update(BACKGROUND_SPEED, 0)
-        player.update(BACKGROUND_SPEED, 0)
+        player.update(-1, 0)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
