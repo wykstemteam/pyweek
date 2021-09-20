@@ -37,8 +37,6 @@ class Player(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
 
         self.image = image
-        self.imageL = pygame.transform.flip(image, True, False)
-        self.imageR = pygame.transform.flip(image, False, False)
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
 
@@ -99,14 +97,22 @@ def main():
                 running = False
 
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_w]:
-            player.acc(0, -PLAYER_ACC)
-        if keys[pygame.K_s]:
-            player.acc(0, PLAYER_ACC)
-        if keys[pygame.K_d]:
-            player.acc(PLAYER_ACC, 0)
-        if keys[pygame.K_a]:
-            player.acc(-PLAYER_ACC, 0)
+        if player.rect.left < SCREEN_WIDTH - PLAYER_WIDTH // 2:
+            if keys[pygame.K_w]:
+                player.acc(0, -PLAYER_ACC)
+            if keys[pygame.K_s]:
+                player.acc(0, PLAYER_ACC)
+            if keys[pygame.K_d]:
+                player.acc(PLAYER_ACC, 0)
+            if keys[pygame.K_a]:
+                player.acc(-PLAYER_ACC, 0)
+        else:
+            player.rect.left = SCREEN_WIDTH - PLAYER_WIDTH // 2
+        
+        if player.rect.top <= 0:
+            running = False
+        elif player.rect.top >= SCREEN_HEIGHT - PLAYER_HEIGHT:
+            running = False
 
         player.friction()
         player.update_pos(t)
@@ -117,6 +123,16 @@ def main():
 
         clock.tick(60)
 
+    lose = True
+    while lose:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                lose = False
+
+        roads.draw(window)
+        window.blit(player.image, player.rect)
+        window.blit(assets_manager.images['Darken'], pygame.Rect(0, 0, 0, 0))
+        pygame.display.flip()
 
 if __name__ == '__main__':
     main()
