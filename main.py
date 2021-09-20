@@ -93,7 +93,6 @@ def main():
         t = t // 10
 
         roads.update(BACKGROUND_SPEED, 0)
-        player.acc(BACKGROUND_ACC, 0)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
