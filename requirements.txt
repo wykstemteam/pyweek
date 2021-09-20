@@ -1,1 +1,4 @@
-pygame
+pygame>=2.0.1
+
+numpy>=1.19.5
+scikit-image>=0.18.3
