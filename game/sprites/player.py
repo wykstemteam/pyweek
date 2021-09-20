@@ -20,7 +20,22 @@ class Player(pygame.sprite.Sprite):
         self.vx += dx
         self.vy += dy
 
-    def friction(self):
+    def update(self, t):
+        keys = pygame.key.get_pressed()
+        if self.rect.left <= 0:
+            self.rect.left = 0
+        if self.rect.left < SCREEN_WIDTH - PLAYER_WIDTH // 2:
+            if keys[pygame.K_w]:
+                self.acc(0, -PLAYER_ACC)
+            if keys[pygame.K_s]:
+                self.acc(0, PLAYER_ACC)
+            if keys[pygame.K_d]:
+                self.acc(PLAYER_ACC, 0)
+            if keys[pygame.K_a]:
+                self.acc(-PLAYER_ACC, 0)
+        else:
+            self.rect.left = SCREEN_WIDTH - PLAYER_WIDTH // 2
+
         if self.vx > BACKGROUND_SPEED:
             self.vx = max(BACKGROUND_SPEED, self.vx - FRICTION)
         elif self.vx < BACKGROUND_SPEED:
@@ -31,6 +46,8 @@ class Player(pygame.sprite.Sprite):
         elif self.vy < 0:
             self.vy = min(0, self.vy + FRICTION)
 
-    def update_pos(self, t):
         self.rect.left += self.vx * t
         self.rect.top += self.vy * t
+
+    def in_bounds(self):
+        return 0 < self.rect.top < SCREEN_HEIGHT - PLAYER_HEIGHT

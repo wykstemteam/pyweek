@@ -26,7 +26,8 @@ def main():
         assets_manager.images['player'],
         (PLAYER_WIDTH, PLAYER_HEIGHT)
     )
-    player = Player(assets_manager.images['player'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+    player = Player(
+        assets_manager.images['player'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
 
     clock = pygame.time.Clock()
 
@@ -43,28 +44,10 @@ def main():
                 # Press close button won't close the game and go to losing screen
                 running = False
 
-        keys = pygame.key.get_pressed()
-        if player.rect.left <= 0:
-            player.rect.left = 0
-        if player.rect.left < SCREEN_WIDTH - PLAYER_WIDTH // 2:
-            if keys[pygame.K_w]:
-                player.acc(0, -PLAYER_ACC)
-            if keys[pygame.K_s]:
-                player.acc(0, PLAYER_ACC)
-            if keys[pygame.K_d]:
-                player.acc(PLAYER_ACC, 0)
-            if keys[pygame.K_a]:
-                player.acc(-PLAYER_ACC, 0)
-        else:
-            player.rect.left = SCREEN_WIDTH - PLAYER_WIDTH // 2
+        player.update(t)  # code copied to player.py
 
-        if player.rect.top <= 0:
+        if not player.in_bounds():
             running = False
-        elif player.rect.top >= SCREEN_HEIGHT - PLAYER_HEIGHT:
-            running = False
-
-        player.friction()
-        player.update_pos(t)
 
         roads.draw(window)
         window.blit(player.image, player.rect)
