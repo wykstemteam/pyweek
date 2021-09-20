@@ -6,6 +6,7 @@ from constants import *
 
 assets_manager = AssetsManager()
 
+
 class Road(pygame.sprite.Sprite):
     def __init__(self, image: pygame.Surface, x: int, y: int):
         pygame.sprite.Sprite.__init__(self)
@@ -28,6 +29,7 @@ class Road(pygame.sprite.Sprite):
             self.rect.top -= self.height * 2
         elif self.rect.bottom < 0:
             self.rect.top += self.height * 2
+
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, image: pygame.Surface, x: int, y: int):
