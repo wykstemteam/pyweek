@@ -1,3 +1,4 @@
+import time
 import pygame
 
 from assets_manager import AssetsManager
@@ -40,10 +41,16 @@ class Player(pygame.sprite.Sprite):
 
         self.width = self.image.get_width()
         self.height = self.image.get_height()
+        self.vx = 0.0
+        self.vy = 0.0
 
-    def update(self, dx, dy):
-        self.rect.left += dx
-        self.rect.top += dy
+    def acc(self, dx, dy):
+        self.vx += dx
+        self.vy += dy
+
+    def update_pos(self, t):
+        self.rect.left += self.vx * t
+        self.rect.top += self.vy * t
 
 
 def main():
@@ -65,22 +72,28 @@ def main():
 
     running = True
     while running:
+        t = clock.get_time()
+        t = t // 10
+        print(t)
+
         roads.update(BACKGROUND_SPEED, 0)
-        player.update(-1, 0)
+        player.acc(BACKGROUND_ACC, 0)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-
+        
         keys = pygame.key.get_pressed()
         if keys[pygame.K_w]:
-            player.update(0, -PLAYER_SPEED)
+            player.acc(0, -PLAYER_ACC)
         if keys[pygame.K_s]:
-            player.update(0, PLAYER_SPEED)
+            player.acc(0, PLAYER_ACC)
         if keys[pygame.K_d]:
-            player.update(PLAYER_SPEED, 0)
+            player.acc(PLAYER_ACC, 0)
         if keys[pygame.K_a]:
-            player.update(-PLAYER_SPEED, 0)
+            player.acc(-PLAYER_ACC, 0)
+
+        player.update_pos(t)
 
         roads.draw(window)
         window.blit(player.image, player.rect)
