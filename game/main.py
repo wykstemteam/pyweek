@@ -44,6 +44,8 @@ def main():
                 running = False
 
         keys = pygame.key.get_pressed()
+        if player.rect.left <= 0:
+            player.rect.left = 0
         if player.rect.left < SCREEN_WIDTH - PLAYER_WIDTH // 2:
             if keys[pygame.K_w]:
                 player.acc(0, -PLAYER_ACC)
