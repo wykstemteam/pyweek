@@ -2,8 +2,6 @@ import math
 
 import numpy as np
 import pygame
-from skimage import io
-from skimage import transform
 
 from game.assets_manager import AssetsManager
 from game.constants import *
@@ -41,6 +39,8 @@ def main():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                # FIXME: @Letser this is indistinguishable from losing
+                # Press close button won't close the game and go to losing screen
                 running = False
 
         keys = pygame.key.get_pressed()
