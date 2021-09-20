@@ -1,4 +1,5 @@
 import time
+
 import pygame
 
 from assets_manager import AssetsManager
@@ -78,7 +79,10 @@ def main():
         Road(assets_manager.images['road'], 0, 0),
         Road(assets_manager.images['road'], SCREEN_WIDTH, 0),
     )
-    assets_manager.images['player'] = pygame.transform.scale(assets_manager.images['player'], (PLAYER_WIDTH, PLAYER_HEIGHT))
+    assets_manager.images['player'] = pygame.transform.scale(
+        assets_manager.images['player'],
+        (PLAYER_WIDTH, PLAYER_HEIGHT)
+    )
     player = Player(assets_manager.images['player'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
 
     clock = pygame.time.Clock()
