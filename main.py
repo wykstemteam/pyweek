@@ -52,18 +52,14 @@ class Player(pygame.sprite.Sprite):
 
     def friction(self):
         if self.vx > BACKGROUND_SPEED:
-            self.vx -= FRICTION
-            self.vx = max(BACKGROUND_SPEED, self.vx)
+            self.vx = max(BACKGROUND_SPEED, self.vx - FRICTION)
         elif self.vx < BACKGROUND_SPEED:
-            self.vx += FRICTION
-            self.vx = min(BACKGROUND_SPEED, self.vx)
-        
+            self.vx = min(BACKGROUND_SPEED, self.vx + FRICTION)
+
         if self.vy > 0:
-            self.vy -= FRICTION
-            self.vy = max(0, self.vy)
+            self.vy = max(0, self.vy - FRICTION)
         elif self.vy < 0:
-            self.vy += FRICTION
-            self.vy = min(0, self.vy)
+            self.vy = min(0, self.vy + FRICTION)
 
     def update_pos(self, t):
         self.rect.left += self.vx * t
@@ -91,14 +87,14 @@ def main():
     while running:
         t = clock.get_time()
         t = t // 10
-        
+
         roads.update(BACKGROUND_SPEED, 0)
         player.acc(BACKGROUND_ACC, 0)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-        
+
         keys = pygame.key.get_pressed()
         if keys[pygame.K_w]:
             player.acc(0, -PLAYER_ACC)
