@@ -33,12 +33,15 @@ class Player(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
 
         self.image = image
+        self.imageL = pygame.transform.flip(image, True, False)
+        self.imageR = pygame.transform.flip(image, False, False)
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
 
         self.width = self.image.get_width()
         self.height = self.image.get_height()
         self.dir = 1
+        
 
     def update(self, dx, dy):
         self.rect.left += dx
@@ -46,6 +49,11 @@ class Player(pygame.sprite.Sprite):
 
     def dir_change(self):
         pass
+
+        if self.dir == 0:
+            self.image = self.imageL
+        elif self.dir == 1:
+            self.image = self.imageR
 
 
 def main():
