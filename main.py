@@ -50,6 +50,17 @@ class Player(pygame.sprite.Sprite):
         self.vx += dx
         self.vy += dy
 
+    def friction(self):
+        if self.vx > 0:
+            self.vx -= FRICTION
+        elif self.vx < 0:
+            self.vx += FRICTION
+        
+        if self.vy > 0:
+            self.vy -= FRICTION
+        elif self.vy < 0:
+            self.vy += FRICTION
+
     def update_pos(self, t):
         self.rect.left += self.vx * t
         self.rect.top += self.vy * t
@@ -95,6 +106,7 @@ def main():
         if keys[pygame.K_a]:
             player.acc(-PLAYER_ACC, 0)
 
+        player.friction()
         player.update_pos(t)
 
         roads.draw(window)
