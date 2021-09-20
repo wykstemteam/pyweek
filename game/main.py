@@ -2,67 +2,11 @@ import time
 
 import pygame
 
-from assets_manager import AssetsManager
-from constants import *
+from game.assets_manager import AssetsManager
+from game.constants import *
+from game.sprites import Player, Road
 
 assets_manager = AssetsManager()
-
-
-class Road(pygame.sprite.Sprite):
-    def __init__(self, image: pygame.Surface, x: int, y: int):
-        pygame.sprite.Sprite.__init__(self)
-
-        self.image = image
-        self.rect = self.image.get_rect()
-        self.rect.topleft = (x, y)
-
-        self.width = self.image.get_width()
-        self.height = self.image.get_height()
-
-    def update(self, dx: int, dy: int):
-        self.rect.left += dx
-        if self.rect.left > self.width:
-            self.rect.left -= self.width * 2
-        elif self.rect.right < 0:
-            self.rect.left += self.width * 2
-        self.rect.top += dy
-        if self.rect.top > self.height:
-            self.rect.top -= self.height * 2
-        elif self.rect.bottom < 0:
-            self.rect.top += self.height * 2
-
-
-class Player(pygame.sprite.Sprite):
-    def __init__(self, image: pygame.Surface, x: int, y: int):
-        pygame.sprite.Sprite.__init__(self)
-
-        self.image = image
-        self.rect = self.image.get_rect()
-        self.rect.topleft = (x, y)
-
-        self.width = self.image.get_width()
-        self.height = self.image.get_height()
-        self.vx = 0.0
-        self.vy = 0.0
-
-    def acc(self, dx, dy):
-        self.vx += dx
-        self.vy += dy
-
-    def friction(self):
-        if self.vx > BACKGROUND_SPEED:
-            self.vx = max(BACKGROUND_SPEED, self.vx - FRICTION)
-        elif self.vx < BACKGROUND_SPEED:
-            self.vx = min(BACKGROUND_SPEED, self.vx + FRICTION)
-
-        if self.vy > 0:
-            self.vy = max(0, self.vy - FRICTION)
-        elif self.vy < 0:
-            self.vy = min(0, self.vy + FRICTION)
-
-    def update_pos(self, t):
-        self.rect.left += self.vx * t
-        self.rect.top += self.vy * t
 
 
 def main():
@@ -108,7 +52,7 @@ def main():
                 player.acc(-PLAYER_ACC, 0)
         else:
             player.rect.left = SCREEN_WIDTH - PLAYER_WIDTH // 2
-        
+
         if player.rect.top <= 0:
             running = False
         elif player.rect.top >= SCREEN_HEIGHT - PLAYER_HEIGHT:
@@ -133,6 +77,3 @@ def main():
         window.blit(player.image, player.rect)
         window.blit(assets_manager.images['Darken'], pygame.Rect(0, 0, 0, 0))
         pygame.display.flip()
-
-if __name__ == '__main__':
-    main()
