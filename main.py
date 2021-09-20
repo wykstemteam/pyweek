@@ -40,18 +40,10 @@ class Player(pygame.sprite.Sprite):
 
         self.width = self.image.get_width()
         self.height = self.image.get_height()
-        self.dir = 1
-        
 
     def update(self, dx, dy):
         self.rect.left += dx
         self.rect.top += dy
-
-    def dir_change(self):
-        if self.dir == 0:
-            self.image = self.imageL
-        elif self.dir == 1:
-            self.image = self.imageR
 
 
 def main():
@@ -87,11 +79,8 @@ def main():
             player.update(0, PLAYER_SPEED)
         if keys[pygame.K_d]:
             player.update(PLAYER_SPEED, 0)
-            player.dir = 1
         if keys[pygame.K_a]:
             player.update(-PLAYER_SPEED, 0)
-            player.dir = 0
-        player.dir_change()
 
         roads.draw(window)
         window.blit(player.image, player.rect)
