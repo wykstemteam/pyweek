@@ -50,6 +50,9 @@ def gaming():
     player = Player(
         assets_manager.images['player'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
 
+    move = True
+    while move:
+        policecar.normal()
     for i in range(1, 4):  # building 1-3
         assets_manager.images[f'building{i}'] = pygame.transform.scale(
             assets_manager.images[f'building{i}'],

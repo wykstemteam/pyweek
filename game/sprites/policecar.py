@@ -1,4 +1,5 @@
 import pygame
+import random
 
 from game.constants import *
 from game.sprites.bullet import Bullet
@@ -33,3 +34,16 @@ class PoliceCar(pygame.sprite.Sprite):
         window.blit(self.image, self.rect)
         for bullet in self.bullets:
             window.blit(bullet.image, bullet.rect)
+    
+    def normal(self):
+        movement = True
+        while movement:
+            y = random.randint(120, 600-POLICECAR_HEIGHT)
+            while y != self.rect.top:
+                movement = False
+                if abs(y - self.rect.top) <= 50:
+                    self.rect.top = y
+                elif y < self.rect.top:
+                    self.rect.top += 50
+                else
+                    self.rect.top -= 50
