@@ -5,7 +5,7 @@ from game.constants import *
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, image: pygame.Surface, x: int, y: int):
-        pygame.sprite.Sprite.__init__(self)
+        super().__init__(self)
 
         self.image = image
         self.rect = self.image.get_rect()

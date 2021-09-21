@@ -17,9 +17,9 @@ def gaming():
     lose_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
     restart_button = pygame_gui.elements.UIButton(
         relative_rect=pygame.Rect(
-                (SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT // 2 + 100), 
-                (100, 50)
-            ),
+            (SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT // 2 + 100),
+            (100, 50)
+        ),
         text='Restart',
         manager=lose_screen
     )
@@ -69,7 +69,7 @@ def gaming():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 exit(0)
-            
+
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                     if event.ui_element == restart_button:
@@ -81,7 +81,7 @@ def gaming():
         # update
         if not lose:
             roads.update(t/1000)
-            player.update(t/1000) 
+            player.update(t/1000)
             policecar.update(t/1000)
 
             if not player.in_bounds():
@@ -109,7 +109,7 @@ def main():
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                exit(0)
+                exit()
 
         keys = pygame.key.get_pressed()
         if keys[K_SPACE]:

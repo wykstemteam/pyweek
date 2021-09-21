@@ -1,13 +1,24 @@
 import random
-from game.assets_manager import AssetsManager
+
 import numpy as np
 import pygame
-from skimage import transform, io
-
+from game.assets_manager import AssetsManager
 from game.constants import *
+from skimage import io, transform
 
 
 class Building(pygame.sprite.Sprite):
+    def __init__(self, image: pygame.Surface, bottom_shear_right: float, x: int):
+        super().__init__(self)
+        self.original_image = image
+        self.image = image
+        self.rect = self.image.get_rect()
+        self.shear(bottom_shear_right)
+        self.total_sheared = bottom_shear_right
+        self.rect.topleft = (x, 0)
+        if bottom_shear_right < 0:
+            self.rect.left += bottom_shear_right
+
     def shear(self, bottom_shear_right: float):
         image = np.dstack((
             pygame.surfarray.pixels_red(self.original_image),
@@ -29,17 +40,6 @@ class Building(pygame.sprite.Sprite):
         self.image.set_colorkey((0, 0, 0))  # black shits are transparent
         self.rect.size = self.image.get_size()
 
-    def __init__(self, image: pygame.Surface, bottom_shear_right: float, x: int):
-        pygame.sprite.Sprite.__init__(self)
-        self.original_image = image
-        self.image = image
-        self.rect = self.image.get_rect()
-        self.shear(bottom_shear_right)
-        self.total_sheared = bottom_shear_right
-        self.rect.topleft = (x, 0)
-        if bottom_shear_right < 0:
-            self.rect.left += bottom_shear_right
-
     def update(self, dx: int):
         self.total_sheared -= dx * BUILDING_RATIO
         self.shear(self.total_sheared)
@@ -47,5 +47,3 @@ class Building(pygame.sprite.Sprite):
             self.rect.left += dx
         else:
             self.rect.left += dx * (1 + BUILDING_RATIO)
-
-
