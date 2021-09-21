@@ -7,7 +7,7 @@ import pygame_gui
 
 from game.assets_manager import AssetsManager
 from game.constants import *
-from game.sprites import Player, Road, PoliceCar
+from game.sprites import Player, Road, PoliceCar, Building
 
 assets_manager = AssetsManager()
 pygame.init()
@@ -43,6 +43,30 @@ def gaming():
     player = Player(
         assets_manager.images['player'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
 
+    for i in range(1, 4):  # building 1-3
+        assets_manager.images[f'building{i}'] = pygame.transform.scale(
+            assets_manager.images[f'building{i}'],
+            (BUILDING_WIDTH, BUILDING_HEIGHT),
+        )
+    buildings = pygame.sprite.Group()
+    x = SCREEN_WIDTH // 2 - BUILDING_WIDTH // 2
+    shear = 0
+    tp = 0
+    while x + BUILDING_WIDTH + shear >= 0:
+        buildings.add(Building(assets_manager.images[f'building{tp + 1}'], shear, x))
+        shear += 2 * BUILDING_WIDTH / 3
+        x -= BUILDING_WIDTH
+        tp = (tp + 1) % 3
+
+    x = SCREEN_WIDTH // 2 + BUILDING_WIDTH // 2
+    shear = -2 * BUILDING_WIDTH / 3
+    tp = 2
+    while x + shear < SCREEN_WIDTH:
+        buildings.add(Building(assets_manager.images[f'building{tp + 1}'], shear, x))
+        shear -= 2 * BUILDING_WIDTH / 3
+        x += BUILDING_WIDTH
+        tp = (tp - 1) % 3
+
     clock = pygame.time.Clock()
 
     running = True
@@ -74,6 +98,7 @@ def gaming():
 
         # draw
         roads.draw(window)
+        buildings.draw(window)
         window.blit(policecar.image, policecar.rect)
         window.blit(player.image, player.rect)
         if lose == True:
