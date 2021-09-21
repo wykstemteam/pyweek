@@ -88,3 +88,4 @@ class PoliceCar(pygame.sprite.Sprite):
         window.blit(self.image, self.rect)
         for bullet in self.bullets:
             window.blit(bullet.image, bullet.rect)
+

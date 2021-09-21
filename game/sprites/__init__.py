@@ -6,5 +6,5 @@ from .policecar import PoliceCar
 from .road import Road
 from .obstacle import Obstacle
 from .obstacle_manager import ObstacleManager
-
-__all__ = ['Building', 'BuildingManager', 'Bullet', 'Player', 'PoliceCar', 'Road', 'Obstacle', 'ObstacleManager']
+from .warningsign import Warn
+__all__ = ['Building', 'BuildingManager', 'Bullet', 'Player', 'PoliceCar', 'Road', 'Obstacle', 'ObstacleManager', 'Warn']

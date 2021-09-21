@@ -6,7 +6,7 @@ import pygame_gui
 
 from game.assets_manager import assets_manager
 from game.constants import *
-from game.sprites import Player, PoliceCar, Road, ObstacleManager, BuildingManager
+from game.sprites import Player, PoliceCar, Road, ObstacleManager, BuildingManager, Warn
 
 pygame.init()
 window = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -29,6 +29,9 @@ def gaming():
     )
     policecar = PoliceCar(
         assets_manager.images['policecar'], (20, 280), assets_manager.images['bullet'])
+    warn = Warn(
+        assets_manager.images['warning sign'], 30, 300
+    )
     player = Player(
         assets_manager.images['player'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
 
@@ -75,6 +78,7 @@ def gaming():
         roads.draw(window)
         buildings.draw(window)
         policecar.draw(window)
+        warn.draw(window)
         obstacle_manager.draw(window)
         window.blit(player.image, player.rect)
         window.blit(rotated_arrow, new_arrow)
