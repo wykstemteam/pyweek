@@ -8,6 +8,7 @@ from game.assets_manager import assets_manager
 from game.constants import *
 from game.sprites import Building, Player, PoliceCar, Road
 from game.sprites.building import Buildings
+from game.sprites.building_manager import BuildingManager
 
 pygame.init()
 window = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -32,7 +33,7 @@ def gaming():
     player = Player(
         assets_manager.images['player'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
 
-    buildings = Buildings()  # copied code to building.py
+    buildings = BuildingManager()  # copied code to building.py
 
     clock = pygame.time.Clock()
 
@@ -59,10 +60,11 @@ def gaming():
             roads.update(t / 1000)
             player.update(t / 1000)
             policecar.update(t / 1000)
+            buildings.update(t / 1000)
 
             if not player.in_bounds():
                 lose = True
-        lose_screen.update(t / 1000.0)
+        lose_screen.update(t / 1000)
 
         # draw
         roads.draw(window)

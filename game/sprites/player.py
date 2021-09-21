@@ -13,7 +13,7 @@ class Player(pygame.sprite.Sprite):
 
         self.width = self.image.get_width()
         self.height = self.image.get_height()
-        self.vx = -BACKGROUND_SPEED
+        self.vx = -BACKGROUND_VELOCITY
         self.vy = 0.0
 
     def acc(self, dx, dy):
@@ -24,7 +24,7 @@ class Player(pygame.sprite.Sprite):
         keys = pygame.key.get_pressed()
         if self.rect.left < 0: #touches left border
             self.rect.left = 0
-            self.vx = -BACKGROUND_SPEED
+            self.vx = -BACKGROUND_VELOCITY
         if self.rect.left < SCREEN_WIDTH - PLAYER_WIDTH // 2: 
             if keys[pygame.K_w]:
                 self.acc(0, -PLAYER_ACC)
@@ -36,7 +36,7 @@ class Player(pygame.sprite.Sprite):
                 self.acc(-PLAYER_ACC, 0)
         else: #touches right border
             self.rect.left = SCREEN_WIDTH - PLAYER_WIDTH // 2
-            self.vx = -BACKGROUND_SPEED
+            self.vx = -BACKGROUND_VELOCITY
 
         if self.vx > 0:
             self.vx = max(0, self.vx - FRICTION_HORI)
@@ -48,7 +48,7 @@ class Player(pygame.sprite.Sprite):
         elif self.vy < 0:
             self.vy = min(0, self.vy + FRICTION_VERT)
 
-        self.rect.left += (self.vx+BACKGROUND_SPEED) * t
+        self.rect.left += (self.vx + BACKGROUND_VELOCITY) * t
         self.rect.top += self.vy * t
 
     def in_bounds(self):
