@@ -24,32 +24,15 @@ def gaming():
         manager=lose_screen
     )
 
-    assets_manager.images['policecar'] = pygame.transform.scale(
-        assets_manager.images['policecar'],
-        (POLICECAR_WIDTH, POLICECAR_HEIGHT)
-    )
-    assets_manager.images['road'] = pygame.transform.scale(
-        assets_manager.images['road'], (SCREEN_WIDTH, SCREEN_HEIGHT - BUILDING_HEIGHT)
-    )
-    assets_manager.images['GameOver'] = pygame.transform.scale(
-        assets_manager.images['GameOver'], (SCREEN_WIDTH, SCREEN_HEIGHT)
-    )
-    assets_manager.images['bullet'] = pygame.transform.scale(
-        assets_manager.images['bullet'],
-        (BULLET_WIDTH, BULLET_HEIGHT)
-    )
-    policecar = PoliceCar(assets_manager.images['policecar'], (20, 280), assets_manager.images['bullet'])
     roads = pygame.sprite.Group(
         Road(assets_manager.images['road'], 0, BUILDING_HEIGHT),
         Road(assets_manager.images['road'], SCREEN_WIDTH, BUILDING_HEIGHT),
     )
-    assets_manager.images['player'] = pygame.transform.scale(
-        assets_manager.images['player'],
-        (PLAYER_WIDTH, PLAYER_HEIGHT)
-    )
+    policecar = PoliceCar(assets_manager.images['policecar'], (20, 280), assets_manager.images['bullet'])
     player = Player(
         assets_manager.images['player'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
 
+    # should not be put in main
     for i in range(1, 4):  # building 1-3
         assets_manager.images[f'building{i}'] = pygame.transform.scale(
             assets_manager.images[f'building{i}'],
@@ -73,6 +56,7 @@ def gaming():
         shear -= 2 * BUILDING_WIDTH / 3
         x += BUILDING_WIDTH
         tp = (tp - 1) % 3
+    # /should not be put in main
 
     clock = pygame.time.Clock()
 
@@ -96,8 +80,8 @@ def gaming():
 
         # update
         if not lose:
-            roads.update(BACKGROUND_SPEED, 0)
-            player.update(t/10) 
+            roads.update(t/1000)
+            player.update(t/1000) 
             policecar.update(t/1000)
 
             if not player.in_bounds():
