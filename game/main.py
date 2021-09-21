@@ -28,6 +28,7 @@ def gaming():
         assets_manager.images['policecar'],
         (POLICECAR_WIDTH, POLICECAR_HEIGHT)
     )
+<<<<<<< Updated upstream
     policecar = PoliceCar(assets_manager.images['policecar'], 20, 280)
     assets_manager.images['road'] = pygame.transform.scale(
         assets_manager.images['road'], (SCREEN_WIDTH, SCREEN_HEIGHT - BUILDING_HEIGHT)
@@ -35,6 +36,13 @@ def gaming():
     assets_manager.images['GameOver'] = pygame.transform.scale(
         assets_manager.images['GameOver'], (SCREEN_WIDTH, SCREEN_HEIGHT)
     )
+=======
+    assets_manager.images['bullet'] = pygame.transform.scale(
+        assets_manager.images['bullet'],
+        (BULLET_WIDTH, BULLET_HEIGHT)
+    )
+    policecar = PoliceCar(assets_manager.images['policecar'], (20, 280), assets_manager.images['bullet'])
+>>>>>>> Stashed changes
     roads = pygame.sprite.Group(
         Road(assets_manager.images['road'], 0, BUILDING_HEIGHT),
         Road(assets_manager.images['road'], SCREEN_WIDTH, BUILDING_HEIGHT),
@@ -93,16 +101,17 @@ def gaming():
         # update
         if not lose:
             roads.update(BACKGROUND_SPEED, 0)
-            player.update(t//10)  # code copied to player.py
+            player.update(t/10) 
+            policecar.update(t/1000)
 
             if not player.in_bounds():
                 lose = True
-        lose_screen.update(t // 1000.0)
+        lose_screen.update(t / 1000.0)
 
         # draw
         roads.draw(window)
         buildings.draw(window)
-        window.blit(policecar.image, policecar.rect)
+        policecar.draw(window)
         window.blit(player.image, player.rect)
         if lose:
             window.blit(assets_manager.images['Darken'], pygame.Rect(0, 0, 0, 0))
