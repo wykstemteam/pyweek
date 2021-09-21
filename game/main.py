@@ -66,13 +66,18 @@ def gaming():
             lose = True
         lose_screen.update(t / 1000.0)
 
+        rotated_arrow = pygame.transform.rotate(assets_manager.images['arrow'], player.dir * 360 // (2 * np.pi) )
+        new_arrow = rotated_arrow.get_rect(center = assets_manager.images['arrow'].get_rect(center = (player.rect.left + (PLAYER_WIDTH / 2) , player.rect.top + (PLAYER_HEIGHT / 2))).center)
+        new_arrow.left += np.cos(player.dir) * 150
+        new_arrow.top -= np.sin(player.dir) * 150
+
         # draw
         roads.draw(window)
         buildings.draw(window)
         policecar.draw(window)
         obstacle_manager.draw(window)
         window.blit(player.image, player.rect)
-#        window.blit(assets_manager.images['arrow'], player.rect)
+        window.blit(rotated_arrow, new_arrow)
         if lose:
             window.blit(
                 assets_manager.images['Darken'], pygame.Rect(0, 0, 0, 0))
