@@ -48,3 +48,5 @@ class Building(pygame.sprite.Sprite):
             self.rect.left += dx
         else:
             self.rect.left += dx * (1 + BUILDING_RATIO)
+        if self.rect.right < 0:
+            self.kill()

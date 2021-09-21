@@ -40,7 +40,7 @@ class PoliceCar(pygame.sprite.Sprite):
                         self.rect.centery = 50
                     else:
                         self.rect.centery += self.velocity * t
-            while centery <= 400:
+            while self.rect.centery <= 400:
                 self.rect.centery += 100
                 self.bullets.update(t)
                 if self.shoot_cooldown <= 0:
@@ -64,12 +64,12 @@ class PoliceCar(pygame.sprite.Sprite):
             else:
                 self.objective = random.randint(120, 600 - POLICECAR_HEIGHT)
 
-            self.bullets.update(t)
-            if self.shoot_cooldown <= 0:
-                self.shoot(500)
-                self.shoot_cooldown = SHOOT_COOLDOWN
-            else:
-                self.shoot_cooldown -= t
+        self.bullets.update(t)
+        if self.shoot_cooldown <= 0:
+            self.shoot(-BACKGROUND_VELOCITY)
+            self.shoot_cooldown = SHOOT_COOLDOWN
+        else:
+            self.shoot_cooldown -= t
 
     def draw(self, window):
         window.blit(self.image, self.rect)

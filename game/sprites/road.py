@@ -1,6 +1,6 @@
 import pygame
 
-from game.constants import BACKGROUND_VELOCITY
+from game.constants import BACKGROUND_VELOCITY, SCREEN_WIDTH
 
 
 class Road(pygame.sprite.Sprite):
@@ -16,7 +16,5 @@ class Road(pygame.sprite.Sprite):
 
     def update(self, t):
         self.rect.left += BACKGROUND_VELOCITY * t
-        if self.rect.left > self.width:
-            self.rect.left -= self.width * 2
-        elif self.rect.right < 0:
-            self.rect.left += self.width * 2
+        if self.rect.right < 0:
+            self.rect.left = SCREEN_WIDTH
