@@ -14,10 +14,15 @@ def main():
     pygame.init()
     
     # gui
-    gui_manager = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
-    hello_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((350, 275), (100, 50)),
-                                             text='Say Hello',
-                                             manager=gui_manager)
+    lose_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
+    restart_button = pygame_gui.elements.UIButton(
+        relative_rect=pygame.Rect(
+                (SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT // 2 + 100), 
+                (100, 50)
+            ),
+        text='Restart',
+        manager=lose_screen
+    )
 
     window = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
@@ -47,29 +52,30 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            gui_manager.process_events(event)
+            
+            if event.type == pygame.USEREVENT:
+                if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
+                    if event.ui_element == restart_button:
+                        player = Player(
+                            assets_manager.images['player'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+                        lose = False
+            lose_screen.process_events(event)
 
         # update
-        keys = pygame.key.get_pressed()
-        if lose == True:
-            if keys[pygame.K_f]:
-                player = Player(
-                    assets_manager.images['player'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
-                lose = False
-        else:
+        if lose == False:
             roads.update(BACKGROUND_SPEED, 0)
             player.update(t//10)  # code copied to player.py
 
             if not player.in_bounds():
                 lose = True
-        gui_manager.update(t // 1000.0)
+        lose_screen.update(t // 1000.0)
 
         # draw
         roads.draw(window)
         window.blit(player.image, player.rect)
         if lose == True:
             window.blit(assets_manager.images['Darken'], pygame.Rect(0, 0, 0, 0))
-        gui_manager.draw_ui(window)
+            lose_screen.draw_ui(window)
         pygame.display.flip()
 
         clock.tick(60)
