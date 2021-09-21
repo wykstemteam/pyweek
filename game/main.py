@@ -82,12 +82,13 @@ def gaming():
             if event.type == pygame.QUIT:
                 exit(0)
             
-            if event.type == pygame.USEREVENT:
-                if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
-                    if event.ui_element == restart_button:
-                        player = Player(
-                            assets_manager.images['player'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
-                        lose = False
+            if lose:
+                if event.type == pygame.USEREVENT:
+                    if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
+                        if event.ui_element == restart_button:
+                            player = Player(
+                                assets_manager.images['player'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+                            lose = False
             lose_screen.process_events(event)
 
         # update
@@ -115,18 +116,35 @@ def gaming():
 
 def main():
 
+    title_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
+    start_button = pygame_gui.elements.UIButton(
+        relative_rect=pygame.Rect(
+                (SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2 + 100), 
+                (200, 50)
+            ),
+        text='Start',
+        manager=title_screen
+    )
+
     running = True
     cock = pygame.time.Clock()
     while running:
+        t = cock.get_time()
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 exit(0)
+            
+            if event.type == pygame.USEREVENT:
+                if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
+                    if event.ui_element == start_button:
+                        gaming()
+            title_screen.process_events(event)
+        title_screen.update(t // 1000)
 
-        keys = pygame.key.get_pressed()
-        if keys[K_SPACE]:
-            gaming()
         cock.tick(60)
 
-        window.fill((0, 0, 0))
+        window.fill((100, 100, 100))
+        title_screen.draw_ui(window)
         pygame.display.flip()
 
