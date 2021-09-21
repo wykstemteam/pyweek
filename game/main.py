@@ -28,21 +28,17 @@ def gaming():
         assets_manager.images['policecar'],
         (POLICECAR_WIDTH, POLICECAR_HEIGHT)
     )
-<<<<<<< Updated upstream
-    policecar = PoliceCar(assets_manager.images['policecar'], 20, 280)
     assets_manager.images['road'] = pygame.transform.scale(
         assets_manager.images['road'], (SCREEN_WIDTH, SCREEN_HEIGHT - BUILDING_HEIGHT)
     )
     assets_manager.images['GameOver'] = pygame.transform.scale(
         assets_manager.images['GameOver'], (SCREEN_WIDTH, SCREEN_HEIGHT)
     )
-=======
     assets_manager.images['bullet'] = pygame.transform.scale(
         assets_manager.images['bullet'],
         (BULLET_WIDTH, BULLET_HEIGHT)
     )
     policecar = PoliceCar(assets_manager.images['policecar'], (20, 280), assets_manager.images['bullet'])
->>>>>>> Stashed changes
     roads = pygame.sprite.Group(
         Road(assets_manager.images['road'], 0, BUILDING_HEIGHT),
         Road(assets_manager.images['road'], SCREEN_WIDTH, BUILDING_HEIGHT),
