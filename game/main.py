@@ -87,7 +87,8 @@ def gaming():
         pygame.display.flip()
 
         clock.tick(60)
-        print(f'fps = {0 if t == 0 else 1000/t}')
+        if SHOW_FPS:
+            print(f'fps = {0 if t == 0 else 1000/t}')
 
 
 def main():
