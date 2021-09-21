@@ -1,5 +1,4 @@
 import random
-
 import numpy as np
 import pygame
 from skimage import io, transform
@@ -37,7 +36,8 @@ class Building(pygame.sprite.Sprite):
         image = image.swapaxes(0, 1)
         self.image = pygame.surfarray.make_surface(image.astype('int8'))
         if bottom_shear_right < 0:
-            self.image = pygame.transform.flip(self.image, True, False)  # flips image horizontally
+            self.image = pygame.transform.flip(
+                self.image, True, False)  # flips image horizontally
         self.image.set_colorkey((0, 0, 0))  # black shits are transparent
         self.rect.size = self.image.get_size()
 
@@ -48,3 +48,30 @@ class Building(pygame.sprite.Sprite):
             self.rect.left += dx
         else:
             self.rect.left += dx * (1 + BUILDING_RATIO)
+
+
+class Buildings:
+    def __init__(self, assets_manager) -> None:
+        self.buildings = pygame.sprite.Group()
+        x = SCREEN_WIDTH // 2 - BUILDING_WIDTH // 2
+        shear = 0
+        tp = 0
+        while x + BUILDING_WIDTH + shear >= 0:
+            self.buildings.add(
+                Building(assets_manager.images[f'building{tp + 1}'], shear, x))
+            shear += 2 * BUILDING_WIDTH / 3
+            x -= BUILDING_WIDTH
+            tp = (tp + 1) % 3
+
+        x = SCREEN_WIDTH // 2 + BUILDING_WIDTH // 2
+        shear = -2 * BUILDING_WIDTH / 3
+        tp = 2
+        while x + shear < SCREEN_WIDTH:
+            self.buildings.add(
+                Building(assets_manager.images[f'building{tp + 1}'], shear, x))
+            shear -= 2 * BUILDING_WIDTH / 3
+            x += BUILDING_WIDTH
+            tp = (tp - 1) % 3
+
+    def draw(self, window):
+        self.buildings.draw(window)
