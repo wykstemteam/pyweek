@@ -12,6 +12,7 @@ assets_manager = AssetsManager()
 pygame.init()
 window = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
+
 def gaming():
     lose_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
     restart_button = pygame_gui.elements.UIButton(
@@ -31,7 +32,7 @@ def gaming():
     player = Player(
         assets_manager.images['player'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
 
-    # should not be put in main
+    # FIXME: @Sunny should not be put in main
     for i in range(1, 4):  # building 1-3
         assets_manager.images[f'building{i}'] = pygame.transform.scale(
             assets_manager.images[f'building{i}'],
@@ -55,7 +56,7 @@ def gaming():
         shear -= 2 * BUILDING_WIDTH / 3
         x += BUILDING_WIDTH
         tp = (tp - 1) % 3
-    # /should not be put in main
+    # </should not be put in main>
 
     clock = pygame.time.Clock()
 
@@ -67,7 +68,7 @@ def gaming():
         # event process
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                exit(0)
+                exit()
 
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
@@ -79,9 +80,9 @@ def gaming():
 
         # update
         if not lose:
-            roads.update(t/1000)
-            player.update(t/1000)
-            policecar.update(t/1000)
+            roads.update(t / 1000)
+            player.update(t / 1000)
+            policecar.update(t / 1000)
 
             if not player.in_bounds():
                 lose = True
@@ -102,7 +103,6 @@ def gaming():
 
 
 def main():
-
     running = True
     cock = pygame.time.Clock()
     while running:
@@ -117,4 +117,3 @@ def main():
 
         window.fill((0, 0, 0))
         pygame.display.flip()
-

@@ -2,9 +2,10 @@ import random
 
 import numpy as np
 import pygame
+from skimage import io, transform
+
 from game.assets_manager import AssetsManager
 from game.constants import *
-from skimage import io, transform
 
 
 class Building(pygame.sprite.Sprite):

@@ -2,9 +2,10 @@ import pygame
 
 from game.constants import *
 
+
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, image: pygame.Surface, pos: pygame.Vector2, v: float) -> None:
-        pygame.sprite.Sprite.__init__(self)
+        super().__init__()
 
         self.image = image
         self.rect = self.image.get_rect()
@@ -17,10 +18,10 @@ class Bullet(pygame.sprite.Sprite):
     def update(self, t):
         self.rect.left += self.velocity*t
         if self.rect.left <= 0 or self.rect.right >= SCREEN_WIDTH:
-            pygame.sprite.Sprite.kill(self)
+            self.kill()
             return
 
-    def hit(): #should be called when collided by someone
-        #animation
+    def hit(self):  # should be called when collided by someone
+        # animation
         pass
 

@@ -1,6 +1,7 @@
 import os
 
 import pygame
+
 from game.constants import *
 
 
@@ -10,7 +11,7 @@ class AssetsManager:
         for fn in os.listdir(os.path.join('assets', 'images')):
             base_fn = os.path.splitext(fn)[0]
             self.images[base_fn] = pygame.image.load(os.path.join('assets', 'images', fn))
-        
+
         self.images['policecar'] = pygame.transform.scale(
             self.images['policecar'],
             (POLICECAR_WIDTH, POLICECAR_HEIGHT)
