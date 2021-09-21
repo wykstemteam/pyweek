@@ -2,6 +2,7 @@ import math
 
 import numpy as np
 import pygame
+import pygame_gui
 
 from game.assets_manager import AssetsManager
 from game.constants import *
@@ -11,6 +12,8 @@ assets_manager = AssetsManager()
 
 def main():
     pygame.init()
+
+    gui_manager = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
 
     window = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
@@ -39,13 +42,11 @@ def main():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                # FIXME: @Letser this is indistinguishable from losing
-                # Press close button won't close the game and go to losing screen
                 running = False
 
         keys = pygame.key.get_pressed()
         if lose == True:
-            if keys[pygame.K_k]:
+            if keys[pygame.K_f]:
                 player = Player(
                     assets_manager.images['player'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
                 lose = False
