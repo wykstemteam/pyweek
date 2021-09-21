@@ -89,3 +89,6 @@ class PoliceCar(pygame.sprite.Sprite):
         for bullet in self.bullets:
             window.blit(bullet.image, bullet.rect)
 
+    def kill(self):
+        self.bullets.empty()
+

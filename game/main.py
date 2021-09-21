@@ -49,12 +49,16 @@ def gaming():
             if event.type == pygame.QUIT:
                 exit()
 
-            if event.type == pygame.USEREVENT:
-                if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
-                    if event.ui_element == restart_button:
-                        player = Player(
-                            assets_manager.images['player'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
-                        lose = False
+            if lose:
+                if event.type == pygame.USEREVENT:
+                    if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
+                        if event.ui_element == restart_button:
+                            # init everything
+                            player.__init__(assets_manager.images['player'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+                            policecar.kill()
+                            policecar.__init__(assets_manager.images['policecar'], (20, 280), assets_manager.images['bullet'])
+                            obstacle_manager.kill()
+                            lose = False
             lose_screen.process_events(event)
 
         # update
