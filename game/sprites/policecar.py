@@ -2,7 +2,7 @@ import pygame
 import random
 
 from game.constants import *
-from game.sprites.bullet import Bullet
+from game.sprites import Bullet
 
 
 class PoliceCar(pygame.sprite.Sprite):

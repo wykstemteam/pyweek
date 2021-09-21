@@ -6,8 +6,7 @@ import pygame_gui
 
 from game.assets_manager import assets_manager
 from game.constants import *
-from game.sprites import Building, Player, PoliceCar, Road
-from game.sprites.building import Buildings
+from game.sprites import Building, Buildings, Player, PoliceCar, Road
 
 pygame.init()
 window = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
