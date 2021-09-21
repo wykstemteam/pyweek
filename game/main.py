@@ -2,6 +2,7 @@ import math
 
 import numpy as np
 import pygame
+from pygame.constants import K_SPACE
 import pygame_gui
 
 from game.assets_manager import AssetsManager
@@ -9,11 +10,10 @@ from game.constants import *
 from game.sprites import Player, Road
 
 assets_manager = AssetsManager()
+pygame.init()
+window = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
-def main():
-    pygame.init()
-    
-    # gui
+def gaming():
     lose_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
     restart_button = pygame_gui.elements.UIButton(
         relative_rect=pygame.Rect(
@@ -23,8 +23,6 @@ def main():
         text='Restart',
         manager=lose_screen
     )
-
-    window = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
     assets_manager.images['road'] = pygame.transform.scale(
         assets_manager.images['road'], (SCREEN_WIDTH, SCREEN_HEIGHT)
@@ -42,7 +40,6 @@ def main():
 
     clock = pygame.time.Clock()
 
-
     running = True
     lose = False
     while running:
@@ -51,7 +48,7 @@ def main():
         # event process
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
+                exit(0)
             
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
@@ -79,3 +76,22 @@ def main():
         pygame.display.flip()
 
         clock.tick(60)
+
+
+def main():
+
+    running = True
+    cock = pygame.time.Clock()
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                exit(0)
+
+        keys = pygame.key.get_pressed()
+        if keys[K_SPACE]:
+            gaming()
+        cock.tick(60)
+
+        window.fill((0, 0, 0))
+        pygame.display.flip()
+
