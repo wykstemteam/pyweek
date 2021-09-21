@@ -15,7 +15,7 @@ class Obstacle(pygame.sprite.Sprite):
         self.height = self.image.get_height()
 
     def update(self, t):
-        self.rect.left += BACKGROUND_VELOCITY * t
+        self.rect.left += int(BACKGROUND_VELOCITY * t)
         if self.rect.left <= 0 or self.rect.right >= SCREEN_WIDTH:
             self.kill()
             return

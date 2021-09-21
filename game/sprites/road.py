@@ -13,8 +13,10 @@ class Road(pygame.sprite.Sprite):
 
         self.width = self.image.get_width()
         self.height = self.image.get_height()
+        print(self.width)
 
     def update(self, t):
-        self.rect.left += BACKGROUND_VELOCITY * t
-        if self.rect.right < 0:
+        self.rect.left += int(BACKGROUND_VELOCITY * t)
+        if self.rect.right <= 0:
             self.rect.left = SCREEN_WIDTH
+        
