@@ -4,13 +4,15 @@ import numpy as np
 import pygame
 import pygame_gui
 
-from game.assets_manager import AssetsManager
+from game.assets_manager import assets_manager
 from game.constants import *
 from game.sprites import Building, Player, PoliceCar, Road
+from game.sprites.building import Buildings
+from game.sprites.building_manager import BuildingManager
 
-assets_manager = AssetsManager()
 pygame.init()
 window = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
 
 def gaming():
     lose_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -31,31 +33,7 @@ def gaming():
     player = Player(
         assets_manager.images['player'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
 
-    # should not be put in main
-    for i in range(1, 4):  # building 1-3
-        assets_manager.images[f'building{i}'] = pygame.transform.scale(
-            assets_manager.images[f'building{i}'],
-            (BUILDING_WIDTH, BUILDING_HEIGHT),
-        )
-    buildings = pygame.sprite.Group()
-    x = SCREEN_WIDTH // 2 - BUILDING_WIDTH // 2
-    shear = 0
-    tp = 0
-    while x + BUILDING_WIDTH + shear >= 0:
-        buildings.add(Building(assets_manager.images[f'building{tp + 1}'], shear, x))
-        shear += 2 * BUILDING_WIDTH / 3
-        x -= BUILDING_WIDTH
-        tp = (tp + 1) % 3
-
-    x = SCREEN_WIDTH // 2 + BUILDING_WIDTH // 2
-    shear = -2 * BUILDING_WIDTH / 3
-    tp = 2
-    while x + shear < SCREEN_WIDTH:
-        buildings.add(Building(assets_manager.images[f'building{tp + 1}'], shear, x))
-        shear -= 2 * BUILDING_WIDTH / 3
-        x += BUILDING_WIDTH
-        tp = (tp - 1) % 3
-    # /should not be put in main
+    buildings = BuildingManager()  # copied code to building.py
 
     clock = pygame.time.Clock()
 
@@ -67,7 +45,7 @@ def gaming():
         # event process
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                exit(0)
+                exit()
 
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
@@ -79,13 +57,14 @@ def gaming():
 
         # update
         if not lose:
-            roads.update(t/1000)
-            player.update(t/1000)
-            policecar.update(t/1000)
+            roads.update(t / 1000)
+            player.update(t / 1000)
+            policecar.update(t / 1000)
+            buildings.update(t / 1000)
 
             if not player.in_bounds():
                 lose = True
-        lose_screen.update(t / 1000.0)
+        lose_screen.update(t / 1000)
 
         # draw
         roads.draw(window)
@@ -102,7 +81,6 @@ def gaming():
 
 
 def main():
-
     running = True
     cock = pygame.time.Clock()
     while running:
@@ -117,4 +95,3 @@ def main():
 
         window.fill((0, 0, 0))
         pygame.display.flip()
-

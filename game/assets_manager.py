@@ -1,6 +1,7 @@
 import os
 
 import pygame
+
 from game.constants import *
 
 
@@ -10,7 +11,7 @@ class AssetsManager:
         for fn in os.listdir(os.path.join('assets', 'images')):
             base_fn = os.path.splitext(fn)[0]
             self.images[base_fn] = pygame.image.load(os.path.join('assets', 'images', fn))
-        
+
         self.images['policecar'] = pygame.transform.scale(
             self.images['policecar'],
             (POLICECAR_WIDTH, POLICECAR_HEIGHT)
@@ -29,3 +30,11 @@ class AssetsManager:
             self.images['player'],
             (PLAYER_WIDTH, PLAYER_HEIGHT)
         )
+        for i in range(1, 4):  # building 1-3
+            self.images[f'building{i}'] = pygame.transform.scale(
+                self.images[f'building{i}'],
+                (BUILDING_WIDTH, BUILDING_HEIGHT),
+            )
+
+
+assets_manager = AssetsManager()

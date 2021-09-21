@@ -2,11 +2,12 @@ import pygame
 import random
 
 from game.constants import *
-from game.sprites.bullet import Bullet
+from game.sprites import Bullet
+
 
 class PoliceCar(pygame.sprite.Sprite):
     def __init__(self, image: pygame.Surface, pos: pygame.Vector2, bullet_image: pygame.Surface) -> None:
-        pygame.sprite.Sprite.__init__(self)
+        super().__init__()
 
         self.image = image
         self.rect = self.image.get_rect()
@@ -22,24 +23,23 @@ class PoliceCar(pygame.sprite.Sprite):
         self.objective = self.rect.centery
         self.velocity = POLICECAR_VELOCITY
 
-
     def shoot(self, bullet_speed):
         self.bullets.add(Bullet(self.bullet_image, self.rect.center, bullet_speed))
-    
+
     def update(self, t):
         if self.rect.centery != self.objective:
             if self.rect.centery > self.objective:
-                if abs(self.rect.centery - self.objective) < self.velocity*t:
+                if abs(self.rect.centery - self.objective) < self.velocity * t:
                     self.rect.centery = self.objective
                 else:
-                    self.rect.centery -= self.velocity*t
+                    self.rect.centery -= self.velocity * t
             else:
-                if abs(self.rect.centery - self.objective) < self.velocity*t:
+                if abs(self.rect.centery - self.objective) < self.velocity * t:
                     self.rect.centery = self.objective
                 else:
-                    self.rect.centery += self.velocity*t
+                    self.rect.centery += self.velocity * t
         else:
-            self.objective = random.randint(120, 600-POLICECAR_HEIGHT)
+            self.objective = random.randint(120, 600 - POLICECAR_HEIGHT)
 
         self.bullets.update(t)
         if self.shoot_cooldown <= 0:
@@ -52,4 +52,3 @@ class PoliceCar(pygame.sprite.Sprite):
         window.blit(self.image, self.rect)
         for bullet in self.bullets:
             window.blit(bullet.image, bullet.rect)
-    

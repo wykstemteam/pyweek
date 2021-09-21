@@ -16,7 +16,8 @@ class BuildingManager:
             self.left, self.right
         )
 
-    def update(self, dx: int):
+    def update(self, t: float):
+        dx = BACKGROUND_VELOCITY * t
         self.buildings.update(dx)
         if self.left.rect.left + self.left.total_sheared + BUILDING_WIDTH * (1 + BUILDING_RATIO) / 2 < 0:
             self.buildings.remove(self.left)

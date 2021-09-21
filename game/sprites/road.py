@@ -1,10 +1,11 @@
-from game.constants import BACKGROUND_SPEED
 import pygame
+
+from game.constants import BACKGROUND_VELOCITY
 
 
 class Road(pygame.sprite.Sprite):
     def __init__(self, image: pygame.Surface, x: int, y: int):
-        pygame.sprite.Sprite.__init__(self)
+        super().__init__()
 
         self.image = image
         self.rect = self.image.get_rect()
@@ -13,9 +14,8 @@ class Road(pygame.sprite.Sprite):
         self.width = self.image.get_width()
         self.height = self.image.get_height()
 
-
     def update(self, t):
-        self.rect.left += BACKGROUND_SPEED * t
+        self.rect.left += BACKGROUND_VELOCITY * t
         if self.rect.left > self.width:
             self.rect.left -= self.width * 2
         elif self.rect.right < 0:

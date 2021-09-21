@@ -1,6 +1,7 @@
-from .building import Building
+from .building import Building, Buildings
+from .bullet import Bullet
 from .player import Player
-from .road import Road
 from .policecar import PoliceCar
+from .road import Road
 
-__all__ = ['Building', 'Player', 'Road', 'PoliceCar']
+__all__ = ['Building', 'Buildings', 'Bullet', 'Player', 'PoliceCar', 'Road']
