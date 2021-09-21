@@ -32,6 +32,9 @@ def gaming():
     assets_manager.images['road'] = pygame.transform.scale(
         assets_manager.images['road'], (SCREEN_WIDTH, SCREEN_HEIGHT - BUILDING_HEIGHT)
     )
+    assets_manager.images['GameOver'] = pygame.transform.scale(
+        assets_manager.images['GameOver'], (SCREEN_WIDTH, SCREEN_HEIGHT)
+    )
     roads = pygame.sprite.Group(
         Road(assets_manager.images['road'], 0, BUILDING_HEIGHT),
         Road(assets_manager.images['road'], SCREEN_WIDTH, BUILDING_HEIGHT),
@@ -103,6 +106,7 @@ def gaming():
         window.blit(player.image, player.rect)
         if lose:
             window.blit(assets_manager.images['Darken'], pygame.Rect(0, 0, 0, 0))
+            window.blit(assets_manager.images['GameOver'], pygame.Rect(0, 0, 0, 0))
             lose_screen.draw_ui(window)
         pygame.display.flip()
 
