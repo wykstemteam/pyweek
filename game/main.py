@@ -7,7 +7,7 @@ import pygame_gui
 
 from game.assets_manager import AssetsManager
 from game.constants import *
-from game.sprites import Player, Road
+from game.sprites import Player, Road, PoliceCar
 
 assets_manager = AssetsManager()
 pygame.init()
@@ -27,6 +27,11 @@ def gaming():
     assets_manager.images['road'] = pygame.transform.scale(
         assets_manager.images['road'], (SCREEN_WIDTH, SCREEN_HEIGHT)
     )
+    assets_manager.images['police car'] = pygame.transform.scale(
+        assets_manager.images['police car'],
+        (POLICECAR_WIDTH, POLICECAR_HEIGHT)
+    )
+    policecar = PoliceCar(assets_manager.images['police car'], 0, 200)
     roads = pygame.sprite.Group(
         Road(assets_manager.images['road'], 0, 0),
         Road(assets_manager.images['road'], SCREEN_WIDTH, 0),
@@ -69,6 +74,7 @@ def gaming():
 
         # draw
         roads.draw(window)
+        window.blit(policecar.image, policecar.rect)
         window.blit(player.image, player.rect)
         if lose == True:
             window.blit(assets_manager.images['Darken'], pygame.Rect(0, 0, 0, 0))
