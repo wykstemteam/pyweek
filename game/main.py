@@ -27,11 +27,11 @@ def gaming():
     assets_manager.images['road'] = pygame.transform.scale(
         assets_manager.images['road'], (SCREEN_WIDTH, SCREEN_HEIGHT)
     )
-    assets_manager.images['police car'] = pygame.transform.scale(
-        assets_manager.images['police car'],
+    assets_manager.images['policecar'] = pygame.transform.scale(
+        assets_manager.images['policecar'],
         (POLICECAR_WIDTH, POLICECAR_HEIGHT)
     )
-    policecar = PoliceCar(assets_manager.images['police car'], 0, 200)
+    policecar = PoliceCar(assets_manager.images['policecar'], 20, 280)
     roads = pygame.sprite.Group(
         Road(assets_manager.images['road'], 0, 0),
         Road(assets_manager.images['road'], SCREEN_WIDTH, 0),
