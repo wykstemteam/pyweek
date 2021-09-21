@@ -40,6 +40,11 @@ class AssetsManager:
                 self.images[f'building{i}'],
                 (BUILDING_WIDTH, BUILDING_HEIGHT),
             )
+        for i in range(1, 4):  # obstacle 1-3
+            self.images[f'obstacle{i}'] = pygame.transform.scale(
+                self.images[f'obstacle{i}'],
+                (OBSTACLE_WIDTH, OBSTACLE_HEIGHT),
+            )
 
 
 assets_manager = AssetsManager()
