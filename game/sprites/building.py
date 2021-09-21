@@ -3,7 +3,7 @@ import numpy as np
 import pygame
 from skimage import io, transform
 
-from game.assets_manager import AssetsManager
+from game.assets_manager import assets_manager
 from game.constants import *
 
 
@@ -51,7 +51,7 @@ class Building(pygame.sprite.Sprite):
 
 
 class Buildings:
-    def __init__(self, assets_manager) -> None:
+    def __init__(self) -> None:
         self.buildings = pygame.sprite.Group()
         x = SCREEN_WIDTH // 2 - BUILDING_WIDTH // 2
         shear = 0

@@ -35,3 +35,6 @@ class AssetsManager:
                 self.images[f'building{i}'],
                 (BUILDING_WIDTH, BUILDING_HEIGHT),
             )
+
+
+assets_manager = AssetsManager()
