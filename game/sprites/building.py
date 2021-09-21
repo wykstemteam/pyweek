@@ -9,7 +9,7 @@ from skimage import io, transform
 
 class Building(pygame.sprite.Sprite):
     def __init__(self, image: pygame.Surface, bottom_shear_right: float, x: int):
-        super().__init__(self)
+        super().__init__()
         self.original_image = image
         self.image = image
         self.rect = self.image.get_rect()

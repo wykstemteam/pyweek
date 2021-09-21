@@ -2,12 +2,11 @@ import math
 
 import numpy as np
 import pygame
-from pygame.constants import K_SPACE
 import pygame_gui
 
 from game.assets_manager import AssetsManager
 from game.constants import *
-from game.sprites import Player, Road, PoliceCar, Building
+from game.sprites import Building, Player, PoliceCar, Road
 
 assets_manager = AssetsManager()
 pygame.init()
@@ -112,7 +111,7 @@ def main():
                 exit()
 
         keys = pygame.key.get_pressed()
-        if keys[K_SPACE]:
+        if keys[pygame.K_SPACE]:
             gaming()
         cock.tick(60)
 
