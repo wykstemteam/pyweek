@@ -24,17 +24,17 @@ def gaming():
         manager=lose_screen
     )
 
-    assets_manager.images['road'] = pygame.transform.scale(
-        assets_manager.images['road'], (SCREEN_WIDTH, SCREEN_HEIGHT)
-    )
     assets_manager.images['policecar'] = pygame.transform.scale(
         assets_manager.images['policecar'],
         (POLICECAR_WIDTH, POLICECAR_HEIGHT)
     )
     policecar = PoliceCar(assets_manager.images['policecar'], 20, 280)
+    assets_manager.images['road'] = pygame.transform.scale(
+        assets_manager.images['road'], (SCREEN_WIDTH, SCREEN_HEIGHT - BUILDING_HEIGHT)
+    )
     roads = pygame.sprite.Group(
-        Road(assets_manager.images['road'], 0, 0),
-        Road(assets_manager.images['road'], SCREEN_WIDTH, 0),
+        Road(assets_manager.images['road'], 0, BUILDING_HEIGHT),
+        Road(assets_manager.images['road'], SCREEN_WIDTH, BUILDING_HEIGHT),
     )
     assets_manager.images['player'] = pygame.transform.scale(
         assets_manager.images['player'],
