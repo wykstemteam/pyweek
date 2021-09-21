@@ -9,3 +9,6 @@ class AssetsManager:
         for fn in os.listdir(os.path.join('assets', 'images')):
             base_fn = os.path.splitext(fn)[0]
             self.images[base_fn] = pygame.image.load(os.path.join('assets', 'images', fn))
+
+
+assets_manager = AssetsManager()
