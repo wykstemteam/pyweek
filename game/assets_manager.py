@@ -30,6 +30,11 @@ class AssetsManager:
             self.images['player'],
             (PLAYER_WIDTH, PLAYER_HEIGHT)
         )
+        self.images['arrow'] = pygame.transform.scale(
+            self.images['arrow'],
+            (80, 100)
+        )
+
         for i in range(1, 4):  # building 1-3
             self.images[f'building{i}'] = pygame.transform.scale(
                 self.images[f'building{i}'],

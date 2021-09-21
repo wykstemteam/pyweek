@@ -71,6 +71,7 @@ def gaming():
         buildings.draw(window)
         policecar.draw(window)
         window.blit(player.image, player.rect)
+#        window.blit(assets_manager.images['arrow'], player.rect)
         if lose:
             window.blit(assets_manager.images['Darken'], pygame.Rect(0, 0, 0, 0))
             window.blit(assets_manager.images['GameOver'], pygame.Rect(0, 0, 0, 0))

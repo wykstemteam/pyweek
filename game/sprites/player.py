@@ -1,4 +1,5 @@
 import pygame
+import numpy as np
 
 from game.constants import *
 
@@ -15,12 +16,17 @@ class Player(pygame.sprite.Sprite):
         self.height = self.image.get_height()
         self.vx = -BACKGROUND_VELOCITY
         self.vy = 0.0
+        self.dir = 0.0
 
     def acc(self, dx, dy):
         self.vx = min(self.vx + dx, PLAYER_MAX_HORI_SPEED)
         self.vy += dy
 
     def update(self, t):
+        x = pygame.mouse.get_pos()[0] - (self.rect.left + PLAYER_WIDTH / 2)
+        y = (self.rect.top + PLAYER_HEIGHT / 2) - pygame.mouse.get_pos()[1]
+        self.dir = np.arctan2(y, x)
+
         keys = pygame.key.get_pressed()
         if self.rect.left < 0: #touches left border
             self.rect.left = 0
