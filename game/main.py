@@ -6,9 +6,7 @@ import pygame_gui
 
 from game.assets_manager import assets_manager
 from game.constants import *
-from game.sprites import Building, Player, PoliceCar, Road
-from game.sprites.building import Buildings
-from game.sprites.building_manager import BuildingManager
+from game.sprites import Player, PoliceCar, Road, ObstacleManager, BuildingManager
 
 pygame.init()
 window = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -29,12 +27,13 @@ def gaming():
         Road(assets_manager.images['road'], 0, BUILDING_HEIGHT),
         Road(assets_manager.images['road'], SCREEN_WIDTH, BUILDING_HEIGHT),
     )
-    policecar = PoliceCar(assets_manager.images['policecar'], (20, 280), assets_manager.images['bullet'])
+    policecar = PoliceCar(
+        assets_manager.images['policecar'], (20, 280), assets_manager.images['bullet'])
     player = Player(
         assets_manager.images['player'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
 
     buildings = BuildingManager()  # copied code to building.py
-
+    obstacle_manager = ObstacleManager()
     clock = pygame.time.Clock()
 
     running = True
@@ -64,16 +63,20 @@ def gaming():
 
             if not player.in_bounds():
                 lose = True
-        lose_screen.update(t / 1000)
+        lose_screen.update(t / 1000.0)
+        obstacle_manager.update(t/1000)
 
         # draw
         roads.draw(window)
         buildings.draw(window)
         policecar.draw(window)
+        obstacle_manager.draw(window)
         window.blit(player.image, player.rect)
         if lose:
-            window.blit(assets_manager.images['Darken'], pygame.Rect(0, 0, 0, 0))
-            window.blit(assets_manager.images['GameOver'], pygame.Rect(0, 0, 0, 0))
+            window.blit(
+                assets_manager.images['Darken'], pygame.Rect(0, 0, 0, 0))
+            window.blit(
+                assets_manager.images['GameOver'], pygame.Rect(0, 0, 0, 0))
             lose_screen.draw_ui(window)
         pygame.display.flip()
 

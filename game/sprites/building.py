@@ -48,30 +48,3 @@ class Building(pygame.sprite.Sprite):
             self.rect.left += dx
         else:
             self.rect.left += dx * (1 + BUILDING_RATIO)
-
-
-class Buildings:
-    def __init__(self) -> None:
-        self.buildings = pygame.sprite.Group()
-        x = SCREEN_WIDTH // 2 - BUILDING_WIDTH // 2
-        shear = 0
-        tp = 0
-        while x + BUILDING_WIDTH + shear >= 0:
-            self.buildings.add(
-                Building(assets_manager.images[f'building{tp + 1}'], shear, x))
-            shear += 2 * BUILDING_WIDTH / 3
-            x -= BUILDING_WIDTH
-            tp = (tp + 1) % 3
-
-        x = SCREEN_WIDTH // 2 + BUILDING_WIDTH // 2
-        shear = -2 * BUILDING_WIDTH / 3
-        tp = 2
-        while x + shear < SCREEN_WIDTH:
-            self.buildings.add(
-                Building(assets_manager.images[f'building{tp + 1}'], shear, x))
-            shear -= 2 * BUILDING_WIDTH / 3
-            x += BUILDING_WIDTH
-            tp = (tp - 1) % 3
-
-    def draw(self, window):
-        self.buildings.draw(window)
