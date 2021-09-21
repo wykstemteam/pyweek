@@ -88,7 +88,7 @@ def gaming():
             lose_screen.process_events(event)
 
         # update
-        if lose == False:
+        if not lose:
             roads.update(BACKGROUND_SPEED, 0)
             player.update(t//10)  # code copied to player.py
 
@@ -101,7 +101,7 @@ def gaming():
         buildings.draw(window)
         window.blit(policecar.image, policecar.rect)
         window.blit(player.image, player.rect)
-        if lose == True:
+        if lose:
             window.blit(assets_manager.images['Darken'], pygame.Rect(0, 0, 0, 0))
             lose_screen.draw_ui(window)
         pygame.display.flip()
