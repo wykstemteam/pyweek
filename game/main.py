@@ -60,11 +60,11 @@ def gaming():
             player.update(t / 1000)
             policecar.update(t / 1000)
             buildings.update(t / 1000)
+            obstacle_manager.update(t/1000)
 
-            if not player.in_bounds():
-                lose = True
+        if not player.in_bounds():
+            lose = True
         lose_screen.update(t / 1000.0)
-        obstacle_manager.update(t/1000)
 
         rotated_arrow = pygame.transform.rotate(assets_manager.images['arrow'], player.dir * 360 // (2 * np.pi) )
         new_arrow = rotated_arrow.get_rect(center = assets_manager.images['arrow'].get_rect(center = (player.rect.left + (PLAYER_WIDTH / 2) , player.rect.top + (PLAYER_HEIGHT / 2))).center)
@@ -87,6 +87,7 @@ def gaming():
         pygame.display.flip()
 
         clock.tick(60)
+        print(f'fps = {0 if t == 0 else 1000/t}')
 
 
 def main():
