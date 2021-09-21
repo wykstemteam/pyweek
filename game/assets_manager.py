@@ -7,7 +7,15 @@ from game.constants import *
 
 class AssetsManager:
     def __init__(self):
+        pygame.mixer.init()
+
         self.images = {}
+        self.sounds = {}
+
+        self.init_images()
+        # self.init_sounds()
+
+    def init_images(self):
         for fn in os.listdir(os.path.join('assets', 'images')):
             base_fn = os.path.splitext(fn)[0]
             self.images[base_fn] = pygame.image.load(os.path.join('assets', 'images', fn))
@@ -47,6 +55,24 @@ class AssetsManager:
                 self.images[f'obstacle{i}'],
                 (OBSTACLE_WIDTH, OBSTACLE_HEIGHT),
             )
+
+    def init_sounds(self):
+        for fn in os.listdir(os.path.join('assets', 'sounds')):
+            base_fn = os.path.splitext(fn)[0]
+            self.sounds[base_fn] = pygame.mixer.Sound(os.path.join('assets', 'sounds', fn))
+
+    def play_music(self, name):
+        for fn in os.listdir(os.path.join('assets', 'music')):
+            base_fn = os.path.splitext(fn)[0]
+            if base_fn == name:
+                pygame.mixer.music.load(os.path.join('assets', 'music', fn))
+                pygame.mixer.music.play(-1)
+                break
+        else:
+            raise ValueError(f"No music '{name}' found")
+
+    def stop_music(self):
+        pygame.mixer.music.stop()
 
 
 assets_manager = AssetsManager()

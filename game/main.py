@@ -13,6 +13,9 @@ window = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 
 def gaming():
+    assets_manager.stop_music()
+    assets_manager.play_music("8bitaggressive1")
+
     lose_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
     restart_button = pygame_gui.elements.UIButton(
         relative_rect=pygame.Rect(
@@ -54,6 +57,9 @@ def gaming():
                     if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                         if event.ui_element == restart_button:
                             # init everything
+                            assets_manager.stop_music()
+                            assets_manager.play_music("8bitaggressive1")
+
                             player.__init__(assets_manager.images['player'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
                             policecar.kill()
                             policecar.__init__(assets_manager.images['policecar'], (20, 280), assets_manager.images['bullet'])
@@ -70,6 +76,9 @@ def gaming():
             obstacle_manager.update(t/1000)
 
         if not player.in_bounds():
+            if not lose:  # Just lost
+                assets_manager.stop_music()
+                assets_manager.play_music("greensleeves")
             lose = True
         lose_screen.update(t / 1000.0)
 
@@ -110,6 +119,7 @@ def main():
         manager=title_screen
     )
 
+    assets_manager.play_music("tanukichis_adventure")
     running = True
     cock = pygame.time.Clock()
     while running:
