@@ -27,27 +27,22 @@ class PoliceCar(pygame.sprite.Sprite):
     def shoot(self, bullet_speed):
         self.bullets.add(Bullet(self.bullet_image, self.rect.center, bullet_speed))
 
+    def objectivepos(self, x : int , speed : int):
+        if self.rect.centery != x:
+            if self.rect.centery > x:
+                if abs(self.rect.centery - x) < speed * t:
+                    self.rect.centery = x
+                else:
+                    self.rect.centery -= speed * t
+            else:
+                if abs(self.rect.centery - x) < speed * t:
+                    self.rect.centery = x
+                else:
+                    self.rect.centery += speed * t
     def update(self, t):
         if self.state == 0:  # bottom to top quickfire
-            while self.rect.centery != 50:
-                if self.rect.centery > 50:
-                    if abs(self.rect.centery - 50) < self.velocity * t:
-                        self.rect.centery = 50
-                    else:
-                        self.rect.centery -= self.velocity * t
-                else:
-                    if abs(self.rect.centery - 50) < self.velocity * t:
-                        self.rect.centery = 50
-                    else:
-                        self.rect.centery += self.velocity * t
-            while self.rect.centery <= 400:
-                self.rect.centery += 100
-                self.bullets.update(t)
-                if self.shoot_cooldown <= 0:
-                    self.shoot(500)
-                    self.shoot_cooldown = QUICKFIRE_COOLDOWN
-                else:
-                    self.shoot_cooldown -= t
+            self.objectivepos(50, self.velocity)
+            self.objectivepos(400, 50)
             self.state = 1
         else:
             if self.rect.centery != self.objective:
