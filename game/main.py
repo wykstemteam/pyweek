@@ -1,3 +1,4 @@
+from game.sprites.building import Buildings
 import math
 
 import numpy as np
@@ -31,31 +32,7 @@ def gaming():
     player = Player(
         assets_manager.images['player'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
 
-    # should not be put in main
-    for i in range(1, 4):  # building 1-3
-        assets_manager.images[f'building{i}'] = pygame.transform.scale(
-            assets_manager.images[f'building{i}'],
-            (BUILDING_WIDTH, BUILDING_HEIGHT),
-        )
-    buildings = pygame.sprite.Group()
-    x = SCREEN_WIDTH // 2 - BUILDING_WIDTH // 2
-    shear = 0
-    tp = 0
-    while x + BUILDING_WIDTH + shear >= 0:
-        buildings.add(Building(assets_manager.images[f'building{tp + 1}'], shear, x))
-        shear += 2 * BUILDING_WIDTH / 3
-        x -= BUILDING_WIDTH
-        tp = (tp + 1) % 3
-
-    x = SCREEN_WIDTH // 2 + BUILDING_WIDTH // 2
-    shear = -2 * BUILDING_WIDTH / 3
-    tp = 2
-    while x + shear < SCREEN_WIDTH:
-        buildings.add(Building(assets_manager.images[f'building{tp + 1}'], shear, x))
-        shear -= 2 * BUILDING_WIDTH / 3
-        x += BUILDING_WIDTH
-        tp = (tp - 1) % 3
-    # /should not be put in main
+    buildings = Buildings(assets_manager) # copied code to building.py
 
     clock = pygame.time.Clock()
 
