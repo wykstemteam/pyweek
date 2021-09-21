@@ -29,18 +29,18 @@ class PoliceCar(pygame.sprite.Sprite):
         self.bullets.add(
             Bullet(self.bullet_image, self.rect.center, bullet_speed))
 
-    def objectivepos(self, t):
+    def objectivepos(self, speed: int, t):
         if self.rect.centery != self.objectives[0]:
             if self.rect.centery > self.objectives[0]:
-                if abs(self.rect.centery - self.objectives[0]) < self.velocity * t:
+                if abs(self.rect.centery - self.objectives[0]) < speed * t:
                     self.rect.centery = self.objectives[0]
                 else:
-                    self.rect.centery -= self.velocity * t
+                    self.rect.centery -= speed * t
             else:
-                if abs(self.rect.centery - self.objectives[0]) < self.velocity * t:
+                if abs(self.rect.centery - self.objectives[0]) < speed * t:
                     self.rect.centery = self.objectives[0]
                 else:
-                    self.rect.centery += self.velocity * t
+                    self.rect.centery += speed * t
         else:
             self.objectives.pop(0)
 
@@ -49,7 +49,7 @@ class PoliceCar(pygame.sprite.Sprite):
             if len(self.objectives) == 0:
                 self.objectives.append(
                     random.randint(120, 600 - POLICECAR_HEIGHT))
-            self.objectivepos(t)
+            self.objectivepos(self.velocity, t)
             if self.shoot_cooldown <= 0:
                 self.shoot(-BACKGROUND_VELOCITY)
                 self.shoot_cooldown = SHOOT_COOLDOWN
@@ -61,7 +61,7 @@ class PoliceCar(pygame.sprite.Sprite):
             else:
                 self.quickfire_skill_cooldown -= t
         elif self.state == 1: # go to bottom first
-            self.objectivepos(t)
+            self.objectivepos(self.velocity, t)
             if self.shoot_cooldown <= 0:
                 self.shoot(-BACKGROUND_VELOCITY)
                 self.shoot_cooldown = SHOOT_COOLDOWN
@@ -69,10 +69,10 @@ class PoliceCar(pygame.sprite.Sprite):
                 self.shoot_cooldown -= t
             if len(self.objectives) == 0:
                 self.state = 2
-                self.objectives.append(SCREEN_HEIGHT//3)
+                self.objectives.append(230)
                 self.shoot_cooldown = QUICKFIRE_COOLDOWN
         elif self.state == 2: # bottom to top quickfire
-            self.objectivepos(t)
+            self.objectivepos(self.velocity * 2, t)
             if len(self.objectives) == 0:
                 self.state = 0
                 self.quickfire_skill_cooldown = QUICKFIRE_SKILL_COOLDOWN
