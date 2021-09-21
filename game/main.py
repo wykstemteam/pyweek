@@ -9,7 +9,6 @@ from game.sprites import Player, Road
 
 assets_manager = AssetsManager()
 
-
 def main():
     pygame.init()
 
@@ -31,12 +30,12 @@ def main():
 
     clock = pygame.time.Clock()
 
+
     running = True
+    lose = False
     while running:
         t = clock.get_time()
         t = t // 10
-
-        roads.update(BACKGROUND_SPEED, 0)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -44,24 +43,23 @@ def main():
                 # Press close button won't close the game and go to losing screen
                 running = False
 
-        player.update(t)  # code copied to player.py
+        keys = pygame.key.get_pressed()
+        if lose == True:
+            if keys[pygame.K_k]:
+                player = Player(
+                    assets_manager.images['player'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+                lose = False
+        else:
+            roads.update(BACKGROUND_SPEED, 0)
+            player.update(t)  # code copied to player.py
 
-        if not player.in_bounds():
-            running = False
+            if not player.in_bounds():
+                lose = True
 
         roads.draw(window)
         window.blit(player.image, player.rect)
+        if lose == True:
+            window.blit(assets_manager.images['Darken'], pygame.Rect(0, 0, 0, 0))
         pygame.display.flip()
 
         clock.tick(60)
-
-    lose = True
-    while lose:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                lose = False
-
-        roads.draw(window)
-        window.blit(player.image, player.rect)
-        window.blit(assets_manager.images['Darken'], pygame.Rect(0, 0, 0, 0))
-        pygame.display.flip()
