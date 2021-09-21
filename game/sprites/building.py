@@ -1,44 +1,45 @@
-import math
-
 import numpy as np
 import pygame
-from skimage import io, transform
+from skimage import transform
+
+from game.constants import *
 
 
 class Building(pygame.sprite.Sprite):
-    def shear(self, img: np.ndarray, bottom_shear_right: float):
-        img = img.astype('float32') / 255.0
-        img = img.swapaxes(0, 1)
+    def shear(self, bottom_shear_right: float):
+        image = np.dstack((
+            pygame.surfarray.pixels_red(self.image),
+            pygame.surfarray.pixels_green(self.image),
+            pygame.surfarray.pixels_blue(self.image),
+        )).astype('float32') / 255.0
+        image = image.swapaxes(0, 1)
+        shear_matrix = np.array([[1, abs(bottom_shear_right) / self.image.get_height(), 0],
+                                 [0, 1, 0],
+                                 [0, 0, 1]])
+        image = transform.warp(
+            image, np.linalg.inv(shear_matrix), output_shape=(
+                self.image.get_height(), self.image.get_width() + int(abs(bottom_shear_right)))
+        ) * 255.0
+        image = image.swapaxes(0, 1)
+        self.image = pygame.surfarray.make_surface(image.astype('int32'))
+        if bottom_shear_right < 0:
+            self.image = pygame.transform.flip(self.image, True, False)  # flips image horizontally
 
-        affine_transform = transform.AffineTransform(shear=math.atan(bottom_shear_right / self.height))
-        modified_image = transform.warp(img, affine_transform) * 255.0
-        io.imshow(modified_image)
-        io.show()
-
-        modified_image = modified_image.swapaxes(0, 1)
-        return modified_image.astype('int32')
-
-    def __init__(self, image: pygame.Surface, bottom_shear_right: float, x: int, y: int):
+    def __init__(self, image: pygame.Surface, bottom_shear_right: float, x: int):
         pygame.sprite.Sprite.__init__(self)
 
-        self.height = image.get_height()
-
-        pixels = np.dstack((
-            pygame.surfarray.pixels_red(image),
-            pygame.surfarray.pixels_green(image),
-            pygame.surfarray.pixels_blue(image),
-            pygame.surfarray.pixels_alpha(image),
-        )).astype('float32')
-        pixels /= 255.0
-        pixels = pixels.swapaxes(0, 1)
-        affine_transform = transform.AffineTransform(shear=math.atan(bottom_shear_right / self.height))
-
-        modified_image = transform.warp(pixels, affine_transform)
-        modified_image *= 255.0
-        modified_image = modified_image.astype('int32')
-        modified_image = modified_image.swapaxes(0, 1)
-
-        self.image = pygame.surfarray.make_surface(modified_image[:, :, :-1])
+        self.image = image
+        self.shear(bottom_shear_right)
         self.image.set_colorkey((0, 0, 0))  # black shits are transparent
         self.rect = self.image.get_rect()
-        self.rect.topleft = (x, y)
+        self.rect.topleft = (x, 0)
+        if bottom_shear_right < 0:
+            self.rect.left += bottom_shear_right
+
+    def update(self, dx: int, rightmost: int):
+        self.shear(dx * BUILDING_RATIO)
+        self.rect.left += dx
+        # if self.rect.right < 0:
+
+
+
