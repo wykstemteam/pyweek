@@ -26,3 +26,6 @@ class ObstacleManager:
 
     def draw(self, window):
         self.obstacles.draw(window)
+
+    def kill(self):
+        self.obstacles.empty()
