@@ -91,17 +91,33 @@ def gaming():
 
 
 def main():
+    title_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
+    start_button = pygame_gui.elements.UIButton(
+        relative_rect=pygame.Rect(
+            (SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2 + 100),
+            (200, 50)
+        ),
+        text='Start',
+        manager=title_screen
+    )
+
     running = True
     cock = pygame.time.Clock()
     while running:
+        t = cock.get_time()
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 exit()
+            if event.type == pygame.USEREVENT:
+                if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
+                    if event.ui_element == start_button:
+                        gaming()
+        title_screen.process_events(event)
+        title_screen.update(t / 1000.0)
 
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_SPACE]:
-            gaming()
-        cock.tick(60)
-
-        window.fill((0, 0, 0))
+        window.fill((100, 100, 100))
+        title_screen.draw_ui(window)
         pygame.display.flip()
+
+        cock.tick(60)
