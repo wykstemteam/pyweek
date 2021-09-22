@@ -58,19 +58,14 @@ class PoliceCar(pygame.sprite.Sprite):
                 self.shoot_cooldown -= t
             if len(self.objectives) == 0 and self.quickfire_skill_cooldown <= 0:
                 self.state = random.randint(1, 2)
-                if(self.state == 1):
-                    self.objectives.append(SCREEN_HEIGHT - BULLET_HEIGHT)
+                if self.state == 1:
+                    self.objectives.append(SCREEN_HEIGHT)
                 else:
                     self.objectives.append(BUILDING_HEIGHT)
             else:
                 self.quickfire_skill_cooldown -= t
         elif self.state == 1:  # go to bottom first
             self.objectivepos(self.velocity, t)
-            if self.shoot_cooldown <= 0:
-                self.shoot(-BACKGROUND_VELOCITY)
-                self.shoot_cooldown = SHOOT_COOLDOWN
-            else:
-                self.shoot_cooldown -= t
             if len(self.objectives) == 0:
                 self.state =101
                 self.objectives.append(230)
@@ -88,11 +83,6 @@ class PoliceCar(pygame.sprite.Sprite):
                 self.shoot_cooldown -= t
         elif self.state == 2:  # go to top first
             self.objectivepos(self.velocity, t)
-            if self.shoot_cooldown <= 0:
-                self.shoot(-BACKGROUND_VELOCITY)
-                self.shoot_cooldown = SHOOT_COOLDOWN
-            else:
-                self.shoot_cooldown -= t
             if len(self.objectives) == 0:
                 self.state = 102
                 self.objectives.append(470)
