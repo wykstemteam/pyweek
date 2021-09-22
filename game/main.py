@@ -49,7 +49,7 @@ def main():
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                     if event.ui_element == start_button:
                         gaming()
-        title_screen.process_events(event)
+            title_screen.process_events(event)
         title_screen.update(t / 1000.0)
 
         window.fill((100, 100, 100))
