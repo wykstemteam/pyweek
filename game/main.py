@@ -56,7 +56,7 @@ def main() -> None:
                 if event.ui_element == start_button:
                     gaming()
                     assets_manager.play_music("tanukichis_adventure")
-                if event.ui_element == settings_button:
+                elif event.ui_element == settings_button:
                     settings(window)
 
             title_screen.process_events(event)

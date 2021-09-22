@@ -5,6 +5,7 @@ import pygame
 from game.constants import *
 from game.sprites.missle import Missle
 
+
 class Player(pygame.sprite.Sprite):
     def __init__(self, image: pygame.Surface, x: int, y: int):
         super().__init__()
@@ -72,34 +73,33 @@ class Player(pygame.sprite.Sprite):
         left_button_pressed = pygame.mouse.get_pressed()[0]
         if left_button_pressed:
             if self.items[self.holding] == 1:
-                #FIXME: play some music maybe
+                # FIXME: play some sound effect maybe
                 self.hp += 1
-            elif self.items[self.holding] == 2: #invincible
+            elif self.items[self.holding] == 2:  # invincible
                 pass
             elif self.items[self.holding] == 3:
                 self.vx -= np.cos(self.dir) * 100
                 self.vy += np.sin(self.dir) * 100
                 self.shoot_missle()
-            elif self.items[self.holding] == 4: # earthquake
+            elif self.items[self.holding] == 4:  # earthquake
                 pass
-            elif self.items[self.holding] == 5: # shield
+            elif self.items[self.holding] == 5:  # shield
                 pass
-            elif self.items[self.holding] == 6: # bullet time
+            elif self.items[self.holding] == 6:  # bullet time
                 pass
             self.items[self.holding] = 0
-        
+
         self.missles.update(t)
 
         if self.vx > 0:
             self.vx = max(0, self.vx - FRICTION_HORI)
-        elif self.vx < 0:
+        else:
             self.vx = min(0, self.vx + FRICTION_HORI)
 
         if self.vy > 0:
             self.vy = max(0, self.vy - FRICTION_VERT)
-        elif self.vy < 0:
+        else:
             self.vy = min(0, self.vy + FRICTION_VERT)
-
 
     def draw(self, window):
         for missle in self.missles:

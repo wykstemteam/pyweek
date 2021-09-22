@@ -25,4 +25,4 @@ class Obstacle(pygame.sprite.Sprite):
     def player_hit(self, player) -> None:  # should be called when collided by player
         # animation
         #
-        pass
+        pass  # TODO: Implement

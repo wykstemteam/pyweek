@@ -6,8 +6,6 @@ from game.constants import *
 
 
 def settings(window: pygame.Surface):
-    running = True
-
     settings_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
     return_button = pygame_gui.elements.UIButton(
         relative_rect=pygame.Rect((10, 10), (100, 50)), text='Return', manager=settings_screen
@@ -38,6 +36,7 @@ def settings(window: pygame.Surface):
 
     clock = pygame.time.Clock()
 
+    running = True
     while running:
         t = clock.get_time()
 

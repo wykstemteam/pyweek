@@ -11,7 +11,6 @@ class Warn(pygame.sprite.Sprite):
 
         self.width = self.image.get_width()
         self.height = self.image.get_height()
-        print(self.width)
 
     def update(self, t):
         self.kill()

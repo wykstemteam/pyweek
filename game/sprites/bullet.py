@@ -23,9 +23,8 @@ class Bullet(pygame.sprite.Sprite):
             self.rect.left += self.velocity * t
             if self.rect.left <= 0 or self.rect.right >= SCREEN_WIDTH:
                 self.kill()
-        else:
-            if not self.explode.update(t):
-                self.kill()
+        elif not self.explode.update(t):
+            self.kill()
 
     def player_hit(self, player) -> None:  # should be called when collided by player
         if not self.explode:

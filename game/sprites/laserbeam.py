@@ -1,7 +1,9 @@
-import pygame
 import random
 
+import pygame
+
 from game.constants import *
+
 
 class Laser(pygame.sprite.Sprite):
     def __init__(self) -> None:
@@ -21,11 +23,13 @@ class Laser(pygame.sprite.Sprite):
             self.rect.topleft = (0, random.randint(BUILDING_HEIGHT, SCREEN_HEIGHT - LASER_HEIGHT))
             self.laserrandom = False
             self.laserremaintime = LASERREMAINTIME
+
         if self.laser_cooldown <= 0:
             self.laser_cooldown = 999
             self.laserrandom = True
         else:
             self.laser_cooldown -= t
+
         if self.laserremaintime >= 0:
             self.laserremaintime -= t
             if self.laserred_cooldown >= 0:
@@ -37,7 +41,7 @@ class Laser(pygame.sprite.Sprite):
                 self.laserblink_cooldown -= t
                 if self.laserblink_cooldown < 0:
                     self.laserred_cooldown = LASERRED_COOLDOWN
-        elif self.laserremaintime < 0 and self.laser_cooldown > 900:
+        elif self.laser_cooldown > 900:
             self.image.fill((50, 0, 0, 0))
             self.laser_cooldown = LASER_COOLDOWN
 

@@ -38,21 +38,17 @@ class PoliceCar(pygame.sprite.Sprite):
         self.player_collision_group.add(new_bullet)
 
     def objectivepos(self, speed: int, t):
-        if self.rect.centery != self.objectives[0]:
-            if self.rect.centery > self.objectives[0]:
-                if abs(self.rect.centery - self.objectives[0]) < speed * t:
-                    self.rect.centery = self.objectives[0]
-                else:
-                    self.rect.centery -= speed * t
-            else:
-                if abs(self.rect.centery - self.objectives[0]) < speed * t:
-                    self.rect.centery = self.objectives[0]
-                else:
-                    self.rect.centery += speed * t
+        if self.rect.centery == self.objectives[0]:
+            del self.objectives[0]
+        elif abs(self.rect.centery - self.objectives[0]) < speed * t:
+            self.rect.centery = self.objectives[0]
+        elif self.rect.centery > self.objectives[0]:
+            self.rect.centery -= speed * t
         else:
-            self.objectives.pop(0)
+            self.rect.centery += speed * t
 
     def update(self, t):
+        # FIXME: @Jutsin/Eason please use an enum instead of raw integers for state
         if self.state == 0:
             if len(self.objectives) == 0:
                 self.objectives.append(random.randint(120, 600 - POLICECAR_HEIGHT))
@@ -76,7 +72,7 @@ class PoliceCar(pygame.sprite.Sprite):
                 self.state = 101
                 self.objectives.append(230)
                 self.shoot_cooldown = 0
-        elif self.state == 101:  # bottom to top quickfire
+        elif self.state == 101 or self.state != 2 and self.state == 102:  # bottom to top quickfire
             self.objectivepos(self.velocity * 2, t)
             if len(self.objectives) == 0:
                 self.state = 0
@@ -93,26 +89,14 @@ class PoliceCar(pygame.sprite.Sprite):
                 self.state = 102
                 self.objectives.append(470)
                 self.shoot_cooldown = 0
-        elif self.state == 102:  # top to bottom quickfire
-            self.objectivepos(self.velocity * 2, t)
-            if len(self.objectives) == 0:
-                self.state = 0
-                self.quickfire_skill_cooldown = QUICKFIRE_SKILL_COOLDOWN
-                self.shoot_cooldown = 3
-            if self.shoot_cooldown <= 0:
-                self.shoot(-BACKGROUND_VELOCITY)
-                self.shoot_cooldown = QUICKFIRE_COOLDOWN
-            else:
-                self.shoot_cooldown -= t
-
         self.bullets.update(t)
 
-    def draw(self, window):
+    def draw(self, window: pygame.Surface) -> None:
         window.blit(self.image, self.rect)
         for bullet in self.bullets:
             bullet.draw(window)
 
-    def kill(self):
+    def kill(self) -> None:
         self.bullets.empty()
 
     def player_hit(self, player):  # should be called when collided by someone
