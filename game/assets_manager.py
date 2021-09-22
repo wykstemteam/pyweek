@@ -18,6 +18,7 @@ class AssetsManager:
         self.init_images()
         self.scale_images()
         self.init_animations()
+        self.scale_animations()
         # self.init_sounds()
 
     def init_images(self) -> None:
@@ -65,11 +66,14 @@ class AssetsManager:
             files.sort(key=lambda fn: int(os.path.splitext(fn)[0]))
             for fn in files:
                 self.animations[dirname].append(
-                    pygame.transform.scale(
-                        pygame.image.load(os.path.join('assets', 'animations', dirname, fn)),
-                        (EXPLODE_WIDTH, EXPLODE_HEIGHT)
-                    )
+                    pygame.image.load(os.path.join('assets', 'animations', dirname, fn))
                 )
+
+    def scale_animations(self) -> None:
+        for i in range(len(self.animations['explode'])):
+            self.animations['explode'][i] = pygame.transform.scale(
+                self.animations['explode'][i], (EXPLODE_WIDTH, EXPLODE_HEIGHT)
+            )
 
     def init_sounds(self) -> None:
         for fn in os.listdir(os.path.join('assets', 'sounds')):
