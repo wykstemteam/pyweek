@@ -102,6 +102,17 @@ class Game:
             self.lose_screen.process_events(event)
 
     def update(self, t):
+        if self.player.hp == 4:
+            self.health_bar_image = assets_manager.images['HP4']
+        elif self.player.hp == 3:
+            self.health_bar_image = assets_manager.images['HP3']
+        elif self.player.hp == 2:
+            self.health_bar_image = assets_manager.images['HP2']
+        elif self.player.hp == 1:
+            self.health_bar_image = assets_manager.images['HP1']
+        elif self.player.hp == 0:
+            self.health_bar_image = assets_manager.images['HP0']
+
         if not self.lose and not self.pause:
             self.roads.update(t)
             self.buildings.update(t)
