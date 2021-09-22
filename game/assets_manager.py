@@ -16,6 +16,7 @@ class AssetsManager:
         self.sounds = {}
 
         self.init_images()
+        self.scale_images()
         self.init_animations()
         # self.init_sounds()
 
@@ -23,6 +24,8 @@ class AssetsManager:
         for fn in os.listdir(os.path.join('assets', 'images')):
             base_fn = os.path.splitext(fn)[0]
             self.images[base_fn] = pygame.image.load(os.path.join('assets', 'images', fn))
+
+    def scale_images(self) -> None:
         self.images['warning sign'] = pygame.transform.scale(
             self.images['warning sign'], (WARN_WIDTH, WARN_HEIGHT)
         )
@@ -45,12 +48,11 @@ class AssetsManager:
             self.images['motorbike'], (PLAYER_WIDTH, PLAYER_HEIGHT)
         )
         self.images['arrow'] = pygame.transform.scale(self.images['arrow'], (80, 100))
-        self.images['HP0'] = pygame.transform.scale(self.images['HP0'], (400, 100))
-        self.images['HP1'] = pygame.transform.scale(self.images['HP1'], (400, 100))
-        self.images['HP2'] = pygame.transform.scale(self.images['HP2'], (400, 100))
-        self.images['HP3'] = pygame.transform.scale(self.images['HP3'], (400, 100))
-        self.images['HP4'] = pygame.transform.scale(self.images['HP4'], (400, 100))
-        self.images['missle'] = pygame.transform.scale(self.images['missle'], (MISSLE_WIDTH, MISSLE_HEIGHT))
+        for i in range(1, 5):
+            self.images[f'HP{i}'] = pygame.transform.scale(self.images[f'HP{i}'], (400, 100))
+        self.images['missle'] = pygame.transform.scale(
+            self.images['missle'], (MISSLE_WIDTH, MISSLE_HEIGHT)
+        )
         for i in range(1, 4):
             self.images[f'obstacle{i}'] = pygame.transform.scale(
                 self.images[f'obstacle{i}'], (OBSTACLE_WIDTH, OBSTACLE_HEIGHT)
@@ -85,7 +87,7 @@ class AssetsManager:
                 pygame.mixer.music.stop()
                 pygame.mixer.music.load(os.path.join('assets', 'music', fn))
                 pygame.mixer.music.play(-1)
-                pygame.mixer.music.set_volume(self.music_volume)  # is work???
+                pygame.mixer.music.set_volume(self.music_volume)
                 break
         else:
             raise ValueError(f"No music '{name}' found")
