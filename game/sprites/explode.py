@@ -12,10 +12,13 @@ class Explode(pygame.sprite.Sprite):
         self.rect = self.animation[0].get_rect()
         self.rect.center = pos
 
-    def update(self, t):
-        self.image = self.animation[0]
-        self.rect = self.animation[0].get_rect()
-        self.animation.pop(0)
+    def update(self, t) -> bool:
+        if self.animation[0]:
+            self.image = self.animation[0]
+            self.rect = self.animation[0].get_rect()
+            self.animation.pop(0)
+            return True
+        return False
 
     def draw(self, window):
         window.blit(self.image, self.rect)
