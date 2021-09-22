@@ -135,6 +135,9 @@ class Game:
 
             self.player_collision()
 
+        if self.player.hp <= 0:
+            self.trigger_lose()
+
         self.game_screen.update(t)
         self.pause_screen.update(t)
         self.lose_screen.update(t)

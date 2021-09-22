@@ -30,6 +30,9 @@ class Player(pygame.sprite.Sprite):
     def update(self, t):
         self.real_x += (self.vx + BACKGROUND_VELOCITY) * t
         self.real_y += self.vy * t
+        self.rect.left = self.real_x
+        self.rect.top = self.real_y
+        
         x = pygame.mouse.get_pos()[0] - (self.real_x + PLAYER_WIDTH / 2)
         y = (self.real_y + PLAYER_HEIGHT / 2) - pygame.mouse.get_pos()[1]
         self.dir = np.arctan2(y, x)
@@ -74,8 +77,6 @@ class Player(pygame.sprite.Sprite):
         elif self.vy < 0:
             self.vy = min(0, self.vy + FRICTION_VERT)
 
-        self.rect.left = self.real_x
-        self.rect.top = self.real_y
 
     def draw(self, window):
         for missle in self.missles:
@@ -86,5 +87,5 @@ class Player(pygame.sprite.Sprite):
         return BUILDING_HEIGHT < self.real_y < SCREEN_HEIGHT - PLAYER_HEIGHT
 
     def shoot_missle(self):
-        new_missle = Missle((self.real_x, self.real_y), self.dir)
+        new_missle = Missle(self.rect.center, self.dir)
         self.missles.add(new_missle)
