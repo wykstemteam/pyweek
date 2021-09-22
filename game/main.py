@@ -1,13 +1,9 @@
-import math
-
-import numpy as np
 import pygame
 import pygame_gui
 
 from game.assets_manager import assets_manager
 from game.constants import *
-from game.sprites import Building, Player, PoliceCar, Road
-from game.sprites.building import Buildings
+from game.sprites import Player, PoliceCar, Road
 from game.sprites.building_manager import BuildingManager
 
 pygame.init()
@@ -33,7 +29,7 @@ def gaming():
     player = Player(
         assets_manager.images['player'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
 
-    buildings = BuildingManager()  # copied code to building.py
+    buildings = BuildingManager()
 
     clock = pygame.time.Clock()
 

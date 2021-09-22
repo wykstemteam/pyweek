@@ -1,77 +1,56 @@
-import random
+import cv2 as cv
 import numpy as np
 import pygame
-from skimage import io, transform
+from matplotlib import pyplot as plt
 
-from game.assets_manager import assets_manager
 from game.constants import *
 
 
 class Building(pygame.sprite.Sprite):
-    def __init__(self, image: pygame.Surface, bottom_shear_right: float, x: int):
+    def __init__(self, image: pygame.Surface, x: int):
         super().__init__()
         self.original_image = image
+        self.flipped_image = pygame.transform.flip(image, True, False)
         self.image = image
+        self.mid_x = x + BUILDING_WIDTH // 2
         self.rect = self.image.get_rect()
-        self.shear(bottom_shear_right)
-        self.total_sheared = bottom_shear_right
         self.rect.topleft = (x, 0)
-        if bottom_shear_right < 0:
-            self.rect.left += bottom_shear_right
+        if self.sx < 0:
+            self.rect.left += self.sx
+        self.shear()
 
-    def shear(self, bottom_shear_right: float):
+    @property
+    def sx(self):
+        return -(self.mid_x - SCREEN_WIDTH // 2) * (1 - BUILDING_RATIO)
+
+    def shear(self):
+        image = self.original_image if self.sx > 0 else self.flipped_image
+        plt.imshow(pygame.surfarray.pixels3d(image))
         image = np.dstack((
-            pygame.surfarray.pixels_red(self.original_image),
-            pygame.surfarray.pixels_green(self.original_image),
-            pygame.surfarray.pixels_blue(self.original_image),
-        )).astype('float32') / 255.0
+            pygame.surfarray.pixels_red(image),
+            pygame.surfarray.pixels_green(image),
+            pygame.surfarray.pixels_blue(image),
+        ))
         image = image.swapaxes(0, 1)
-        shear_matrix = np.array([[1, abs(bottom_shear_right) / self.original_image.get_height(), 0],
+        shear_matrix = np.array([[1, abs(self.sx) / self.original_image.get_height(), 0],
                                  [0, 1, 0],
                                  [0, 0, 1]])
-        image = transform.warp(
-            image, np.linalg.inv(shear_matrix), output_shape=(
-                self.original_image.get_height(), self.original_image.get_width() + int(abs(bottom_shear_right)))
-        ) * 255.0
+        image = cv.warpPerspective(image, shear_matrix, (
+            self.original_image.get_width() + int(abs(self.sx)), self.original_image.get_height()))
+
         image = image.swapaxes(0, 1)
-        self.image = pygame.surfarray.make_surface(image.astype('int8'))
-        if bottom_shear_right < 0:
+
+        self.image = pygame.surfarray.make_surface(image)
+        if self.sx < 0:
             self.image = pygame.transform.flip(
                 self.image, True, False)  # flips image horizontally
         self.image.set_colorkey((0, 0, 0))  # black shits are transparent
         self.rect.size = self.image.get_size()
 
     def update(self, dx: int):
-        self.total_sheared -= dx * BUILDING_RATIO
-        self.shear(self.total_sheared)
-        if self.total_sheared < 0:
+        self.mid_x += dx
+        self.shear()
+        if self.sx > 0:
             self.rect.left += dx
         else:
-            self.rect.left += dx * (1 + BUILDING_RATIO)
-
-
-class Buildings:
-    def __init__(self) -> None:
-        self.buildings = pygame.sprite.Group()
-        x = SCREEN_WIDTH // 2 - BUILDING_WIDTH // 2
-        shear = 0
-        tp = 0
-        while x + BUILDING_WIDTH + shear >= 0:
-            self.buildings.add(
-                Building(assets_manager.images[f'building{tp + 1}'], shear, x))
-            shear += 2 * BUILDING_WIDTH / 3
-            x -= BUILDING_WIDTH
-            tp = (tp + 1) % 3
-
-        x = SCREEN_WIDTH // 2 + BUILDING_WIDTH // 2
-        shear = -2 * BUILDING_WIDTH / 3
-        tp = 2
-        while x + shear < SCREEN_WIDTH:
-            self.buildings.add(
-                Building(assets_manager.images[f'building{tp + 1}'], shear, x))
-            shear -= 2 * BUILDING_WIDTH / 3
-            x += BUILDING_WIDTH
-            tp = (tp - 1) % 3
-
-    def draw(self, window):
-        self.buildings.draw(window)
+            self.rect.left += int(dx * BUILDING_RATIO)

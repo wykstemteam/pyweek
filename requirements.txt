@@ -2,3 +2,6 @@ pygame>=2.0.1
 numpy>=1.19.5
 scikit-image>=0.18.3
 pygame_gui>=0.5.7
+
+opencv-python>=4.5.3.56
+matplotlib>=3.4.3
