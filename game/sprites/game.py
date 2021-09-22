@@ -5,6 +5,7 @@ import pygame_gui
 from game.assets_manager import assets_manager
 from game.constants import *
 from game.sprites import BuildingManager, ObstacleManager, Player, PoliceCar, Road, Warn
+from game.settings import settings
 
 
 class Game:
@@ -41,15 +42,14 @@ class Game:
         self.arrow_rect.left += np.cos(self.player.dir) * 150
         self.arrow_rect.top -= np.sin(self.player.dir) * 150
 
-
         # game gui
         self.game_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.settings_button = pygame_gui.elements.UIButton(
             relative_rect=pygame.Rect(
                 (10, 10), (100, 50)
             ),
-            text = 'Settings',
-            manager = self.game_screen
+            text='Settings',
+            manager=self.game_screen
         )
 
         # lose_screen
@@ -65,19 +65,20 @@ class Game:
 
         assets_manager.play_music("8bitaggressive1")
 
-    def event_process(self):
+    def event_process(self, window: pygame.Surface):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 exit()
 
-            if event.type == pygame.USEREVENT:
-                if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
-                    if event.ui_element == self.settings_button:
-                        pass
+            if (
+                event.type == pygame.USEREVENT
+                and event.user_type == pygame_gui.UI_BUTTON_PRESSED
+            ):
+                if event.ui_element == self.settings_button:
+                    settings(window)
 
-                    if self.lose:
-                        if event.ui_element == self.restart_button:
-                            self.__init__()  #  Reinitialize
+                if self.lose and event.ui_element == self.restart_button:
+                    self.__init__()  # Reinitialize
 
             self.game_screen.process_events(event)
             self.lose_screen.process_events(event)

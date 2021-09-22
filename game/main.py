@@ -17,7 +17,7 @@ def gaming():
     while running:
         t = clock.get_time()
 
-        game.event_process()
+        game.event_process(window)
         game.update(t / 1000)
 
         game.draw(window)
