@@ -8,8 +8,8 @@ from game.constants import *
 class AssetsManager:
     def __init__(self) -> None:
         pygame.mixer.init()
-        self.sound_volume = 0.3
-        self.music_volume = 0.3
+        self.sound_volume = INIT_SOUND_VOLUME
+        self.music_volume = INIT_MUSIC_VOLUME
 
         self.images = {}
         self.animations = {}

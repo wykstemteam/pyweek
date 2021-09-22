@@ -10,39 +10,27 @@ def settings(window: pygame.Surface):
 
     settings_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
     return_button = pygame_gui.elements.UIButton(
-        relative_rect=pygame.Rect(
-            (10, 10), (100, 50)
-        ),
-        text='Return',
-        manager=settings_screen
+        relative_rect=pygame.Rect((10, 10), (100, 50)), text='Return', manager=settings_screen
     )
     music_label = pygame_gui.elements.UILabel(
-        relative_rect=pygame.Rect(
-            (SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 - 25), (400, 10)
-        ),
+        relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 - 25), (400, 10)),
         text='Music Volume',
         manager=settings_screen
     )
     music_slider = pygame_gui.elements.UIHorizontalSlider(
-        relative_rect=pygame.Rect(
-            (SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 - 15), (400, 30)
-        ),
+        relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 - 15), (400, 30)),
         start_value=assets_manager.music_volume,
         value_range=(0.0, 1),
         manager=settings_screen
     )
 
     sound_label = pygame_gui.elements.UILabel(
-        relative_rect=pygame.Rect(
-            (SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 + 20), (400, 10)
-        ),
+        relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 + 20), (400, 10)),
         text='Sound Volume',
         manager=settings_screen
     )
     sound_slider = pygame_gui.elements.UIHorizontalSlider(
-        relative_rect=pygame.Rect(
-            (SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 + 30), (400, 30)
-        ),
+        relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 + 30), (400, 30)),
         start_value=assets_manager.sound_volume,
         value_range=(0.0, 1),
         manager=settings_screen
@@ -58,8 +46,7 @@ def settings(window: pygame.Surface):
                 exit()
 
             if (
-                event.type == pygame.USEREVENT
-                and event.user_type == pygame_gui.UI_BUTTON_PRESSED
+                event.type == pygame.USEREVENT and event.user_type == pygame_gui.UI_BUTTON_PRESSED
                 and event.ui_element == return_button
             ):
                 running = False
