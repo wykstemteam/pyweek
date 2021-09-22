@@ -7,4 +7,5 @@ from .road import Road
 from .obstacle import Obstacle
 from .obstacle_manager import ObstacleManager
 from .warningsign import Warn
+from .game import Game
 __all__ = ['Building', 'BuildingManager', 'Bullet', 'Player', 'PoliceCar', 'Road', 'Obstacle', 'ObstacleManager', 'Warn']
