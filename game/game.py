@@ -44,13 +44,13 @@ class Game:
         # game gui
         self.game_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.pause_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect((10, 10), (100, 50)), text='Pause', manager=self.game_screen
+            relative_rect=pygame.Rect((SCREEN_WIDTH - 100 - 10, 10), (100, 50)), text='Pause', manager=self.game_screen
         )
 
         # pause gui
         self.pause_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.return_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect((10, 10), (100, 50)),
+            relative_rect=pygame.Rect((SCREEN_WIDTH - 100 - 10, 10), (100, 50)),
             text='Return',
             manager=self.pause_screen
         )
