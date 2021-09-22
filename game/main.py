@@ -45,12 +45,13 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 exit()
-            if event.type == pygame.USEREVENT:
-                if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
-                    if event.ui_element == start_button:
-                        gaming()
+            if (
+                event.type == pygame.USEREVENT and event.user_type == pygame_gui.UI_BUTTON_PRESSED
+                and event.ui_element == start_button
+            ):
+                gaming()
             title_screen.process_events(event)
-        title_screen.update(t / 1000.0)
+        title_screen.update(t / 1000)
 
         window.fill((100, 100, 100))
         title_screen.draw_ui(window)
