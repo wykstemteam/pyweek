@@ -5,7 +5,6 @@ import pygame_gui
 from game.assets_manager import assets_manager
 from game.constants import *
 from game.sprites import BuildingManager, ObstacleManager, Player, PoliceCar, Road, Warn
-from game.settings import settings
 
 
 class Game:
@@ -72,6 +71,13 @@ class Game:
             text='Restart',
             manager=self.lose_screen
         )
+        self.return_title_button = pygame_gui.elements.UIButton(
+            relative_rect=pygame.Rect(
+                (SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT // 2), (100, 50)
+            ),
+            text='Return',
+            manager=self.lose_screen
+        )
         self.lose = False
 
         assets_manager.play_music("8bitaggressive1")
@@ -93,6 +99,8 @@ class Game:
 
                 if self.lose and event.ui_element == self.restart_button:
                     self.__init__()  # Reinitialize
+                if self.lose and event.ui_element == self.return_title_button:
+                    pass
 
             self.game_screen.process_events(event)
             self.pause_screen.process_events(event)

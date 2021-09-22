@@ -4,6 +4,7 @@ import pygame_gui
 from game.assets_manager import assets_manager
 from game.constants import *
 from game.sprites.game import Game  # FIXME: Please don't put this in sprites
+from game.settings import settings
 
 pygame.init()
 window = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -30,8 +31,13 @@ def gaming():
 
 def main():
     title_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
-    start_button = pygame_gui.elements.UIButton(
+    settings_button = pygame_gui.elements.UIButton(
         relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2 + 100), (200, 50)),
+        text='Settings',
+        manager=title_screen
+    )
+    start_button = pygame_gui.elements.UIButton(
+        relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2), (200, 50)),
         text='Start',
         manager=title_screen
     )
@@ -47,9 +53,12 @@ def main():
                 exit()
             if (
                 event.type == pygame.USEREVENT and event.user_type == pygame_gui.UI_BUTTON_PRESSED
-                and event.ui_element == start_button
             ):
-                gaming()
+                if event.ui_element == start_button:
+                    gaming()
+                if event.ui_element == settings_button:
+                    settings(window)
+
             title_screen.process_events(event)
         title_screen.update(t / 1000)
 
