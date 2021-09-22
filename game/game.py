@@ -102,16 +102,7 @@ class Game:
             self.lose_screen.process_events(event)
 
     def update(self, t):
-        if self.player.hp == 4:
-            self.health_bar_image = assets_manager.images['HP4']
-        elif self.player.hp == 3:
-            self.health_bar_image = assets_manager.images['HP3']
-        elif self.player.hp == 2:
-            self.health_bar_image = assets_manager.images['HP2']
-        elif self.player.hp == 1:
-            self.health_bar_image = assets_manager.images['HP1']
-        elif self.player.hp == 0:
-            self.health_bar_image = assets_manager.images['HP0']
+        self.health_bar_image = assets_manager.images[f"HP{self.player.hp}"]
 
         if not self.lose and not self.pause:
             self.roads.update(t)
@@ -154,15 +145,15 @@ class Game:
         self.player.draw(window)
         window.blit(self.arrow_image, self.arrow_rect)
         window.blit(self.health_bar_image, pygame.Rect((10, 10), (400, 100)))
-        if not self.lose and not self.pause:
-            self.game_screen.draw_ui(window)
         if self.pause:
             window.blit(assets_manager.images['Darken'], pygame.Rect(0, 0, 0, 0))
             self.pause_screen.draw_ui(window)
-        if self.lose:
+        elif self.lose:
             window.blit(assets_manager.images['Darken'], pygame.Rect(0, 0, 0, 0))
             window.blit(assets_manager.images['GameOver'], pygame.Rect(0, 0, 0, 0))
             self.lose_screen.draw_ui(window)
+        else:
+            self.game_screen.draw_ui(window)
 
     def trigger_lose(self):
         if not self.lose and not self.pause:
