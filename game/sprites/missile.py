@@ -5,13 +5,13 @@ from game.assets_manager import assets_manager
 from game.constants import *
 
 
-class Missle(pygame.sprite.Sprite):
+class Missile(pygame.sprite.Sprite):
     def __init__(self, pos: pygame.Vector2, dir: float) -> None:
         super().__init__()
 
         self.pos = pygame.Vector2(pos)
-        self.original_image = assets_manager.images['missle']
-        self.image = assets_manager.images['missle']
+        self.original_image = assets_manager.images['missile']
+        self.image = assets_manager.images['missile']
         self.rect = self.image.get_rect()
         self.rect.center = pos
         self.dir = dir
@@ -19,9 +19,9 @@ class Missle(pygame.sprite.Sprite):
         self.explode = None
 
     def update(self, t) -> None:
-        self.pos += (MISSLE_SPEED * t * np.cos(self.dir), -MISSLE_SPEED * t * np.sin(self.dir))
+        self.pos += (MISSILE_SPEED * t * np.cos(self.dir), -MISSILE_SPEED * t * np.sin(self.dir))
         self.image = pygame.transform.rotate(
-            assets_manager.images['missle'], self.dir * 360 // (2 * np.pi)
+            assets_manager.images['missile'], self.dir * 360 // (2 * np.pi)
         )
         self.rect.center = self.pos
 

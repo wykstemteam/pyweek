@@ -3,7 +3,7 @@ import numpy as np
 import pygame
 
 from game.constants import *
-from game.sprites.missle import Missle
+from game.sprites.missile import Missile
 
 
 class Player(pygame.sprite.Sprite):
@@ -23,7 +23,7 @@ class Player(pygame.sprite.Sprite):
         self.real_y = float(y)
 
         self.hp = 4
-        self.missles = pygame.sprite.Group()
+        self.missiles = pygame.sprite.Group()
 
         self.items = {1: 0, 2: 0}
         self.holding = 1
@@ -80,7 +80,7 @@ class Player(pygame.sprite.Sprite):
             elif self.items[self.holding] == 3:
                 self.vx -= np.cos(self.dir) * 100
                 self.vy += np.sin(self.dir) * 100
-                self.shoot_missle()
+                self.shoot_missile()
             elif self.items[self.holding] == 4:  # earthquake
                 pass
             elif self.items[self.holding] == 5:  # shield
@@ -89,7 +89,7 @@ class Player(pygame.sprite.Sprite):
                 pass
             self.items[self.holding] = 0
 
-        self.missles.update(t)
+        self.missiles.update(t)
 
         if self.vx > 0:
             self.vx = max(0, self.vx - FRICTION_HORI)
@@ -102,13 +102,13 @@ class Player(pygame.sprite.Sprite):
             self.vy = min(0, self.vy + FRICTION_VERT)
 
     def draw(self, window):
-        for missle in self.missles:
-            missle.draw(window)
+        for missile in self.missiles:
+            missile.draw(window)
         window.blit(self.image, self.rect)
 
     def in_bounds(self):
         return BUILDING_HEIGHT < self.real_y < SCREEN_HEIGHT - PLAYER_HEIGHT
 
-    def shoot_missle(self):
-        new_missle = Missle(self.rect.center, self.dir)
-        self.missles.add(new_missle)
+    def shoot_missile(self):
+        new_missile = Missile(self.rect.center, self.dir)
+        self.missiles.add(new_missile)
