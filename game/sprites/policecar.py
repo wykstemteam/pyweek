@@ -29,6 +29,7 @@ class PoliceCar(pygame.sprite.Sprite):
         self.state = 0
 
         self.player_collision_group = player_collision_group
+        self.player_collision_group.add(self)
 
     def shoot(self, bullet_speed):
         new_bullet = Bullet(self.bullet_image, self.rect.center, bullet_speed)
