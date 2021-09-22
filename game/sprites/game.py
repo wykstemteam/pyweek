@@ -14,7 +14,7 @@ class Game:
             Road(assets_manager.images['road'], SCREEN_WIDTH),
         )
         self.policecar = PoliceCar(
-            assets_manager.images['policecar'], (20, 280), assets_manager.images['bullet']
+            assets_manager.images['policecar'], pygame.Vector2(20, 280), assets_manager.images['bullet']
         )
         self.warn = Warn(assets_manager.images['warning sign'], 30, 300)
         self.player = Player(assets_manager.images['motorbike'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
@@ -110,9 +110,9 @@ class Game:
     def update(self, t):
         if not self.lose and not self.pause:
             self.roads.update(t)
+            self.buildings.update(t)
             self.player.update(t)
             self.policecar.update(t)
-            self.buildings.update(t)
             self.obstacle_manager.update(t)
             self.arrow_image = pygame.transform.rotate(
                 assets_manager.images['arrow'], self.player.dir * 360 // (2 * np.pi)
