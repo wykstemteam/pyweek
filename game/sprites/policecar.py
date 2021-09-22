@@ -8,7 +8,7 @@ from game.sprites import Bullet
 
 class PoliceCar(pygame.sprite.Sprite):
     def __init__(
-        self, image: pygame.Surface, pos: pygame.Vector2, bullet_image: pygame.Surface
+        self, image: pygame.Surface, pos: pygame.Vector2, bullet_image: pygame.Surface, player_collision_group: pygame.sprite.Group
     ) -> None:
         super().__init__()
 
@@ -28,8 +28,12 @@ class PoliceCar(pygame.sprite.Sprite):
         self.velocity = POLICECAR_VELOCITY
         self.state = 0
 
+        self.player_collision_group = player_collision_group
+
     def shoot(self, bullet_speed):
-        self.bullets.add(Bullet(self.bullet_image, self.rect.center, bullet_speed))
+        new_bullet = Bullet(self.bullet_image, self.rect.center, bullet_speed)
+        self.bullets.add(new_bullet)
+        self.player_collision_group.add(new_bullet)
 
     def objectivepos(self, speed: int, t):
         if self.rect.centery != self.objectives[0]:

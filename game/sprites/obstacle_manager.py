@@ -8,22 +8,29 @@ from game.sprites import Obstacle
 
 
 class ObstacleManager:
-    def __init__(self) -> None:
+    def __init__(self, player_collision_group) -> None:
         self.obstacles = pygame.sprite.Group()
         self.cooldown = OBSTACLE_COOLDOWN
+        self.player_collision_group = player_collision_group
 
     def add(self) -> None:
         obstacle_num = random.randint(1, 3)
+<<<<<<< Updated upstream
         self.obstacles.add(
             Obstacle(
                 assets_manager.images[f'obstacle{obstacle_num}'], pygame.Vector2(
+=======
+        new_obstacle = Obstacle(
+                assets_manager.images[f'obstacle{obstacle_num}'], (
+>>>>>>> Stashed changes
                     SCREEN_WIDTH - OBSTACLE_WIDTH / 2 - 1,
                     random.randint(
                         BUILDING_HEIGHT + OBSTACLE_HEIGHT / 2, SCREEN_HEIGHT - OBSTACLE_WIDTH / 2
                     )
                 )
             )
-        )
+        self.obstacles.add(new_obstacle)
+        self.player_collision_group.add(new_obstacle)
 
     def update(self, t: float) -> None:
         if self.cooldown <= 0:

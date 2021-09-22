@@ -7,8 +7,9 @@ from .player import Player
 from .policecar import PoliceCar
 from .road import Road
 from .warningsign import Warn
+from .explode import Explode
 
 __all__ = [
     'Building', 'BuildingManager', 'Bullet', 'Obstacle', 'ObstacleManager', 'Player', 'PoliceCar',
-    'Road', 'Warn'
+    'Road', 'Warn', 'Explode'
 ]
