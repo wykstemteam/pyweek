@@ -25,13 +25,15 @@ class Player(pygame.sprite.Sprite):
         self.vy += dy
 
     def update(self, t):
+        self.real_x += (self.vx + BACKGROUND_VELOCITY) * t
+        self.real_y += self.vy * t
         x = pygame.mouse.get_pos()[0] - (self.real_x + PLAYER_WIDTH / 2)
         y = (self.real_y + PLAYER_HEIGHT / 2) - pygame.mouse.get_pos()[1]
         self.dir = np.arctan2(y, x)
 
         keys = pygame.key.get_pressed()
         if self.real_x < 0:  # touches left border
-            self.real_y = 0
+            self.real_x = 0
             self.vx = -BACKGROUND_VELOCITY
         if self.real_x < SCREEN_WIDTH - PLAYER_WIDTH // 2:
             if keys[pygame.K_w]:
@@ -46,6 +48,13 @@ class Player(pygame.sprite.Sprite):
             self.rect.left = SCREEN_WIDTH - PLAYER_WIDTH // 2
             self.vx = -BACKGROUND_VELOCITY
 
+        if self.real_y < BUILDING_HEIGHT:
+            self.real_y = BUILDING_HEIGHT
+            self.vy = 0
+        if self.real_y + PLAYER_HEIGHT > SCREEN_HEIGHT:
+            self.real_y = SCREEN_HEIGHT -PLAYER_HEIGHT
+            self.vy = 0
+
         if self.vx > 0:
             self.vx = max(0, self.vx - FRICTION_HORI)
         elif self.vx < 0:
@@ -56,8 +65,6 @@ class Player(pygame.sprite.Sprite):
         elif self.vy < 0:
             self.vy = min(0, self.vy + FRICTION_VERT)
 
-        self.real_x += (self.vx + BACKGROUND_VELOCITY) * t
-        self.real_y += self.vy * t
         self.rect.left = self.real_x
         self.rect.top = self.real_y
 

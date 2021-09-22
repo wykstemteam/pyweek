@@ -119,10 +119,6 @@ class Game:
 
             self.player_collision()
 
-        if not self.lose and not self.pause and not self.player.in_bounds():
-            assets_manager.play_music("greensleeves")
-            self.lose = True
-
         self.game_screen.update(t)
         self.pause_screen.update(t)
         self.lose_screen.update(t)
@@ -146,7 +142,15 @@ class Game:
             window.blit(assets_manager.images['GameOver'], pygame.Rect(0, 0, 0, 0))
             self.lose_screen.draw_ui(window)
 
+    def trigger_lose(self):
+        if not self.lose and not self.pause:
+            assets_manager.play_music("greensleeves")
+            self.lose = True
+
     def player_collision(self):
         for obj in self.player_collision_group:
             if self.player.rect.colliderect(obj.rect):
-                obj.player_hit(self.player)
+                if type(obj) == PoliceCar:
+                    self.trigger_lose()
+                else:
+                    obj.player_hit(self.player)
