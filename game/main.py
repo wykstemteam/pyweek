@@ -18,7 +18,9 @@ def gaming() -> None:
     while running:
         t = clock.get_time()
 
-        game.event_process(window)
+        if game.event_process(window):  # Returns True if stop gaming
+            running = False
+
         game.update(t / 1000)
 
         game.draw(window)
@@ -56,6 +58,7 @@ def main() -> None:
             ):
                 if event.ui_element == start_button:
                     gaming()
+                    assets_manager.play_music("tanukichis_adventure")
                 if event.ui_element == settings_button:
                     settings(window)
 

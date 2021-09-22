@@ -101,7 +101,7 @@ class Game:
                 if self.lose and event.ui_element == self.restart_button:
                     self.__init__()  # Reinitialize
                 if self.lose and event.ui_element == self.return_title_button:
-                    pass
+                    return True  # Stop gaming
 
             self.game_screen.process_events(event)
             self.pause_screen.process_events(event)

@@ -52,14 +52,16 @@ class AssetsManager:
             base_fn = os.path.splitext(fn)[0]
             self.sounds[base_fn] = pygame.mixer.Sound(os.path.join('assets', 'sounds', fn))
 
-    def init_animations(self):
-        for dir in os.listdir(os.path.join('assets', 'sounds')):
-            self.animations[dir] = []
-            for fn in os.listdir(dir):
-                self.animations[dir].append(pygame.transform.scale(
-                    pygame.image.load(os.path.join('assets', 'images', dir, fn))), 
-                    (EXPLODE_WIDTH, EXPLODE_HEIGHT)
+    def init_animations(self) -> None:
+        for dirname in os.listdir(os.path.join('assets', 'animations')):
+            self.animations[dirname] = []
+            for fn in os.listdir(dirname):
+                self.animations[dirname].append(
+                    pygame.transform.scale(
+                        pygame.image.load(os.path.join('assets', 'animations', dirname, fn)),
+                        (EXPLODE_WIDTH, EXPLODE_HEIGHT)
                     )
+                )
 
     def play_music(self, name: str) -> None:
         for fn in os.listdir(os.path.join('assets', 'music')):
@@ -68,7 +70,7 @@ class AssetsManager:
                 pygame.mixer.music.stop()
                 pygame.mixer.music.load(os.path.join('assets', 'music', fn))
                 pygame.mixer.music.play(-1)
-                pygame.mixer.music.set_volume(0.3)
+                pygame.mixer.music.set_volume(0.3)  # is work???
                 break
         else:
             raise ValueError(f"No music '{name}' found")
