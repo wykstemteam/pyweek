@@ -17,7 +17,7 @@ class Obstacle(pygame.sprite.Sprite):
 
     def update(self, t) -> None:
         self.pos.x += BACKGROUND_VELOCITY * t
-        self.rect.left = self.pos.x
+        self.rect.center = self.pos
         if self.rect.left <= 0:
             self.kill()
             return

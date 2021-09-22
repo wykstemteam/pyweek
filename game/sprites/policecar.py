@@ -1,4 +1,5 @@
 import random
+from enum import Enum
 
 import pygame
 
@@ -7,9 +8,13 @@ from game.sprites import Bullet
 
 
 class PoliceCar(pygame.sprite.Sprite):
+    class State(Enum):
+        RANDOM = 0
+        BOTTOM_TO_UP = 1
+        UP_TO_BOTTOM = 2
+
     def __init__(
-        self, image: pygame.Surface, pos: pygame.Vector2, bullet_image: pygame.Surface,
-        player_collision_group: pygame.sprite.Group
+        self, image: pygame.Surface, pos: pygame.Vector2, bullet_image: pygame.Surface, player_collision_group: pygame.sprite.Group
     ) -> None:
         super().__init__()
 
@@ -27,7 +32,8 @@ class PoliceCar(pygame.sprite.Sprite):
 
         self.objectives = []
         self.velocity = POLICECAR_VELOCITY
-        self.state = 0
+        self.state = PoliceCar.State.RANDOM
+        self.going_to_target = False
 
         self.player_collision_group = player_collision_group
         self.player_collision_group.add(self)
@@ -49,7 +55,7 @@ class PoliceCar(pygame.sprite.Sprite):
 
     def update(self, t):
         # FIXME: @Jutsin/Eason please use an enum instead of raw integers for state
-        if self.state == 0:
+        if self.state == PoliceCar.State.RANDOM:
             if len(self.objectives) == 0:
                 self.objectives.append(random.randint(120, 600 - POLICECAR_HEIGHT))
             self.objectivepos(self.velocity, t)
@@ -59,23 +65,19 @@ class PoliceCar(pygame.sprite.Sprite):
             else:
                 self.shoot_cooldown -= t
             if len(self.objectives) == 0 and self.quickfire_skill_cooldown <= 0:
-                self.state = random.randint(1, 2)
-                if self.state == 1:
+                self.state = random.choice([PoliceCar.State.BOTTOM_TO_UP, PoliceCar.State.UP_TO_BOTTOM])
+                if self.state == PoliceCar.State.BOTTOM_TO_UP:
                     self.objectives.append(SCREEN_HEIGHT)
                 else:
                     self.objectives.append(BUILDING_HEIGHT)
+                self.going_to_target = True
             else:
                 self.quickfire_skill_cooldown -= t
-        elif self.state == 1:  # go to bottom first
-            self.objectivepos(self.velocity, t)
-            if len(self.objectives) == 0:
-                self.state = 101
-                self.objectives.append(230)
-                self.shoot_cooldown = 0
-        elif self.state == 101 or self.state != 2 and self.state == 102:  # bottom to top quickfire
+
+        elif not self.going_to_target:
             self.objectivepos(self.velocity * 2, t)
             if len(self.objectives) == 0:
-                self.state = 0
+                self.state = PoliceCar.State.RANDOM
                 self.quickfire_skill_cooldown = QUICKFIRE_SKILL_COOLDOWN
                 self.shoot_cooldown = 3
             if self.shoot_cooldown <= 0:
@@ -83,12 +85,21 @@ class PoliceCar(pygame.sprite.Sprite):
                 self.shoot_cooldown = QUICKFIRE_COOLDOWN
             else:
                 self.shoot_cooldown -= t
-        elif self.state == 2:  # go to top first
+
+        elif self.state == PoliceCar.State.BOTTOM_TO_UP:  # go to bottom first
             self.objectivepos(self.velocity, t)
             if len(self.objectives) == 0:
-                self.state = 102
+                self.going_to_target = False
+                self.objectives.append(230)
+                self.shoot_cooldown = 0
+
+        else:  # PoliceCar.State.UP_TO_BOTTOM
+            self.objectivepos(self.velocity, t)
+            if len(self.objectives) == 0:
+                self.going_to_target = False
                 self.objectives.append(470)
                 self.shoot_cooldown = 0
+
         self.bullets.update(t)
 
     def draw(self, window: pygame.Surface) -> None:
