@@ -28,4 +28,9 @@ class Bullet(pygame.sprite.Sprite):
 
     def player_hit(self, player) -> None:  # should be called when collided by player
         if not self.explode:
+            self.image = None
             self.explode = Explode(self.rect.center)
+
+    def draw(self, window):
+        if self.image:
+            window.blit(self.image, self.rect)
