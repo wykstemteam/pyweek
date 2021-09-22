@@ -4,6 +4,7 @@ import pygame
 
 from game.constants import *
 from game.sprites.missile import Missile
+from game.sprites import Obstacle
 
 
 class Player(pygame.sprite.Sprite):
@@ -112,3 +113,31 @@ class Player(pygame.sprite.Sprite):
     def shoot_missile(self):
         new_missile = Missile(self.rect.center, self.dir)
         self.missiles.add(new_missile)
+
+    def resolve_collision(self, obstacle: Obstacle):
+        obstacle_left = obstacle.pos.x - OBSTACLE_WIDTH // 2
+        obstacle_right = obstacle.pos.x + OBSTACLE_WIDTH // 2
+        obstacle_top = obstacle.pos.y - OBSTACLE_HEIGHT // 2
+        obstacle_bottom = obstacle.pos.y + OBSTACLE_HEIGHT // 2
+        self_left = self.real_x
+        self_right = self.real_x + PLAYER_WIDTH
+        self_top = self.real_y
+        self_bottom = self.real_y + PLAYER_WIDTH
+        distances = [(self_right - obstacle_left, 0), (obstacle_right - self_left, 1),
+                     (self_bottom - obstacle_top, 2), (obstacle_bottom - self_top, 3)]
+        distances = sorted(filter(lambda x: x[0] >= 0, distances))
+
+        if distances[0][1] == 0:  # right
+            self.real_x = obstacle_left - PLAYER_WIDTH
+            self.vx = 0
+        elif distances[0][1] == 1:  # left
+            self.real_x = obstacle_right
+            self.vx = 0
+        elif distances[0][1] == 2:  # top
+            self.real_y = obstacle_top - PLAYER_HEIGHT
+            self.vy = 0
+        else:  # bottom
+            self.real_y = obstacle_bottom
+            self.vy = 0
+        self.rect.left = self.real_x
+        self.rect.top = self.real_y

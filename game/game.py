@@ -4,7 +4,7 @@ import pygame_gui
 
 from game.assets_manager import assets_manager
 from game.constants import *
-from game.sprites import BuildingManager, Laser, ObstacleManager, Player, PoliceCar, Road, Warn
+from game.sprites import *
 
 
 class Game:
@@ -84,7 +84,7 @@ class Game:
             if event.type == pygame.QUIT:
                 exit()
 
-            if (event.type == pygame.USEREVENT and event.user_type == pygame_gui.UI_BUTTON_PRESSED):
+            if event.type == pygame.USEREVENT and event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                 if not self.pause and not self.lose and event.ui_element == self.pause_button:
                     self.pause = True
                     break  # Otherwise will click both pause and return buttons
@@ -94,6 +94,7 @@ class Game:
 
                 if self.lose and event.ui_element == self.restart_button:
                     self.__init__()  # Reinitialize
+
                 if self.lose and event.ui_element == self.return_title_button:
                     return True  # Stop gaming
 
@@ -165,5 +166,7 @@ class Game:
             if self.player.rect.colliderect(obj.rect):
                 if type(obj) == PoliceCar:
                     self.trigger_lose()
-                else:
+                elif type(obj) == Bullet:
                     obj.player_hit(self.player)
+                elif type(obj) == Obstacle:
+                    self.player.resolve_collision(obj)
