@@ -1,7 +1,7 @@
 import pygame
 
 from game.constants import *
-from game.sprites import Explode
+from game.sprites.explode import Explode
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, image: pygame.Surface, pos: pygame.Vector2, v: float) -> None:

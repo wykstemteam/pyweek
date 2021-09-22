@@ -27,7 +27,7 @@ def settings(window: pygame.Surface):
         relative_rect=pygame.Rect(
             (SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 - 15), (400, 30)
         ),
-        start_value=0.3,
+        start_value=assets_manager.music_volume,
         value_range=(0.0, 1),
         manager=settings_screen
     )
@@ -66,7 +66,7 @@ def settings(window: pygame.Surface):
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_HORIZONTAL_SLIDER_MOVED:
                     if event.ui_element == music_slider:
-                        assets_manager.music_change_volume(event.value)
+                        assets_manager.set_music_volume(event.value)
 
             settings_screen.process_events(event)
         settings_screen.update(t)

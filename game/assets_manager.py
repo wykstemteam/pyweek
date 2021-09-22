@@ -8,6 +8,8 @@ from game.constants import *
 class AssetsManager:
     def __init__(self) -> None:
         pygame.mixer.init()
+        self.sound_volume = 0.3
+        self.music_volume = 0.3
 
         self.images = {}
         self.animations = {}
@@ -73,13 +75,14 @@ class AssetsManager:
                 pygame.mixer.music.stop()
                 pygame.mixer.music.load(os.path.join('assets', 'music', fn))
                 pygame.mixer.music.play(-1)
-                pygame.mixer.music.set_volume(0.3)  # is work???
+                pygame.mixer.music.set_volume(self.music_volume)  # is work???
                 break
         else:
             raise ValueError(f"No music '{name}' found")
 
-    def music_change_volume(self, vol) -> None:
-        pygame.mixer.music.set_volume(vol)
+    def set_music_volume(self, val) -> None:
+        self.music_volume = val
+        pygame.mixer.music.set_volume(self.music_volume)
 
 
 assets_manager = AssetsManager()
