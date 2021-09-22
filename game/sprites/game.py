@@ -21,7 +21,7 @@ class Game:
         self.player = Player(
             assets_manager.images['player'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
 
-        self.buildings = BuildingManager()
+        self.buildings = BuildingManager()  # copied code to building.py
         self.obstacle_manager = ObstacleManager()
         self.arrow_image = pygame.transform.rotate(assets_manager.images['arrow'], self.player.dir * 360 // (2 * np.pi) )
         self.arrow_rect = self.arrow_image.get_rect(center = assets_manager.images['arrow'].get_rect(center = (self.player.rect.left + (PLAYER_WIDTH / 2) , self.player.rect.top + (PLAYER_HEIGHT / 2))).center)
@@ -95,3 +95,7 @@ class Game:
         for obj in self.player_collision_group:
             if self.player.rect.colliderect(obj.rect):
                 obj.player_hit(self.player)
+
+
+
+

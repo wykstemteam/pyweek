@@ -11,9 +11,11 @@ window = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 def gaming():
     game = Game()
+
     clock = pygame.time.Clock()
 
     running = True
+    lose = False
     while running:
         t = clock.get_time()
 
