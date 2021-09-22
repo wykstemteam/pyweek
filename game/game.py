@@ -146,7 +146,7 @@ class Game:
         self.policecar.draw(window)
         self.warn.draw(window)
         self.obstacle_manager.draw(window)
-        window.blit(self.player.image, self.player.rect)
+        self.player.draw(window)
         window.blit(self.arrow_image, self.arrow_rect)
         window.blit(self.health_bar_image, pygame.Rect((10, 10), (400, 100)))
         if not self.lose and not self.pause:

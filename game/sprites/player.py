@@ -2,7 +2,7 @@ import numpy as np
 import pygame
 
 from game.constants import *
-
+from game.sprites.missle import Missle
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, image: pygame.Surface, x: int, y: int):
@@ -21,6 +21,7 @@ class Player(pygame.sprite.Sprite):
         self.real_y = float(y)
 
         self.hp = 4
+        self.missles = pygame.sprite.Group()
 
     def acc(self, dx, dy):
         self.vx = min(self.vx + dx, PLAYER_MAX_HORI_SPEED)
@@ -57,6 +58,12 @@ class Player(pygame.sprite.Sprite):
             self.real_y = SCREEN_HEIGHT - PLAYER_HEIGHT
             self.vy = 0
 
+        left_button_pressed = pygame.mouse.get_pressed()[0]
+        if left_button_pressed:
+            self.shoot_missle()
+        
+        self.missles.update(t)
+
         if self.vx > 0:
             self.vx = max(0, self.vx - FRICTION_HORI)
         elif self.vx < 0:
@@ -70,5 +77,14 @@ class Player(pygame.sprite.Sprite):
         self.rect.left = self.real_x
         self.rect.top = self.real_y
 
+    def draw(self, window):
+        for missle in self.missles:
+            missle.draw(window)
+        window.blit(self.image, self.rect)
+
     def in_bounds(self):
         return BUILDING_HEIGHT < self.real_y < SCREEN_HEIGHT - PLAYER_HEIGHT
+
+    def shoot_missle(self):
+        new_missle = Missle((self.real_x, self.real_y), self.dir)
+        self.missles.add(new_missle)

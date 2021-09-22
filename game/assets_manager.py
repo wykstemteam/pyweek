@@ -50,6 +50,7 @@ class AssetsManager:
         self.images['HP2'] = pygame.transform.scale(self.images['HP2'], (400, 100))
         self.images['HP3'] = pygame.transform.scale(self.images['HP3'], (400, 100))
         self.images['HP4'] = pygame.transform.scale(self.images['HP4'], (400, 100))
+        self.images['missle'] = pygame.transform.scale(self.images['missle'], (MISSLE_WIDTH, MISSLE_HEIGHT))
         for i in range(1, 4):
             self.images[f'obstacle{i}'] = pygame.transform.scale(
                 self.images[f'obstacle{i}'], (OBSTACLE_WIDTH, OBSTACLE_HEIGHT)
