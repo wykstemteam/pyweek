@@ -1,10 +1,9 @@
-from re import match
 import numpy as np
 import pygame
 
 from game.constants import *
-from game.sprites.missile import Missile
 from game.sprites import Obstacle
+from game.sprites.missile import Missile
 
 
 class Player(pygame.sprite.Sprite):
