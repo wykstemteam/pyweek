@@ -15,14 +15,16 @@ class Game:
         )
         self.player_collision_group = pygame.sprite.Group()
         self.policecar = PoliceCar(
-            assets_manager.images['policecar'], (20, 280), assets_manager.images['bullet'], self.player_collision_group
+            assets_manager.images['policecar'], (20, 280), assets_manager.images['bullet'],
+            self.player_collision_group
         )
         self.warn = Warn(assets_manager.images['warning sign'], 30, 300)
-        self.player = Player(assets_manager.images['motorbike'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+        self.player = Player(
+            assets_manager.images['motorbike'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2
+        )
 
         self.buildings = BuildingManager()
         self.obstacle_manager = ObstacleManager(self.player_collision_group)
-
 
         # Arrow
         self.arrow_image = pygame.transform.rotate(
@@ -42,19 +44,13 @@ class Game:
         # game gui
         self.game_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.pause_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(
-                (10, 10), (100, 50)
-            ),
-            text='Pause',
-            manager=self.game_screen
+            relative_rect=pygame.Rect((10, 10), (100, 50)), text='Pause', manager=self.game_screen
         )
 
         # pause gui
         self.pause_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.return_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(
-                (10, 10), (100, 50)
-            ),
+            relative_rect=pygame.Rect((10, 10), (100, 50)),
             text='Return',
             manager=self.pause_screen
         )
@@ -70,9 +66,7 @@ class Game:
             manager=self.lose_screen
         )
         self.return_title_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(
-                (SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT // 2), (100, 50)
-            ),
+            relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT // 2), (100, 50)),
             text='Return',
             manager=self.lose_screen
         )
@@ -85,10 +79,7 @@ class Game:
             if event.type == pygame.QUIT:
                 exit()
 
-            if (
-                event.type == pygame.USEREVENT
-                and event.user_type == pygame_gui.UI_BUTTON_PRESSED
-            ):
+            if (event.type == pygame.USEREVENT and event.user_type == pygame_gui.UI_BUTTON_PRESSED):
                 if not self.pause and not self.lose and event.ui_element == self.pause_button:
                     self.pause = True
                     break  # Otherwise will click both pause and return buttons
