@@ -71,12 +71,13 @@ class PoliceCar(pygame.sprite.Sprite):
             if len(self.objectives) == 0:
                 self.state = 2
                 self.objectives.append(230)
-                self.shoot_cooldown = QUICKFIRE_COOLDOWN
+                self.shoot_cooldown = 0
         elif self.state == 2:  # bottom to top quickfire
             self.objectivepos(self.velocity * 2, t)
             if len(self.objectives) == 0:
                 self.state = 0
                 self.quickfire_skill_cooldown = QUICKFIRE_SKILL_COOLDOWN
+                self.shoot_cooldown = 3
             if self.shoot_cooldown <= 0:
                 self.shoot(-BACKGROUND_VELOCITY)
                 self.shoot_cooldown = QUICKFIRE_COOLDOWN
