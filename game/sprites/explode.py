@@ -15,7 +15,6 @@ class Explode(pygame.sprite.Sprite):
         self.explode_frame = 0
 
     def update(self, t) -> bool:
-        print(self.explode_frame)
         if self.explode_frame < len(self.animation):
             self.image = self.animation[self.explode_frame]
             self.rect = self.animation[self.explode_frame].get_rect()
