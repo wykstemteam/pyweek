@@ -11,13 +11,14 @@ class Bomber(pygame.sprite.Sprite):
         self.animation = assets_manager.animations['bomber']
         self.image = self.animation[0]
         self.rect = self.animation[0].get_rect()
-        self.rect.topleft = (400, 400)
+        self.rect.topleft = (0, (SCREEN_HEIGHT / 2) - (self.image.get_height() / 2))
         self.frame = 0
 
     def update(self, t):
         if self.frame < len(self.animation):
             self.image = self.animation[self.frame]
             self.rect = self.animation[self.frame].get_rect()
+            self.rect.topleft = (0, (SCREEN_HEIGHT / 2) - (self.image.get_height() / 2))
             self.frame += 1
         else:
             self.frame = 0
