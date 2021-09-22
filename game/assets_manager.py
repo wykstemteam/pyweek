@@ -50,11 +50,6 @@ class AssetsManager:
                 self.images[f'obstacle{i}'], (OBSTACLE_WIDTH, OBSTACLE_HEIGHT)
             )
 
-    def init_sounds(self) -> None:
-        for fn in os.listdir(os.path.join('assets', 'sounds')):
-            base_fn = os.path.splitext(fn)[0]
-            self.sounds[base_fn] = pygame.mixer.Sound(os.path.join('assets', 'sounds', fn))
-
     def init_animations(self) -> None:
         for dirname in os.listdir(os.path.join('assets', 'animations')):
             self.animations[dirname] = []
@@ -68,6 +63,15 @@ class AssetsManager:
                     )
                 )
 
+    def init_sounds(self) -> None:
+        for fn in os.listdir(os.path.join('assets', 'sounds')):
+            base_fn = os.path.splitext(fn)[0]
+            self.sounds[base_fn] = pygame.mixer.Sound(os.path.join('assets', 'sounds', fn))
+
+    def play_sound(self, name: str) -> None:
+        sound = self.sounds[name].play()
+        sound.set_volume(self.sound_volume)
+
     def play_music(self, name: str) -> None:
         for fn in os.listdir(os.path.join('assets', 'music')):
             base_fn = os.path.splitext(fn)[0]
@@ -80,7 +84,10 @@ class AssetsManager:
         else:
             raise ValueError(f"No music '{name}' found")
 
-    def set_music_volume(self, val) -> None:
+    def set_sound_volume(self, val: float) -> None:
+        self.sound_volume = val
+
+    def set_music_volume(self, val: float) -> None:
         self.music_volume = val
         pygame.mixer.music.set_volume(self.music_volume)
 

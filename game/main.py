@@ -22,7 +22,6 @@ def gaming() -> None:
             running = False
 
         game.update(t / 1000)
-
         game.draw(window)
         pygame.display.flip()
         clock.tick(60)

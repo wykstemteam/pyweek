@@ -10,13 +10,17 @@ class Explode(pygame.sprite.Sprite):
         self.animation = assets_manager.animations['explode']
         self.image = self.animation[0]
         self.rect = self.animation[0].get_rect()
-        self.rect.center = pos
+        self.pos = pygame.Vector2(pos)
+        self.rect.center = self.pos
+        self.explode_frame = 0
 
     def update(self, t) -> bool:
-        if self.animation[0]:
-            self.image = self.animation[0]
-            self.rect = self.animation[0].get_rect()
-            self.animation.pop(0)
+        print(self.explode_frame)
+        if self.explode_frame < len(self.animation):
+            self.image = self.animation[self.explode_frame]
+            self.rect = self.animation[self.explode_frame].get_rect()
+            self.rect.center = self.pos
+            self.explode_frame += 1
             return True
         return False
 
