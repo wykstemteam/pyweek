@@ -4,17 +4,19 @@ from game.constants import *
 
 
 class Road(pygame.sprite.Sprite):
-    def __init__(self, image: pygame.Surface, x: int, y: int):
+    def __init__(self, image: pygame.Surface, x: int):
         super().__init__()
 
         self.image = image
         self.rect = self.image.get_rect()
-        self.rect.topleft = (x, y)
+        self.rect.topleft = (x, BUILDING_HEIGHT)
 
         self.width = self.image.get_width()
         self.height = self.image.get_height()
+        self.x = x
 
     def update(self, t):
-        self.rect.left += int(BACKGROUND_VELOCITY * t)
+        self.x += BACKGROUND_VELOCITY * t
+        self.rect.left = int(self.x)
         if self.rect.right <= 0:
-            self.rect.left += 2 * SCREEN_WIDTH
+            self.x += 2 * SCREEN_WIDTH
