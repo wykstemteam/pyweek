@@ -1,3 +1,4 @@
+from re import match
 import numpy as np
 import pygame
 
@@ -23,6 +24,9 @@ class Player(pygame.sprite.Sprite):
         self.hp = 4
         self.missles = pygame.sprite.Group()
 
+        self.items = {1: 0, 2: 0}
+        self.holding = 1
+
     def acc(self, dx, dy):
         self.vx = min(self.vx + dx, PLAYER_MAX_HORI_SPEED)
         self.vy += dy
@@ -32,7 +36,7 @@ class Player(pygame.sprite.Sprite):
         self.real_y += self.vy * t
         self.rect.left = self.real_x
         self.rect.top = self.real_y
-        
+
         x = pygame.mouse.get_pos()[0] - (self.real_x + PLAYER_WIDTH / 2)
         y = (self.real_y + PLAYER_HEIGHT / 2) - pygame.mouse.get_pos()[1]
         self.dir = np.arctan2(y, x)
@@ -61,9 +65,26 @@ class Player(pygame.sprite.Sprite):
             self.real_y = SCREEN_HEIGHT - PLAYER_HEIGHT
             self.vy = 0
 
+        if keys[pygame.K_1]:
+            self.holding = 1
+        elif keys[pygame.K_2]:
+            self.holding = 2
         left_button_pressed = pygame.mouse.get_pressed()[0]
         if left_button_pressed:
-            self.shoot_missle()
+            if self.items[self.holding] == 1:
+                #FIXME: play some music maybe
+                self.hp += 1
+            elif self.items[self.holding] == 2: #invincible
+                pass
+            elif self.items[self.holding] == 3:
+                self.shoot_missle()
+            elif self.items[self.holding] == 4: # earthquake
+                pass
+            elif self.items[self.holding] == 5: # shield
+                pass
+            elif self.items[self.holding] == 6: # bullet time
+                pass
+            self.items[self.holding] = 0
         
         self.missles.update(t)
 
