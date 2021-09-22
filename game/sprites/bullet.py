@@ -34,3 +34,5 @@ class Bullet(pygame.sprite.Sprite):
     def draw(self, window):
         if self.image:
             window.blit(self.image, self.rect)
+        elif self.explode and self.explode.image:
+            window.blit(self.explode.image, self.explode.rect)
