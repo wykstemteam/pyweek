@@ -3,7 +3,7 @@ import pygame_gui
 
 from game.assets_manager import assets_manager
 from game.constants import *
-from game.sprites.game import Game
+from game.sprites.game import Game  # FIXME: Please don't put this in sprites
 
 pygame.init()
 window = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -17,17 +17,13 @@ def gaming():
     while running:
         t = clock.get_time()
 
-        # event process
         game.event_process()
-
-        # update
         game.update(t / 1000)
 
-        # draw
         game.draw(window)
         pygame.display.flip()
-
         clock.tick(60)
+
         if SHOW_FPS:
             print(f'fps = {0 if t == 0 else 1000 / t}')
 
