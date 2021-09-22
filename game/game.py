@@ -44,7 +44,7 @@ class Game:
         # Health_bar
         self.health_bar_image = assets_manager.images['HP4']
 
-        # game gui
+        # game_screen
         self.game_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.pause_button = pygame_gui.elements.UIButton(
             relative_rect=pygame.Rect((SCREEN_WIDTH - 100 - 10, 10), (100, 50)),
@@ -52,7 +52,7 @@ class Game:
             manager=self.game_screen
         )
 
-        # pause gui
+        # pause_screen
         self.pause_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.return_button = pygame_gui.elements.UIButton(
             relative_rect=pygame.Rect((SCREEN_WIDTH - 100 - 10, 10), (100, 50)),
