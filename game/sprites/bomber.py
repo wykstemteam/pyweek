@@ -1,6 +1,7 @@
 import pygame
 
 from game.assets_manager import assets_manager
+from game.constants import *
 
 class Bomber(pygame.sprite.Sprite):
     def __init__(self) -> None:
@@ -9,6 +10,7 @@ class Bomber(pygame.sprite.Sprite):
         self.animation = assets_manager.animations['bomber']
         self.image = self.animation[0]
         self.rect = self.animation[0].get_rect()
+        self.rect.topleft = (400, 400)
         self.frame = 0
 
     def update(self, t):

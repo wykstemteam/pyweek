@@ -18,6 +18,8 @@ class Game:
             assets_manager.images['policecar'], (20, 280), assets_manager.images['bullet'],
             self.player_collision_group
         )
+        self.bomber = Bomber()
+
         self.warn = Warn(assets_manager.images['warning sign'], 30, 300)
         self.player = Player(
             assets_manager.images['motorbike'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2
@@ -110,6 +112,7 @@ class Game:
             self.buildings.update(t)
             self.player.update(t)
             self.policecar.update(t)
+            self.bomber.update(t)
             self.obstacle_manager.update(t)
             self.laser.update(t)
             self.arrow_image = pygame.transform.rotate(
@@ -140,6 +143,7 @@ class Game:
         self.roads.draw(window)
         self.buildings.draw(window)
         self.policecar.draw(window)
+        self.bomber.draw(window)
         self.warn.draw(window)
         self.laser.draw(window)
         self.obstacle_manager.draw(window)
