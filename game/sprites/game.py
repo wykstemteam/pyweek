@@ -52,7 +52,7 @@ class Game:
                     if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                         if event.ui_element == self.restart_button:
                             self.__init__()
-                            lose = False
+                            self.lose = False
             self.lose_screen.process_events(event)
 
     def update(self, t):
