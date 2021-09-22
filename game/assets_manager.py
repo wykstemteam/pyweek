@@ -11,6 +11,7 @@ class AssetsManager:
 
         self.images = {}
         self.sounds = {}
+        self.animations = {}
 
         self.init_images()
         # self.init_sounds()
@@ -50,6 +51,15 @@ class AssetsManager:
         for fn in os.listdir(os.path.join('assets', 'sounds')):
             base_fn = os.path.splitext(fn)[0]
             self.sounds[base_fn] = pygame.mixer.Sound(os.path.join('assets', 'sounds', fn))
+
+    def init_animations(self):
+        for dir in os.listdir(os.path.join('assets', 'sounds')):
+            self.animations[dir] = []
+            for fn in os.listdir(dir):
+                self.animations[dir].append(pygame.transform.scale(
+                    pygame.image.load(os.path.join('assets', 'images', dir, fn))), 
+                    (EXPLODE_WIDTH, EXPLODE_HEIGHT)
+                    )
 
     def play_music(self, name: str) -> None:
         for fn in os.listdir(os.path.join('assets', 'music')):
