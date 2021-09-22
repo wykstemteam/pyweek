@@ -57,8 +57,11 @@ class PoliceCar(pygame.sprite.Sprite):
             else:
                 self.shoot_cooldown -= t
             if len(self.objectives) == 0 and self.quickfire_skill_cooldown <= 0:
-                self.state = 1
-                self.objectives.append(SCREEN_HEIGHT - BULLET_HEIGHT)
+                self.state = random.randint(1, 2)
+                if(self.state == 1):
+                    self.objectives.append(SCREEN_HEIGHT - BULLET_HEIGHT)
+                else:
+                    self.objectives.append(BUILDING_HEIGHT)
             else:
                 self.quickfire_skill_cooldown -= t
         elif self.state == 1:  # go to bottom first
@@ -69,10 +72,32 @@ class PoliceCar(pygame.sprite.Sprite):
             else:
                 self.shoot_cooldown -= t
             if len(self.objectives) == 0:
-                self.state = 2
+                self.state =101
                 self.objectives.append(230)
                 self.shoot_cooldown = 0
-        elif self.state == 2:  # bottom to top quickfire
+        elif self.state == 101:  # bottom to top quickfire
+            self.objectivepos(self.velocity * 2, t)
+            if len(self.objectives) == 0:
+                self.state = 0
+                self.quickfire_skill_cooldown = QUICKFIRE_SKILL_COOLDOWN
+                self.shoot_cooldown = 3
+            if self.shoot_cooldown <= 0:
+                self.shoot(-BACKGROUND_VELOCITY)
+                self.shoot_cooldown = QUICKFIRE_COOLDOWN
+            else:
+                self.shoot_cooldown -= t
+        elif self.state == 2:  # go to top first
+            self.objectivepos(self.velocity, t)
+            if self.shoot_cooldown <= 0:
+                self.shoot(-BACKGROUND_VELOCITY)
+                self.shoot_cooldown = SHOOT_COOLDOWN
+            else:
+                self.shoot_cooldown -= t
+            if len(self.objectives) == 0:
+                self.state = 102
+                self.objectives.append(470)
+                self.shoot_cooldown = 0
+        elif self.state == 102:  # top to bottom quickfire
             self.objectivepos(self.velocity * 2, t)
             if len(self.objectives) == 0:
                 self.state = 0
