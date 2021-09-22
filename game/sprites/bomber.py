@@ -3,6 +3,7 @@ import pygame
 from game.assets_manager import assets_manager
 from game.constants import *
 
+
 class Bomber(pygame.sprite.Sprite):
     def __init__(self) -> None:
         super().__init__()

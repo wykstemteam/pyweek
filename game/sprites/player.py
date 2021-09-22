@@ -1,10 +1,9 @@
-from re import match
 import numpy as np
 import pygame
 
 from game.constants import *
-from game.sprites.missile import Missile
 from game.sprites import Obstacle
+from game.sprites.missile import Missile
 
 
 class Player(pygame.sprite.Sprite):
@@ -123,8 +122,10 @@ class Player(pygame.sprite.Sprite):
         self_right = self.real_x + PLAYER_WIDTH
         self_top = self.real_y
         self_bottom = self.real_y + PLAYER_HEIGHT
-        distances = [(self_right - obstacle_left, 0), (obstacle_right - self_left, 1),
-                     (self_bottom - obstacle_top, 2), (obstacle_bottom - self_top, 3)]
+        distances = [
+            (self_right - obstacle_left, 0), (obstacle_right - self_left, 1),
+            (self_bottom - obstacle_top, 2), (obstacle_bottom - self_top, 3)
+        ]
         distances = sorted(filter(lambda x: x[0] >= 0, distances))
 
         if distances[0][1] == 0:  # right
