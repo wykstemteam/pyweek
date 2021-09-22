@@ -136,6 +136,9 @@ class Game:
 
             self.player_collision()
 
+        if self.player.hp <= 0:
+            self.trigger_lose()
+
         self.game_screen.update(t)
         self.pause_screen.update(t)
         self.lose_screen.update(t)
@@ -148,7 +151,7 @@ class Game:
         self.warn.draw(window)
         self.laser.draw(window)
         self.obstacle_manager.draw(window)
-        window.blit(self.player.image, self.player.rect)
+        self.player.draw(window)
         window.blit(self.arrow_image, self.arrow_rect)
         window.blit(self.health_bar_image, pygame.Rect((10, 10), (400, 100)))
         if not self.lose and not self.pause:
