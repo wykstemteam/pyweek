@@ -1,7 +1,7 @@
 import pygame
 
-from game.constants import *
 from game.assets_manager import assets_manager
+
 
 class Explode(pygame.sprite.Sprite):
     def __init__(self, pos) -> None:

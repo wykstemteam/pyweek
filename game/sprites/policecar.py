@@ -8,7 +8,8 @@ from game.sprites import Bullet
 
 class PoliceCar(pygame.sprite.Sprite):
     def __init__(
-        self, image: pygame.Surface, pos: pygame.Vector2, bullet_image: pygame.Surface, player_collision_group: pygame.sprite.Group
+        self, image: pygame.Surface, pos: pygame.Vector2, bullet_image: pygame.Surface,
+        player_collision_group: pygame.sprite.Group
     ) -> None:
         super().__init__()
 
@@ -72,7 +73,7 @@ class PoliceCar(pygame.sprite.Sprite):
         elif self.state == 1:  # go to bottom first
             self.objectivepos(self.velocity, t)
             if len(self.objectives) == 0:
-                self.state =101
+                self.state = 101
                 self.objectives.append(230)
                 self.shoot_cooldown = 0
         elif self.state == 101:  # bottom to top quickfire
