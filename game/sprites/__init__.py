@@ -8,8 +8,9 @@ from .player import Player
 from .policecar import PoliceCar
 from .road import Road
 from .warningsign import Warn
+from .laserbeam import Laser
 
 __all__ = [
     'Building', 'BuildingManager', 'Bullet', 'Obstacle', 'ObstacleManager', 'Player', 'PoliceCar',
-    'Road', 'Warn', 'Explode'
+    'Road', 'Warn', 'Explode', 'Laser'
 ]

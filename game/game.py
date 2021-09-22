@@ -4,7 +4,7 @@ import pygame_gui
 
 from game.assets_manager import assets_manager
 from game.constants import *
-from game.sprites import BuildingManager, ObstacleManager, Player, PoliceCar, Road, Warn
+from game.sprites import BuildingManager, ObstacleManager, Player, PoliceCar, Road, Warn, Laser
 
 
 class Game:
@@ -22,7 +22,7 @@ class Game:
         self.player = Player(
             assets_manager.images['motorbike'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2
         )
-
+        self.laser = Laser()
         self.buildings = BuildingManager()
         self.obstacle_manager = ObstacleManager(self.player_collision_group)
 
@@ -119,6 +119,7 @@ class Game:
             self.player.update(t)
             self.policecar.update(t)
             self.obstacle_manager.update(t)
+            self.laser.update(t)
             self.arrow_image = pygame.transform.rotate(
                 assets_manager.images['arrow'], self.player.dir * 360 // (2 * np.pi)
             )
@@ -145,6 +146,7 @@ class Game:
         self.buildings.draw(window)
         self.policecar.draw(window)
         self.warn.draw(window)
+        self.laser.draw(window)
         self.obstacle_manager.draw(window)
         window.blit(self.player.image, self.player.rect)
         window.blit(self.arrow_image, self.arrow_rect)
