@@ -21,6 +21,12 @@ class Game:
 
         self.buildings = BuildingManager()
         self.obstacle_manager = ObstacleManager()
+
+        self.player_collision_group = pygame.sprite.Group(
+            self.obstacle_manager.obstacles, self.policecar.bullets, self.policecar
+        )
+
+        # Arrow
         self.arrow_image = pygame.transform.rotate(
             assets_manager.images['arrow'], self.player.dir * 360 // (2 * np.pi)
         )
@@ -35,8 +41,6 @@ class Game:
         self.arrow_rect.left += np.cos(self.player.dir) * 150
         self.arrow_rect.top -= np.sin(self.player.dir) * 150
 
-        assets_manager.play_music("8bitaggressive1")
-
         self.lose_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.restart_button = pygame_gui.elements.UIButton(
             relative_rect=pygame.Rect(
@@ -45,11 +49,9 @@ class Game:
             text='Restart',
             manager=self.lose_screen
         )
-        self.lose = False
 
-        self.player_collision_group = pygame.sprite.Group(
-            self.obstacle_manager.obstacles, self.policecar.bullets, self.policecar
-        )
+        self.lose = False
+        assets_manager.play_music("8bitaggressive1")
 
     def event_process(self):
         for event in pygame.event.get():
@@ -60,8 +62,7 @@ class Game:
                 if event.type == pygame.USEREVENT:
                     if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                         if event.ui_element == self.restart_button:
-                            self.__init__()
-                            self.lose = False
+                            self.__init__()  #  Reinitialize
             self.lose_screen.process_events(event)
 
     def update(self, t):
@@ -85,10 +86,9 @@ class Game:
             self.arrow_rect.left += np.cos(self.player.dir) * 150
             self.arrow_rect.top -= np.sin(self.player.dir) * 150
 
-        if not self.player.in_bounds():
-            if not self.lose:
-                assets_manager.play_music("greensleeves")
-                self.lose = True
+        if not self.lose and not self.player.in_bounds():
+            assets_manager.play_music("greensleeves")
+            self.lose = True
         self.lose_screen.update(t)
 
     def draw(self, window: pygame.Surface):
