@@ -1,9 +1,7 @@
 import pygame
 
-from game.constants import *
 
-
-class Road(pygame.sprite.Sprite):
+class Warn(pygame.sprite.Sprite):
     def __init__(self, image: pygame.Surface, x: int, y: int):
         super().__init__()
 
@@ -13,9 +11,11 @@ class Road(pygame.sprite.Sprite):
 
         self.width = self.image.get_width()
         self.height = self.image.get_height()
+        print(self.width)
 
     def update(self, t):
-        self.rect.left += int(BACKGROUND_VELOCITY * t)
-        if self.rect.right <= 0:
-            self.rect.left += SCREEN_WIDTH
-        
+        self.kill()
+    def draw(self, window):
+        window.blit(self.image, self.rect)
+
+
