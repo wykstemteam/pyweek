@@ -10,10 +10,11 @@ class AssetsManager:
         pygame.mixer.init()
 
         self.images = {}
-        self.sounds = {}
         self.animations = {}
+        self.sounds = {}
 
         self.init_images()
+        self.init_animations()
         # self.init_sounds()
 
     def init_images(self) -> None:
@@ -55,7 +56,9 @@ class AssetsManager:
     def init_animations(self) -> None:
         for dirname in os.listdir(os.path.join('assets', 'animations')):
             self.animations[dirname] = []
-            for fn in os.listdir(dirname):
+            files = os.listdir(os.path.join('assets', 'animations', dirname))
+            files.sort(key=lambda fn: int(os.path.splitext(fn)[0]))
+            for fn in files:
                 self.animations[dirname].append(
                     pygame.transform.scale(
                         pygame.image.load(os.path.join('assets', 'animations', dirname, fn)),
@@ -74,6 +77,9 @@ class AssetsManager:
                 break
         else:
             raise ValueError(f"No music '{name}' found")
+
+    def music_change_volume(self, vol) -> None:
+        pygame.mixer.music.set_volume(vol)
 
 
 assets_manager = AssetsManager()
