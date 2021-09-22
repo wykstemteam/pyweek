@@ -75,5 +75,8 @@ class AssetsManager:
         else:
             raise ValueError(f"No music '{name}' found")
 
+    def music_change_volume(self, vol) -> None:
+        pygame.mixer.music.set_volume(vol)
+
 
 assets_manager = AssetsManager()
