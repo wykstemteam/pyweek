@@ -7,21 +7,21 @@ from game.constants import *
 
 
 class Building(pygame.sprite.Sprite):
-    def __init__(self, image: pygame.Surface, x: int):
+    def __init__(self, image: pygame.Surface, x: float):
         super().__init__()
         self.original_image = image
         self.flipped_image = pygame.transform.flip(image, True, False)
         self.image = image
-        self.mid_x = x + BUILDING_WIDTH // 2
+        self.x = x
+        self._update_sx()
         self.rect = self.image.get_rect()
-        self.rect.topleft = (x, 0)
+        self.rect.topleft = (int(x), 0)
         if self.sx < 0:
             self.rect.left += self.sx
         self.shear()
 
-    @property
-    def sx(self):
-        return -(self.mid_x - SCREEN_WIDTH // 2) * (1 - BUILDING_RATIO)
+    def _update_sx(self):
+        self.sx = -(self.x - (SCREEN_WIDTH // 2 - BUILDING_WIDTH // 2)) * (1 - BUILDING_RATIO)
 
     def shear(self):
         image = self.original_image if self.sx > 0 else self.flipped_image
@@ -35,22 +35,27 @@ class Building(pygame.sprite.Sprite):
         shear_matrix = np.array([[1, abs(self.sx) / self.original_image.get_height(), 0],
                                  [0, 1, 0],
                                  [0, 0, 1]])
-        image = cv.warpPerspective(image, shear_matrix, (
-            self.original_image.get_width() + int(abs(self.sx)), self.original_image.get_height()))
+        image = cv.warpPerspective(
+            image, shear_matrix,
+            (self.original_image.get_width() + int(abs(self.sx)), self.original_image.get_height()),
+        )
 
         image = image.swapaxes(0, 1)
+        # plt.imshow(image)
+        # plt.show()
+        # input()
 
         self.image = pygame.surfarray.make_surface(image)
         if self.sx < 0:
             self.image = pygame.transform.flip(
                 self.image, True, False)  # flips image horizontally
-        self.image.set_colorkey((0, 0, 0))  # black shits are transparent
+        self.image.set_colorkey(0x000000)  # black shits are transparent
         self.rect.size = self.image.get_size()
 
-    def update(self, dx: int):
-        self.mid_x += dx
+    def update(self, x: float):
+        self.x = x
+        self._update_sx()
         self.shear()
-        if self.sx > 0:
-            self.rect.left += dx
-        else:
-            self.rect.left += int(dx * BUILDING_RATIO)
+        self.rect.left = int(x)
+        if self.sx < 0:
+            self.rect.left += int(self.sx)

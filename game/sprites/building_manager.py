@@ -1,3 +1,5 @@
+from collections import deque
+
 import pygame.sprite
 
 from game.assets_manager import assets_manager
@@ -9,24 +11,35 @@ class BuildingManager:
     def __init__(self):
         if DISABLE_BUILDINGS:
             return
-        assets_manager.images['buildings'] = pygame.transform.scale(assets_manager.images['buildings'],
-                                                                    (BUILDING_WIDTH, BUILDING_HEIGHT))
-        self.left = Building(assets_manager.images['buildings'], SCREEN_WIDTH // 2 - BUILDING_WIDTH // 2)
-        self.right = Building(assets_manager.images['buildings'], SCREEN_WIDTH // 2 + BUILDING_WIDTH // 2)
-        self.buildings = pygame.sprite.Group(self.left, self.right)
+
+        self.buildings = deque()
+        self.xs = deque()
+        self.xs.append(SCREEN_WIDTH // 2 - BUILDING_WIDTH // 2)
+        self.buildings.append(Building(assets_manager.images['3buildings'], self.xs[0]))
+        while self.xs[0] + (1 - BUILDING_RATIO) * BUILDING_WIDTH / 2 + self.buildings[0].sx > 0:
+            self.xs.appendleft(self.xs[0] - BUILDING_WIDTH)
+            self.buildings.appendleft(Building(assets_manager.images['3buildings'], self.xs[0]))
+        while self.xs[-1] + BUILDING_WIDTH + self.buildings[-1].sx < SCREEN_WIDTH:
+            self.xs.append(self.xs[-1] + BUILDING_WIDTH)
+            self.buildings.append(Building(assets_manager.images['3buildings'], self.xs[-1]))
+        self.xs.append(self.xs[-1] + BUILDING_WIDTH)
+        self.buildings.append(Building(assets_manager.images['3buildings'], self.xs[-1]))
 
     def update(self, t: float):
         if DISABLE_BUILDINGS:
             return
-        dx = BACKGROUND_VELOCITY * t
-        self.buildings.update(int(dx / BUILDING_RATIO))
-        if self.left.rect.left + self.left.sx + BUILDING_WIDTH * (1 + BUILDING_RATIO) / 2 < 0:
-            self.buildings.remove(self.left)
-            self.left = self.right
-            self.right = Building(assets_manager.images['buildings'], self.left.rect.right)
-            self.buildings.add(self.right)
 
-    def draw(self, surface: pygame.Surface):
+        dx = BACKGROUND_VELOCITY * t / BUILDING_RATIO
+        for i in range(len(self.xs)):
+            self.xs[i] += dx
+            self.buildings[i].update(self.xs[i])
+
+        if self.xs[0] + self.buildings[0].sx + BUILDING_WIDTH < 0:
+            self.xs.popleft()
+            self.xs.append(self.xs[-1] + BUILDING_WIDTH)
+
+    def draw(self, window: pygame.Surface):
         if DISABLE_BUILDINGS:
             return
-        self.buildings.draw(surface)
+        for i in range(len(self.xs)):
+            window.blit(self.buildings[i].image, self.buildings[i].rect)

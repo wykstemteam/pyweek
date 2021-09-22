@@ -77,7 +77,8 @@ class Game:
             self.lose = True
         self.lose_screen.update(t)
 
-    def draw(self, window):
+    def draw(self, window: pygame.Surface):
+        window.fill((0, 0, 0))
         self.roads.draw(window)
         self.buildings.draw(window)
         self.policecar.draw(window)

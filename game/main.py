@@ -1,6 +1,3 @@
-import math
-
-import numpy as np
 import pygame
 import pygame_gui
 
@@ -26,7 +23,7 @@ def gaming():
         game.event_process()
 
         # update
-        game.update(t/1000)
+        game.update(t / 1000)
 
         # draw
         game.draw(window)
@@ -34,7 +31,7 @@ def gaming():
 
         clock.tick(60)
         if SHOW_FPS:
-            print(f'fps = {0 if t == 0 else 1000/t}')
+            print(f'fps = {0 if t == 0 else 1000 / t}')
 
 
 def main():
