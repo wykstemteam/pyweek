@@ -28,7 +28,6 @@ class Game:
         self.arrow_rect.left += np.cos(self.player.dir) * 150
         self.arrow_rect.top -= np.sin(self.player.dir) * 150
 
-        assets_manager.stop_music()
         assets_manager.play_music("8bitaggressive1")
 
         self.lose_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -69,12 +68,11 @@ class Game:
             self.arrow_rect = self.arrow_image.get_rect(center = assets_manager.images['arrow'].get_rect(center = (self.player.rect.left + (PLAYER_WIDTH / 2) , self.player.rect.top + (PLAYER_HEIGHT / 2))).center)
             self.arrow_rect.left += np.cos(self.player.dir) * 150
             self.arrow_rect.top -= np.sin(self.player.dir) * 150
-        
+
         if not self.player.in_bounds():
             if not self.lose:
-                assets_manager.stop_music()
                 assets_manager.play_music("greensleeves")
-            self.lose = True
+                self.lose = True
         self.lose_screen.update(t)
 
     def draw(self, window: pygame.Surface):
@@ -97,7 +95,7 @@ class Game:
         for obj in self.player_collision_group:
             if self.player.rect.colliderect(obj.rect):
                 obj.player_hit(self.player)
-                
 
 
-    
+
+
