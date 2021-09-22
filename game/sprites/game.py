@@ -13,18 +13,16 @@ class Game:
             Road(assets_manager.images['road'], 0),
             Road(assets_manager.images['road'], SCREEN_WIDTH),
         )
+        self.player_collision_group = pygame.sprite.Group()
         self.policecar = PoliceCar(
-            assets_manager.images['policecar'], pygame.Vector2(20, 280), assets_manager.images['bullet']
+            assets_manager.images['policecar'], (20, 280), assets_manager.images['bullet'], self.player_collision_group
         )
         self.warn = Warn(assets_manager.images['warning sign'], 30, 300)
         self.player = Player(assets_manager.images['motorbike'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
 
         self.buildings = BuildingManager()
-        self.obstacle_manager = ObstacleManager()
+        self.obstacle_manager = ObstacleManager(self.player_collision_group)
 
-        self.player_collision_group = pygame.sprite.Group(
-            self.obstacle_manager.obstacles, self.policecar.bullets, self.policecar
-        )
 
         # Arrow
         self.arrow_image = pygame.transform.rotate(
@@ -127,6 +125,8 @@ class Game:
             )
             self.arrow_rect.left += np.cos(self.player.dir) * 150
             self.arrow_rect.top -= np.sin(self.player.dir) * 150
+
+            self.player_collision()
 
         if not self.lose and not self.pause and not self.player.in_bounds():
             assets_manager.play_music("greensleeves")
