@@ -18,4 +18,3 @@ class Road(pygame.sprite.Sprite):
         self.rect.left += int(BACKGROUND_VELOCITY * t)
         if self.rect.right <= 0:
             self.rect.left += 2 * SCREEN_WIDTH
-        

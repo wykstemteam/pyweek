@@ -23,8 +23,7 @@ class AssetsManager:
             self.images['warning sign'], (WARN_WIDTH, WARN_HEIGHT)
         )
         self.images['policecar'] = pygame.transform.scale(
-            self.images['policecar'],
-            (POLICECAR_WIDTH, POLICECAR_HEIGHT)
+            self.images['policecar'], (POLICECAR_WIDTH, POLICECAR_HEIGHT)
         )
         self.images['road'] = pygame.transform.scale(
             self.images['road'], (SCREEN_WIDTH, SCREEN_HEIGHT - BUILDING_HEIGHT)
@@ -33,21 +32,15 @@ class AssetsManager:
             self.images['GameOver'], (SCREEN_WIDTH, SCREEN_HEIGHT)
         )
         self.images['bullet'] = pygame.transform.scale(
-            self.images['bullet'],
-            (BULLET_WIDTH, BULLET_HEIGHT)
+            self.images['bullet'], (BULLET_WIDTH, BULLET_HEIGHT)
         )
         self.images['3buildings'] = pygame.transform.scale(
-            self.images['3buildings'],
-            (BUILDING_WIDTH, BUILDING_HEIGHT)
+            self.images['3buildings'], (BUILDING_WIDTH, BUILDING_HEIGHT)
         )
         self.images['player'] = pygame.transform.scale(
-            self.images['player'],
-            (PLAYER_WIDTH, PLAYER_HEIGHT)
+            self.images['player'], (PLAYER_WIDTH, PLAYER_HEIGHT)
         )
-        self.images['arrow'] = pygame.transform.scale(
-            self.images['arrow'],
-            (80, 100)
-        )
+        self.images['arrow'] = pygame.transform.scale(self.images['arrow'], (80, 100))
 
     def init_sounds(self):
         for fn in os.listdir(os.path.join('assets', 'sounds')):

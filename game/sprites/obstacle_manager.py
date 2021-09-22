@@ -1,5 +1,6 @@
-import pygame.sprite
 import random
+
+import pygame.sprite
 
 from game.assets_manager import assets_manager
 from game.constants import *
@@ -13,8 +14,16 @@ class ObstacleManager:
 
     def add(self):
         obstacle_num = random.randint(1, 3)
-        self.obstacles.add(Obstacle(assets_manager.images[f'obstacle{obstacle_num}'],
-                                    (SCREEN_WIDTH - OBSTACLE_WIDTH/2 - 1, random.randint(BUILDING_HEIGHT+OBSTACLE_HEIGHT/2, SCREEN_HEIGHT-OBSTACLE_WIDTH/2))))
+        self.obstacles.add(
+            Obstacle(
+                assets_manager.images[f'obstacle{obstacle_num}'], (
+                    SCREEN_WIDTH - OBSTACLE_WIDTH / 2 - 1,
+                    random.randint(
+                        BUILDING_HEIGHT + OBSTACLE_HEIGHT / 2, SCREEN_HEIGHT - OBSTACLE_WIDTH / 2
+                    )
+                )
+            )
+        )
 
     def update(self, t):
         if self.cooldown <= 0:

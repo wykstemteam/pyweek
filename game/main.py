@@ -11,11 +11,9 @@ window = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 def gaming():
     game = Game()
-
     clock = pygame.time.Clock()
 
     running = True
-    lose = False
     while running:
         t = clock.get_time()
 
@@ -37,10 +35,7 @@ def gaming():
 def main():
     title_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
     start_button = pygame_gui.elements.UIButton(
-        relative_rect=pygame.Rect(
-            (SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2 + 100),
-            (200, 50)
-        ),
+        relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2 + 100), (200, 50)),
         text='Start',
         manager=title_screen
     )

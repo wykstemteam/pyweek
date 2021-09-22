@@ -1,10 +1,10 @@
+import numpy as np
 import pygame
 import pygame_gui
-import numpy as np
 
 from game.assets_manager import assets_manager
 from game.constants import *
-from game.sprites import Player, PoliceCar, Road, ObstacleManager, BuildingManager, Warn
+from game.sprites import BuildingManager, ObstacleManager, Player, PoliceCar, Road, Warn
 
 
 class Game:
@@ -14,17 +14,24 @@ class Game:
             Road(assets_manager.images['road'], SCREEN_WIDTH, BUILDING_HEIGHT),
         )
         self.policecar = PoliceCar(
-            assets_manager.images['policecar'], (20, 280), assets_manager.images['bullet'])
-        self.warn = Warn(
-            assets_manager.images['warning sign'], 30, 300
+            assets_manager.images['policecar'], (20, 280), assets_manager.images['bullet']
         )
-        self.player = Player(
-            assets_manager.images['player'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+        self.warn = Warn(assets_manager.images['warning sign'], 30, 300)
+        self.player = Player(assets_manager.images['player'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
 
-        self.buildings = BuildingManager()  # copied code to building.py
+        self.buildings = BuildingManager()
         self.obstacle_manager = ObstacleManager()
-        self.arrow_image = pygame.transform.rotate(assets_manager.images['arrow'], self.player.dir * 360 // (2 * np.pi) )
-        self.arrow_rect = self.arrow_image.get_rect(center = assets_manager.images['arrow'].get_rect(center = (self.player.rect.left + (PLAYER_WIDTH / 2) , self.player.rect.top + (PLAYER_HEIGHT / 2))).center)
+        self.arrow_image = pygame.transform.rotate(
+            assets_manager.images['arrow'], self.player.dir * 360 // (2 * np.pi)
+        )
+        self.arrow_rect = self.arrow_image.get_rect(
+            center=assets_manager.images['arrow'].get_rect(
+                center=(
+                    self.player.rect.left + (PLAYER_WIDTH / 2),
+                    self.player.rect.top + (PLAYER_HEIGHT / 2)
+                )
+            ).center
+        )
         self.arrow_rect.left += np.cos(self.player.dir) * 150
         self.arrow_rect.top -= np.sin(self.player.dir) * 150
 
@@ -33,16 +40,16 @@ class Game:
         self.lose_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.restart_button = pygame_gui.elements.UIButton(
             relative_rect=pygame.Rect(
-                (SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT // 2 + 100),
-                (100, 50)
+                (SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT // 2 + 100), (100, 50)
             ),
             text='Restart',
             manager=self.lose_screen
         )
         self.lose = False
 
-        self.player_collision_group = pygame.sprite.Group(self.obstacle_manager.obstacles, self.policecar.bullets, self.policecar)
-
+        self.player_collision_group = pygame.sprite.Group(
+            self.obstacle_manager.obstacles, self.policecar.bullets, self.policecar
+        )
 
     def event_process(self):
         for event in pygame.event.get():
@@ -64,8 +71,17 @@ class Game:
             self.policecar.update(t)
             self.buildings.update(t)
             self.obstacle_manager.update(t)
-            self.arrow_image = pygame.transform.rotate(assets_manager.images['arrow'], self.player.dir * 360 // (2 * np.pi) )
-            self.arrow_rect = self.arrow_image.get_rect(center = assets_manager.images['arrow'].get_rect(center = (self.player.rect.left + (PLAYER_WIDTH / 2) , self.player.rect.top + (PLAYER_HEIGHT / 2))).center)
+            self.arrow_image = pygame.transform.rotate(
+                assets_manager.images['arrow'], self.player.dir * 360 // (2 * np.pi)
+            )
+            self.arrow_rect = self.arrow_image.get_rect(
+                center=assets_manager.images['arrow'].get_rect(
+                    center=(
+                        self.player.rect.left + (PLAYER_WIDTH / 2),
+                        self.player.rect.top + (PLAYER_HEIGHT / 2)
+                    )
+                ).center
+            )
             self.arrow_rect.left += np.cos(self.player.dir) * 150
             self.arrow_rect.top -= np.sin(self.player.dir) * 150
 
@@ -85,17 +101,11 @@ class Game:
         window.blit(self.player.image, self.player.rect)
         window.blit(self.arrow_image, self.arrow_rect)
         if self.lose:
-            window.blit(
-                assets_manager.images['Darken'], pygame.Rect(0, 0, 0, 0))
-            window.blit(
-                assets_manager.images['GameOver'], pygame.Rect(0, 0, 0, 0))
+            window.blit(assets_manager.images['Darken'], pygame.Rect(0, 0, 0, 0))
+            window.blit(assets_manager.images['GameOver'], pygame.Rect(0, 0, 0, 0))
             self.lose_screen.draw_ui(window)
 
     def player_collide(self):
         for obj in self.player_collision_group:
             if self.player.rect.colliderect(obj.rect):
                 obj.player_hit(self.player)
-
-
-
-

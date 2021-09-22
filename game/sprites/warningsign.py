@@ -15,7 +15,6 @@ class Warn(pygame.sprite.Sprite):
 
     def update(self, t):
         self.kill()
+
     def draw(self, window):
         window.blit(self.image, self.rect)
-
-

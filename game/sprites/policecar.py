@@ -1,12 +1,15 @@
-import pygame
 import random
+
+import pygame
 
 from game.constants import *
 from game.sprites import Bullet
 
 
 class PoliceCar(pygame.sprite.Sprite):
-    def __init__(self, image: pygame.Surface, pos: pygame.Vector2, bullet_image: pygame.Surface) -> None:
+    def __init__(
+        self, image: pygame.Surface, pos: pygame.Vector2, bullet_image: pygame.Surface
+    ) -> None:
         super().__init__()
 
         self.image = image
@@ -26,8 +29,7 @@ class PoliceCar(pygame.sprite.Sprite):
         self.state = 0
 
     def shoot(self, bullet_speed):
-        self.bullets.add(
-            Bullet(self.bullet_image, self.rect.center, bullet_speed))
+        self.bullets.add(Bullet(self.bullet_image, self.rect.center, bullet_speed))
 
     def objectivepos(self, speed: int, t):
         if self.rect.centery != self.objectives[0]:
@@ -45,10 +47,9 @@ class PoliceCar(pygame.sprite.Sprite):
             self.objectives.pop(0)
 
     def update(self, t):
-        if self.state == 0:  
+        if self.state == 0:
             if len(self.objectives) == 0:
-                self.objectives.append(
-                    random.randint(120, 600 - POLICECAR_HEIGHT))
+                self.objectives.append(random.randint(120, 600 - POLICECAR_HEIGHT))
             self.objectivepos(self.velocity, t)
             if self.shoot_cooldown <= 0:
                 self.shoot(-BACKGROUND_VELOCITY)
@@ -60,7 +61,7 @@ class PoliceCar(pygame.sprite.Sprite):
                 self.objectives.append(SCREEN_HEIGHT - BULLET_HEIGHT)
             else:
                 self.quickfire_skill_cooldown -= t
-        elif self.state == 1: # go to bottom first
+        elif self.state == 1:  # go to bottom first
             self.objectivepos(self.velocity, t)
             if self.shoot_cooldown <= 0:
                 self.shoot(-BACKGROUND_VELOCITY)
@@ -71,7 +72,7 @@ class PoliceCar(pygame.sprite.Sprite):
                 self.state = 2
                 self.objectives.append(230)
                 self.shoot_cooldown = QUICKFIRE_COOLDOWN
-        elif self.state == 2: # bottom to top quickfire
+        elif self.state == 2:  # bottom to top quickfire
             self.objectivepos(self.velocity * 2, t)
             if len(self.objectives) == 0:
                 self.state = 0
@@ -95,4 +96,3 @@ class PoliceCar(pygame.sprite.Sprite):
     def player_hit(self, player):  # should be called when collided by someone
         # animation
         pass
-

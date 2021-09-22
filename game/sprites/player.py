@@ -1,5 +1,5 @@
-import pygame
 import numpy as np
+import pygame
 
 from game.constants import *
 
@@ -28,10 +28,10 @@ class Player(pygame.sprite.Sprite):
         self.dir = np.arctan2(y, x)
 
         keys = pygame.key.get_pressed()
-        if self.rect.left < 0: #touches left border
+        if self.rect.left < 0:  # touches left border
             self.rect.left = 0
             self.vx = -BACKGROUND_VELOCITY
-        if self.rect.left < SCREEN_WIDTH - PLAYER_WIDTH // 2: 
+        if self.rect.left < SCREEN_WIDTH - PLAYER_WIDTH // 2:
             if keys[pygame.K_w]:
                 self.acc(0, -PLAYER_ACC)
             if keys[pygame.K_s]:
@@ -40,7 +40,7 @@ class Player(pygame.sprite.Sprite):
                 self.acc(PLAYER_ACC, 0)
             if keys[pygame.K_a]:
                 self.acc(-PLAYER_ACC, 0)
-        else: #touches right border
+        else:  # touches right border
             self.rect.left = SCREEN_WIDTH - PLAYER_WIDTH // 2
             self.vx = -BACKGROUND_VELOCITY
 
