@@ -20,6 +20,8 @@ class Player(pygame.sprite.Sprite):
         self.real_x = float(x)
         self.real_y = float(y)
 
+        self.hp = 4
+
     def acc(self, dx, dy):
         self.vx = min(self.vx + dx, PLAYER_MAX_HORI_SPEED)
         self.vy += dy
