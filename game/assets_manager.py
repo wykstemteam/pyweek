@@ -73,13 +73,13 @@ class AssetsManager:
                 pygame.mixer.music.stop()
                 pygame.mixer.music.load(os.path.join('assets', 'music', fn))
                 pygame.mixer.music.play(-1)
-                pygame.mixer.music.set_volume(0.3)  # is work???
+                pygame.mixer.music.set_volume(MUSIC_VOLUME)  # is work???
                 break
         else:
             raise ValueError(f"No music '{name}' found")
 
     def music_change_volume(self, vol) -> None:
-        pygame.mixer.music.set_volume(vol)
+        pygame.mixer.music.set_volume(MUSIC_VOLUME)
 
 
 assets_manager = AssetsManager()
