@@ -33,11 +33,11 @@ class Laser(pygame.sprite.Sprite):
         if self.laserremaintime >= 0:
             self.laserremaintime -= t
             if self.laserred_cooldown >= 0:
-                self.image.fill((50, 0, 0, 100))
+                self.image.fill((127, 0, 0, 100))
                 self.laserred_cooldown -= t
                 self.laserblink_cooldown = LASERBLINK_COOLDOWN
             else:
-                self.image.fill((50, 0, 0, 0))
+                self.image.fill((127, 0, 0, 0))
                 self.laserblink_cooldown -= t
                 if self.laserblink_cooldown < 0:
                     self.laserred_cooldown = LASERRED_COOLDOWN
