@@ -146,7 +146,7 @@ class Game:
             window.blit(assets_manager.images['GameOver'], pygame.Rect(0, 0, 0, 0))
             self.lose_screen.draw_ui(window)
 
-    def player_collide(self):
+    def player_collision(self):
         for obj in self.player_collision_group:
             if self.player.rect.colliderect(obj.rect):
                 obj.player_hit(self.player)

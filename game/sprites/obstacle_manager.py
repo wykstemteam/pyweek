@@ -34,7 +34,8 @@ class ObstacleManager:
         self.obstacles.update(t)
 
     def draw(self, window):
-        self.obstacles.draw(window)
+        for obstacle in self.obstacles:
+            window.blit(obstacle.image, obstacle.rect)
 
     def kill(self):
         self.obstacles.empty()
