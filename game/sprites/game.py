@@ -17,7 +17,7 @@ class Game:
             assets_manager.images['policecar'], (20, 280), assets_manager.images['bullet']
         )
         self.warn = Warn(assets_manager.images['warning sign'], 30, 300)
-        self.player = Player(assets_manager.images['player'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+        self.player = Player(assets_manager.images['motorbike'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
 
         self.buildings = BuildingManager()
         self.obstacle_manager = ObstacleManager()
@@ -93,6 +93,7 @@ class Game:
             ):
                 if not self.pause and not self.lose and event.ui_element == self.pause_button:
                     self.pause = True
+                    break  # Otherwise will click both pause and return buttons
 
                 if self.pause and event.ui_element == self.return_button:
                     self.pause = False

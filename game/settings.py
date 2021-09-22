@@ -15,6 +15,37 @@ def settings(window: pygame.Surface):
         text='Return',
         manager=settings_screen
     )
+    text1 = pygame_gui.elements.UILabel(
+        relative_rect=pygame.Rect(
+            (SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 - 25), (400, 10)
+        ),
+        text='Music Volume',
+        manager=settings_screen
+    )
+    music_slider = pygame_gui.elements.UIHorizontalSlider(
+        relative_rect=pygame.Rect(
+            (SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 - 15), (400, 30)
+        ),
+        start_value=0,
+        value_range=(0, 100),
+        manager=settings_screen
+    )
+
+    text2 = pygame_gui.elements.UILabel(
+        relative_rect=pygame.Rect(
+            (SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 + 20), (400, 10)
+        ),
+        text='Sound Volume',
+        manager=settings_screen
+    )
+    music_slider = pygame_gui.elements.UIHorizontalSlider(
+        relative_rect=pygame.Rect(
+            (SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 + 30), (400, 30)
+        ),
+        start_value=0,
+        value_range=(0, 100),
+        manager=settings_screen
+    )
 
     clock = pygame.time.Clock()
 
