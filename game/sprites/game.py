@@ -44,13 +44,24 @@ class Game:
 
         # game gui
         self.game_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
-        self.settings_button = pygame_gui.elements.UIButton(
+        self.pause_button = pygame_gui.elements.UIButton(
             relative_rect=pygame.Rect(
                 (10, 10), (100, 50)
             ),
-            text='Settings',
+            text='Pause',
             manager=self.game_screen
         )
+
+        # pause gui
+        self.pause_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
+        self.return_button = pygame_gui.elements.UIButton(
+            relative_rect=pygame.Rect(
+                (10, 10), (100, 50)
+            ),
+            text='Return',
+            manager=self.pause_screen
+        )
+        self.pause = False
 
         # lose_screen
         self.lose_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -74,17 +85,21 @@ class Game:
                 event.type == pygame.USEREVENT
                 and event.user_type == pygame_gui.UI_BUTTON_PRESSED
             ):
-                if event.ui_element == self.settings_button:
-                    settings(window)
+                if not self.pause and not self.lose and event.ui_element == self.pause_button:
+                    self.pause = True
+
+                if self.pause and event.ui_element == self.return_button:
+                    self.pause = False
 
                 if self.lose and event.ui_element == self.restart_button:
                     self.__init__()  # Reinitialize
 
             self.game_screen.process_events(event)
+            self.pause_screen.process_events(event)
             self.lose_screen.process_events(event)
 
     def update(self, t):
-        if not self.lose:
+        if not self.lose and not self.pause:
             self.roads.update(t)
             self.player.update(t)
             self.policecar.update(t)
@@ -104,11 +119,12 @@ class Game:
             self.arrow_rect.left += np.cos(self.player.dir) * 150
             self.arrow_rect.top -= np.sin(self.player.dir) * 150
 
-        if not self.lose and not self.player.in_bounds():
+        if not self.lose and not self.pause and not self.player.in_bounds():
             assets_manager.play_music("greensleeves")
             self.lose = True
 
         self.game_screen.update(t)
+        self.pause_screen.update(t)
         self.lose_screen.update(t)
 
     def draw(self, window: pygame.Surface):
@@ -120,11 +136,15 @@ class Game:
         self.obstacle_manager.draw(window)
         window.blit(self.player.image, self.player.rect)
         window.blit(self.arrow_image, self.arrow_rect)
+        if not self.lose and not self.pause:
+            self.game_screen.draw_ui(window)
+        if self.pause:
+            window.blit(assets_manager.images['Darken'], pygame.Rect(0, 0, 0, 0))
+            self.pause_screen.draw_ui(window)
         if self.lose:
             window.blit(assets_manager.images['Darken'], pygame.Rect(0, 0, 0, 0))
             window.blit(assets_manager.images['GameOver'], pygame.Rect(0, 0, 0, 0))
             self.lose_screen.draw_ui(window)
-        self.game_screen.draw_ui(window)
 
     def player_collide(self):
         for obj in self.player_collision_group:
