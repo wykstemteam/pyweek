@@ -93,6 +93,7 @@ class Game:
             ):
                 if not self.pause and not self.lose and event.ui_element == self.pause_button:
                     self.pause = True
+                    break  # Otherwise will click both pause and return buttons
 
                 if self.pause and event.ui_element == self.return_button:
                     self.pause = False
