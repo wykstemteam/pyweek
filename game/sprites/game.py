@@ -10,8 +10,8 @@ from game.sprites import BuildingManager, ObstacleManager, Player, PoliceCar, Ro
 class Game:
     def __init__(self) -> None:
         self.roads = pygame.sprite.Group(
-            Road(assets_manager.images['road'], 0, BUILDING_HEIGHT),
-            Road(assets_manager.images['road'], SCREEN_WIDTH, BUILDING_HEIGHT),
+            Road(assets_manager.images['road'], 0),
+            Road(assets_manager.images['road'], SCREEN_WIDTH),
         )
         self.policecar = PoliceCar(
             assets_manager.images['policecar'], (20, 280), assets_manager.images['bullet']
@@ -93,6 +93,7 @@ class Game:
             ):
                 if not self.pause and not self.lose and event.ui_element == self.pause_button:
                     self.pause = True
+                    break  # Otherwise will click both pause and return buttons
 
                 if self.pause and event.ui_element == self.return_button:
                     self.pause = False
