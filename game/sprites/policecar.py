@@ -92,3 +92,7 @@ class PoliceCar(pygame.sprite.Sprite):
     def kill(self):
         self.bullets.empty()
 
+    def player_hit(self, player):  # should be called when collided by someone
+        # animation
+        pass
+

@@ -20,6 +20,7 @@ class Obstacle(pygame.sprite.Sprite):
             self.kill()
             return
 
-    def hit(self):  # should be called when collided by someone
+    def player_hit(self, player):  # should be called when collided by player
         # animation
+        # 
         pass

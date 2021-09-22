@@ -42,6 +42,9 @@ class Game:
         )
         self.lose = False
 
+        self.player_collision_group = pygame.sprite.Group(self.obstacle_manager.obstacles, self.policecar.bullets, self.policecar)
+
+
     def event_process(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -88,6 +91,12 @@ class Game:
             window.blit(
                 assets_manager.images['GameOver'], pygame.Rect(0, 0, 0, 0))
             self.lose_screen.draw_ui(window)
+
+    def player_collide(self):
+        for obj in self.player_collision_group:
+            if self.player.rect.colliderect(obj.rect):
+                obj.player_hit(self.player)
+                
 
 
     
