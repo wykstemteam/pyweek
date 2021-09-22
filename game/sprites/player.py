@@ -122,7 +122,7 @@ class Player(pygame.sprite.Sprite):
         self_left = self.real_x
         self_right = self.real_x + PLAYER_WIDTH
         self_top = self.real_y
-        self_bottom = self.real_y + PLAYER_WIDTH
+        self_bottom = self.real_y + PLAYER_HEIGHT
         distances = [(self_right - obstacle_left, 0), (obstacle_right - self_left, 1),
                      (self_bottom - obstacle_top, 2), (obstacle_bottom - self_top, 3)]
         distances = sorted(filter(lambda x: x[0] >= 0, distances))
