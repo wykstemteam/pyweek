@@ -6,7 +6,7 @@ from game.constants import *
 
 
 class AssetsManager:
-    def __init__(self):
+    def __init__(self) -> None:
         pygame.mixer.init()
 
         self.images = {}
@@ -15,7 +15,7 @@ class AssetsManager:
         self.init_images()
         # self.init_sounds()
 
-    def init_images(self):
+    def init_images(self) -> None:
         for fn in os.listdir(os.path.join('assets', 'images')):
             base_fn = os.path.splitext(fn)[0]
             self.images[base_fn] = pygame.image.load(os.path.join('assets', 'images', fn))
@@ -41,13 +41,17 @@ class AssetsManager:
             self.images['player'], (PLAYER_WIDTH, PLAYER_HEIGHT)
         )
         self.images['arrow'] = pygame.transform.scale(self.images['arrow'], (80, 100))
+        for i in range(1, 4):
+            self.images[f'obstacle{i}'] = pygame.transform.scale(
+                self.images[f'obstacle{i}'], (OBSTACLE_WIDTH, OBSTACLE_HEIGHT)
+            )
 
-    def init_sounds(self):
+    def init_sounds(self) -> None:
         for fn in os.listdir(os.path.join('assets', 'sounds')):
             base_fn = os.path.splitext(fn)[0]
             self.sounds[base_fn] = pygame.mixer.Sound(os.path.join('assets', 'sounds', fn))
 
-    def play_music(self, name):
+    def play_music(self, name: str) -> None:
         for fn in os.listdir(os.path.join('assets', 'music')):
             base_fn = os.path.splitext(fn)[0]
             if base_fn == name:

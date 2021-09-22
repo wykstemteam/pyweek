@@ -14,13 +14,13 @@ class Obstacle(pygame.sprite.Sprite):
         self.width = self.image.get_width()
         self.height = self.image.get_height()
 
-    def update(self, t):
+    def update(self, t) -> None:
         self.rect.left += int(BACKGROUND_VELOCITY * t)
         if self.rect.left <= 0 or self.rect.right >= SCREEN_WIDTH:
             self.kill()
             return
 
-    def player_hit(self, player):  # should be called when collided by player
+    def player_hit(self, player) -> None:  # should be called when collided by player
         # animation
         #
         pass

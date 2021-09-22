@@ -8,7 +8,7 @@ from game.sprites import Building
 
 
 class BuildingManager:
-    def __init__(self):
+    def __init__(self) -> None:
         if DISABLE_BUILDINGS:
             return
 
@@ -25,7 +25,7 @@ class BuildingManager:
         self.xs.append(self.xs[-1] + BUILDING_WIDTH)
         self.buildings.append(Building(assets_manager.images['3buildings'], self.xs[-1]))
 
-    def update(self, t: float):
+    def update(self, t: float) -> None:
         if DISABLE_BUILDINGS:
             return
 
@@ -38,7 +38,7 @@ class BuildingManager:
             self.xs.popleft()
             self.xs.append(self.xs[-1] + BUILDING_WIDTH)
 
-    def draw(self, window: pygame.Surface):
+    def draw(self, window: pygame.Surface) -> None:
         if DISABLE_BUILDINGS:
             return
         for i in range(len(self.xs)):

@@ -12,7 +12,7 @@ class ObstacleManager:
         self.obstacles = pygame.sprite.Group()
         self.cooldown = OBSTACLE_COOLDOWN
 
-    def add(self):
+    def add(self) -> None:
         obstacle_num = random.randint(1, 3)
         self.obstacles.add(
             Obstacle(
@@ -25,7 +25,7 @@ class ObstacleManager:
             )
         )
 
-    def update(self, t):
+    def update(self, t: float) -> None:
         if self.cooldown <= 0:
             self.add()
             self.cooldown = OBSTACLE_COOLDOWN
@@ -33,8 +33,9 @@ class ObstacleManager:
             self.cooldown -= t
         self.obstacles.update(t)
 
-    def draw(self, window):
-        self.obstacles.draw(window)
+    def draw(self, window: pygame.Surface) -> None:
+        for obstacle in self.obstacles:
+            window.blit(obstacle.image, obstacle.rect)
 
-    def kill(self):
+    def kill(self) -> None:
         self.obstacles.empty()
