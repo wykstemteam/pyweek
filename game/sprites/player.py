@@ -58,4 +58,4 @@ class Player(pygame.sprite.Sprite):
         self.rect.top += self.vy * t
 
     def in_bounds(self):
-        return 0 < self.rect.top < SCREEN_HEIGHT - PLAYER_HEIGHT
+        return BUILDING_HEIGHT < self.rect.top < SCREEN_HEIGHT - PLAYER_HEIGHT
