@@ -3,7 +3,7 @@ import pygame_gui
 
 from game.assets_manager import assets_manager
 from game.constants import *
-from game.sprites.game import Game  # FIXME: Please don't put this in sprites
+from game.game import Game
 from game.settings import settings
 
 pygame.init()
@@ -53,9 +53,7 @@ def main() -> None:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 exit()
-            if (
-                event.type == pygame.USEREVENT and event.user_type == pygame_gui.UI_BUTTON_PRESSED
-            ):
+            if (event.type == pygame.USEREVENT and event.user_type == pygame_gui.UI_BUTTON_PRESSED):
                 if event.ui_element == start_button:
                     gaming()
                     assets_manager.play_music("tanukichis_adventure")
