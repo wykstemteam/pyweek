@@ -13,7 +13,7 @@ class Obstacle(pygame.sprite.Sprite):
 
         self.width = self.image.get_width()
         self.height = self.image.get_height()
-        self.pos = pos
+        self.pos = pygame.Vector2(pos)
 
     def update(self, t) -> None:
         self.pos.x += BACKGROUND_VELOCITY * t
