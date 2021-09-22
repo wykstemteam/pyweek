@@ -58,14 +58,12 @@ class AssetsManager:
         for fn in os.listdir(os.path.join('assets', 'music')):
             base_fn = os.path.splitext(fn)[0]
             if base_fn == name:
+                pygame.mixer.music.stop()
                 pygame.mixer.music.load(os.path.join('assets', 'music', fn))
                 pygame.mixer.music.play(-1)
                 break
         else:
             raise ValueError(f"No music '{name}' found")
-
-    def stop_music(self):
-        pygame.mixer.music.stop()
 
 
 assets_manager = AssetsManager()
