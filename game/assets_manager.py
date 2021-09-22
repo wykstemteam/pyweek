@@ -37,8 +37,8 @@ class AssetsManager:
         self.images['3buildings'] = pygame.transform.scale(
             self.images['3buildings'], (BUILDING_WIDTH, BUILDING_HEIGHT)
         )
-        self.images['player'] = pygame.transform.scale(
-            self.images['player'], (PLAYER_WIDTH, PLAYER_HEIGHT)
+        self.images['motorbike'] = pygame.transform.scale(
+            self.images['motorbike'], (PLAYER_WIDTH, PLAYER_HEIGHT)
         )
         self.images['arrow'] = pygame.transform.scale(self.images['arrow'], (80, 100))
         for i in range(1, 4):
