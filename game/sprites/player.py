@@ -77,6 +77,8 @@ class Player(pygame.sprite.Sprite):
             elif self.items[self.holding] == 2: #invincible
                 pass
             elif self.items[self.holding] == 3:
+                self.vx -= np.cos(self.dir) * 100
+                self.vy += np.sin(self.dir) * 100
                 self.shoot_missle()
             elif self.items[self.holding] == 4: # earthquake
                 pass
