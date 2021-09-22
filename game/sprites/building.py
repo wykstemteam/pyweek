@@ -1,7 +1,6 @@
 import cv2 as cv
 import numpy as np
 import pygame
-from matplotlib import pyplot as plt
 
 from game.constants import *
 
@@ -25,7 +24,6 @@ class Building(pygame.sprite.Sprite):
 
     def shear(self):
         image = self.original_image if self.sx > 0 else self.flipped_image
-        plt.imshow(pygame.surfarray.pixels3d(image))
         image = np.dstack((
             pygame.surfarray.pixels_red(image),
             pygame.surfarray.pixels_green(image),
@@ -39,11 +37,7 @@ class Building(pygame.sprite.Sprite):
             image, shear_matrix,
             (self.original_image.get_width() + int(abs(self.sx)), self.original_image.get_height()),
         )
-
         image = image.swapaxes(0, 1)
-        # plt.imshow(image)
-        # plt.show()
-        # input()
 
         self.image = pygame.surfarray.make_surface(image)
         if self.sx < 0:
