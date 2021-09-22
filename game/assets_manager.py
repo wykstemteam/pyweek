@@ -45,6 +45,11 @@ class AssetsManager:
             self.images['motorbike'], (PLAYER_WIDTH, PLAYER_HEIGHT)
         )
         self.images['arrow'] = pygame.transform.scale(self.images['arrow'], (80, 100))
+        self.images['HP0'] = pygame.transform.scale(self.images['HP0'], (400, 100))
+        self.images['HP1'] = pygame.transform.scale(self.images['HP1'], (400, 100))
+        self.images['HP2'] = pygame.transform.scale(self.images['HP2'], (400, 100))
+        self.images['HP3'] = pygame.transform.scale(self.images['HP3'], (400, 100))
+        self.images['HP4'] = pygame.transform.scale(self.images['HP4'], (400, 100))
         for i in range(1, 4):
             self.images[f'obstacle{i}'] = pygame.transform.scale(
                 self.images[f'obstacle{i}'], (OBSTACLE_WIDTH, OBSTACLE_HEIGHT)

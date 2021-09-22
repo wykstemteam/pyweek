@@ -41,6 +41,9 @@ class Game:
         self.arrow_rect.left += np.cos(self.player.dir) * 150
         self.arrow_rect.top -= np.sin(self.player.dir) * 150
 
+        # Health_bar
+        self.health_bar_image = assets_manager.images['HP4']
+
         # game gui
         self.game_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.pause_button = pygame_gui.elements.UIButton(
@@ -134,6 +137,7 @@ class Game:
         self.obstacle_manager.draw(window)
         window.blit(self.player.image, self.player.rect)
         window.blit(self.arrow_image, self.arrow_rect)
+        window.blit(self.health_bar_image, pygame.Rect((10, 10), (400, 100)))
         if not self.lose and not self.pause:
             self.game_screen.draw_ui(window)
         if self.pause:
