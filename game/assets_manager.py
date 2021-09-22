@@ -54,6 +54,7 @@ class AssetsManager:
                 pygame.mixer.music.stop()
                 pygame.mixer.music.load(os.path.join('assets', 'music', fn))
                 pygame.mixer.music.play(-1)
+                pygame.mixer.music.set_volume(0.5)
                 break
         else:
             raise ValueError(f"No music '{name}' found")
