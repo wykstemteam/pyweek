@@ -43,7 +43,7 @@ def settings(window: pygame.Surface):
         relative_rect=pygame.Rect(
             (SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 + 30), (400, 30)
         ),
-        start_value=SOUND_VOLUME,
+        start_value=assets_manager.sound_volume,
         value_range=(0.0, 1),
         manager=settings_screen
     )
