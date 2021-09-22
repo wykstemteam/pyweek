@@ -54,7 +54,7 @@ class Player(pygame.sprite.Sprite):
             self.real_y = BUILDING_HEIGHT
             self.vy = 0
         if self.real_y + PLAYER_HEIGHT > SCREEN_HEIGHT:
-            self.real_y = SCREEN_HEIGHT -PLAYER_HEIGHT
+            self.real_y = SCREEN_HEIGHT - PLAYER_HEIGHT
             self.vy = 0
 
         if self.vx > 0:
