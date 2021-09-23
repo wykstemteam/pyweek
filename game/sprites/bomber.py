@@ -1,3 +1,4 @@
+import numpy as np
 import pygame
 
 from game.assets_manager import assets_manager
@@ -17,7 +18,7 @@ class Bomber(pygame.sprite.Sprite):
         self.shadow.fill((0, 0, 0, alpha), None, pygame.BLEND_RGBA_MULT)
 
         self.rect = self.animation[0].get_rect()
-        self.rect.topleft = (0, (SCREEN_HEIGHT / 2) - (self.image.get_height() / 2))
+        self.rect.topleft = (-100, (SCREEN_HEIGHT / 2) - (self.image.get_height() / 2))
         self.shadow_rect = self.rect.copy()
         self.shadow_rect.topleft = self.shadow_rect.topleft + pygame.Vector2(-15, 15)
 
@@ -27,7 +28,7 @@ class Bomber(pygame.sprite.Sprite):
         if self.frame < len(self.animation):
             self.image = self.animation[self.frame]
             self.rect = self.animation[self.frame].get_rect()
-            self.rect.topleft = (0, (SCREEN_HEIGHT / 2) - (self.image.get_height() / 2))
+            self.rect.topleft = (-100, (SCREEN_HEIGHT / 2) - (self.image.get_height() / 2))
             self.shadow_rect = self.rect.copy()
             self.shadow_rect.topleft = self.shadow_rect.topleft + pygame.Vector2(-15, 15)
             self.frame += 1

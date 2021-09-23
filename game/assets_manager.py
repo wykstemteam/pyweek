@@ -75,6 +75,10 @@ class AssetsManager:
             self.animations['explode'][i] = pygame.transform.scale(
                 self.animations['explode'][i], (EXPLODE_WIDTH, EXPLODE_HEIGHT)
             )
+        for i in range(len(self.animations['bomber'])):
+            self.animations['bomber'][i] = pygame.transform.scale(
+                self.animations['bomber'][i], (BOMBER_WIDTH, BOMBER_HEIGHT)
+            )
 
     def init_sounds(self) -> None:
         for fn in os.listdir(os.path.join('assets', 'sounds')):
