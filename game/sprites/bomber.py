@@ -26,11 +26,11 @@ class Bomber(pygame.sprite.Sprite):
 
         self.dir = 0.0
 
-    def goin(self):
+    def go_in(self):
         if self.x < -100:
             self.x += 1
 
-    def goout(self):
+    def go_out(self):
         if self.x > -400:
             self.x -= 1
 

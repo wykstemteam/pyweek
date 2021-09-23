@@ -110,7 +110,7 @@ class Game:
             self.player.update(t)
             self.policecar.update(t, self.shop)
             if self.distance_manager.dist >= 50:
-                self.bomber.goin()
+                self.bomber.go_in()
             self.bomber.update(t, self.shop)
             self.obstacle_manager.update(t, self.shop)
             self.arrow.update(self.player)

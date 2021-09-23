@@ -78,7 +78,7 @@ class Player(pygame.sprite.Sprite):
             self.holding = 1
         elif keys[pygame.K_2]:
             self.holding = 2
-        left_button_pressed = pygame.mouse.get_pressed()[0]
+        left_button_pressed = pygame.mouse.get_pressed(num_buttons=3)[0]
         if left_button_pressed:
             if self.items[self.holding] == 1:
                 # FIXME: play some sound effect maybe
