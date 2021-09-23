@@ -112,7 +112,7 @@ class Game:
 
             if self.distance_manager.dist >= 49 and self.distance_manager.dist <= 51:
                 self.bomber.activated = True
-            print(self.bomber.activated)
+            # print(self.bomber.activated)
 
             if self.bomber.activated:
                 self.bomber.goin(t)
@@ -124,9 +124,9 @@ class Game:
             self.bomber.aim(self.player.rect.centerx, self.player.rect.centery)
             self.obstacle_manager.update(t, self.shop)
             self.arrow.update(self.player)
+            self.laser_manager.update(t)
             if not self.shop:
                 self.distance_manager.update(t)
-                self.laser_manager.update(t)
                 self.player_collision()
             else:
                 self.show_sea_time -= t
