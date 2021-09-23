@@ -4,6 +4,7 @@ import pygame_gui
 
 from game.assets_manager import assets_manager
 from game.constants import *
+from game.screen_shake_manager import ScreenShakeManager
 from game.sprites import *
 
 
@@ -29,6 +30,8 @@ class Game:
         self.obstacle_manager = ObstacleManager(self.player_collision_group)
         self.distance_manager = DistanceManager()
         self.arrow = Arrow(assets_manager.images['arrow'], self.player)
+        self.screen_shake_manager = ScreenShakeManager()
+        self.screen_shake_manager.shaking = True
 
         # Health_bar
         self.health_bar_image = assets_manager.images['HP4']
@@ -141,6 +144,8 @@ class Game:
             self.lose_screen.draw_ui(window)
         else:
             self.game_screen.draw_ui(window)
+
+        self.screen_shake_manager.shake(window)
 
     def trigger_lose(self):
         if not self.lose and not self.pause:
