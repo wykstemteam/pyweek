@@ -14,11 +14,8 @@ class Bomber(pygame.sprite.Sprite):
         self.frame = 0
 
         self.image = self.animation[0]
-        self.shadow = self.image.copy()
-        alpha = 128
-        self.shadow.fill((0, 0, 0, alpha), None, pygame.BLEND_RGBA_MULT)
 
-        self.x = -400
+        self.x = 1500
 
         self.rect = self.animation[0].get_rect()
         self.rect.topleft = (self.x, (SCREEN_HEIGHT / 2) - (self.image.get_height() / 2))
@@ -33,6 +30,14 @@ class Bomber(pygame.sprite.Sprite):
         self.dir = 0.0
         self.activated = False
 
+    def goin(self, t):
+        if self.x < -100:
+            self.x += 1
+
+    def goout(self, t):
+        if self.x > -400:
+            self.x -= 1
+
     def aim(self, px: float, py: float):
         self.dir = np.arctan2(self.rect.centery - py, px - self.rect.centerx)
 
@@ -46,13 +51,6 @@ class Bomber(pygame.sprite.Sprite):
             self.shoot_cooldown = BOMBER_SHOOT_COOLDOWN
 
     def update(self, t):
-        if self.activated:
-            if self.x < -100:
-                self.x += 1
-        else:
-            if self.x > -400:
-                self.x -= 1
-
         if self.frame >= len(self.animation):
             self.frame = 0
 
@@ -64,7 +62,6 @@ class Bomber(pygame.sprite.Sprite):
         self.frame += 1
 
         self.shoot_cooldown -= t
-        self.shoot()
         self.bullets.update(t)
 
     def draw(self, window):

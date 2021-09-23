@@ -113,16 +113,9 @@ class Game:
 
             if self.distance_manager.dist >= BOMBER_APPEAR_DIST-1 and self.distance_manager.dist <= BOMBER_APPEAR_DIST+1:
                 self.bomber.activated = True
-            # print(self.bomber.activated)
-
-            if self.bomber.activated:
-                self.bomber.goin(t)
-                self.bomber.shoot()
-            else:
-                self.bomber.goout(t)
-
-            self.bomber.update(t)
             self.bomber.aim(self.player.rect.centerx, self.player.rect.centery)
+            self.bomber.update(t)
+
             self.obstacle_manager.update(t, self.shop)
             self.arrow.update(self.player)
             self.laser_manager.update(t, self.shop)
