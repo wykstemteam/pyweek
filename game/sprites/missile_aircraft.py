@@ -15,10 +15,13 @@ class MissileAircraft(pygame.sprite.Sprite):
         self.t = 0
 
     def update(self, t):
-        self.t += t
-        if self.t >= LASERREMAINTIME:
-            self.rect.left += MISSILE_AIRCRAFT_VELOCITY * t
-        if self.rect.left >= SCREEN_WIDTH:
+        if not self.explode:
+            self.t += t
+            if self.t >= LASERREMAINTIME:
+                self.rect.left += MISSILE_AIRCRAFT_VELOCITY * t
+            if self.rect.left >= SCREEN_WIDTH:
+                self.kill()
+        elif not self.explode.update(t):
             self.kill()
 
     def player_hit(self, player) -> None:  # should be called when collided by player
