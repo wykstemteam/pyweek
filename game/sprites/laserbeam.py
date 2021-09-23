@@ -17,15 +17,19 @@ class Laser(pygame.sprite.Sprite):
         self.pos = pos
         self.t = 0
         self.laser_amount = 0
+        self.laser_blink_cooldown = LASERBLINK_COOLDOWN
 
     def update(self, dt):
         self.t += dt
         self.rect.topleft = (0, self.pos)
         if self.t <= LASERREMAINTIME:
-            if self.t % (LASERBLINK_COOLDOWN * 2) < LASERBLINK_COOLDOWN:
+            if self.t % (self.laser_blink_cooldown * 2) < self.laser_blink_cooldown:
                 self.image.set_alpha(127)
             else:
                 self.image.set_alpha(0)
+                self.laser_blink_cooldown -= dt/6
+        else:
+            self.image.set_alpha(0)
 
     def draw(self, window):
         window.blit(self.image, self.rect)
