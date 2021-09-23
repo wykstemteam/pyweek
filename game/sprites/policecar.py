@@ -14,8 +14,8 @@ class PoliceCar(pygame.sprite.Sprite):
         UP_TO_BOTTOM = 2
 
     def __init__(
-        self, image: pygame.Surface, pos: pygame.Vector2, bullet_image: pygame.Surface,
-        player_collision_group: pygame.sprite.Group
+            self, image: pygame.Surface, pos: pygame.Vector2, bullet_image: pygame.Surface,
+            player_collision_group: pygame.sprite.Group
     ) -> None:
         super().__init__()
 
@@ -61,7 +61,7 @@ class PoliceCar(pygame.sprite.Sprite):
 
     def update(self, t, shop: bool = False):
         if shop:
-            self.rect.right = max(0, self.rect.right - 20*t)
+            self.rect.right = max(0, self.rect.right - 20 * t)
             self.shadow_rect = self.rect.copy()
             self.shadow_rect.topleft = self.shadow_rect.topleft + pygame.Vector2(-5, 5)
             self.bullets.update(t)

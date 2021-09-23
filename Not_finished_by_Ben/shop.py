@@ -1,5 +1,4 @@
 import pygame
-import sys
 import pygame_gui
 
 
@@ -111,6 +110,3 @@ def shop_main_menu(window: pygame.Surface):
         pygame.display.flip()
 
         clock.tick(60)
-
-
-

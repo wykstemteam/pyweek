@@ -45,13 +45,13 @@ def settings(window: pygame.Surface):
                 exit()
 
             if (
-                event.type == pygame.USEREVENT and event.user_type == pygame_gui.UI_BUTTON_PRESSED
-                and event.ui_element == return_button
+                    event.type == pygame.USEREVENT and event.user_type == pygame_gui.UI_BUTTON_PRESSED
+                    and event.ui_element == return_button
             ):
                 running = False
             if (
-                event.type == pygame.USEREVENT
-                and event.user_type == pygame_gui.UI_HORIZONTAL_SLIDER_MOVED
+                    event.type == pygame.USEREVENT
+                    and event.user_type == pygame_gui.UI_HORIZONTAL_SLIDER_MOVED
             ):
                 if event.ui_element == music_slider:
                     assets_manager.set_music_volume(event.value)
