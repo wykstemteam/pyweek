@@ -151,3 +151,8 @@ class Player(pygame.sprite.Sprite):
             self.vy = 0
         self.rect.left = self.real_x
         self.rect.top = self.real_y
+
+    def go_right(self, t) -> bool:
+        self.rect.left += -BACKGROUND_VELOCITY*t
+        self.shadow_rect.left = self.rect.left - 5
+        return self.rect.left > SCREEN_WIDTH

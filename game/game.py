@@ -68,6 +68,9 @@ class Game:
             manager=self.lose_screen
         )
         self.lose = False
+        self.shop = False
+        self.show_sea_time = SHOW_SEA_TIME
+        self.show_shop_animation = False
 
         assets_manager.play_music("8bitaggressive1")
 
@@ -97,26 +100,36 @@ class Game:
     def update(self, t):
         self.health_bar_image = assets_manager.images[f"HP{self.player.hp}"]
 
+        if self.show_shop_animation:
+            if self.player.go_right(t):
+                self.fade_screen()
+            return
+
         if not self.lose and not self.pause:
             self.roads.update(t)
-            self.buildings.update(t)
+            self.buildings.update(t, self.shop)
             self.player.update(t)
-            self.policecar.update(t)
-
-            # bomber
+            self.policecar.update(t, self.shop)
             if self.distance_manager.dist >= 50:
                 self.bomber.goin()
-            self.bomber.update(t)
-            
-            self.obstacle_manager.update(t)
-            self.laser_manager.update(t)
-            self.distance_manager.update(t)
+            self.bomber.update(t, self.shop)
+            self.obstacle_manager.update(t, self.shop)
             self.arrow.update(self.player)
+            if not self.shop:
+                self.distance_manager.update(t)
+                self.laser_manager.update(t)
+                self.player_collision()
+            else:
+                self.show_sea_time -= t
+                if self.show_sea_time <= 0:
+                    self.show_shop_animation = True
 
-            self.player_collision()
-
-        if self.player.hp <= 0:
+        if self.player.hp <= 0 and not self.shop and not self.lose:
+            print(self.player.hp)
             self.trigger_lose()
+
+        if self.distance_manager.dist_to_next_country <= 0 and not self.shop:
+            self.trigger_shop()
 
         self.game_screen.update(t)
         self.pause_screen.update(t)
@@ -152,6 +165,11 @@ class Game:
             assets_manager.play_music("greensleeves")
             self.lose = True
 
+    def trigger_shop(self):
+        if not self.shop and not self.pause:
+            # assets_manager.play_music("greensleeves") FIXME jono music pls
+            self.shop = True
+
     def player_collision(self):
         for obj in self.player_collision_group:
             if self.player.rect.colliderect(obj.rect):
@@ -161,3 +179,6 @@ class Game:
                     obj.player_hit(self.player)
                 elif type(obj) == Obstacle:
                     self.player.resolve_collision(obj)
+
+    def fade_screen(self):
+        print('gg')

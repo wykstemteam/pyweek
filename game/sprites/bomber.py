@@ -34,7 +34,12 @@ class Bomber(pygame.sprite.Sprite):
         if self.x > -400:
             self.x -= 1
 
-    def update(self, t):
+    def update(self, t, shop: bool):
+        if shop:
+            self.rect.right = max(0, self.rect.right - 20*t)
+            self.shadow_rect = self.rect.copy()
+            self.shadow_rect.topleft = self.shadow_rect.topleft + pygame.Vector2(-5, 5)
+            return
         if self.frame < len(self.animation):
             self.image = self.animation[self.frame]
             self.rect = self.animation[self.frame].get_rect()

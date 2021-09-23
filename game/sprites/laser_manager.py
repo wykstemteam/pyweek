@@ -30,7 +30,10 @@ class LaserManager:
             if len(self.lasers) < 3:
                 self.add()
         self.lasers.update(t)
-        print(self.lasers)
+        # print(self.lasers)
 
     def draw(self, window):
         self.lasers.draw(window)
+
+    def kill(self):
+        self.lasers.empty()

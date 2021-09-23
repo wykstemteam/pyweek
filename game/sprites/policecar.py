@@ -59,7 +59,12 @@ class PoliceCar(pygame.sprite.Sprite):
         else:
             self.rect.centery += speed * t
 
-    def update(self, t):
+    def update(self, t, shop: bool = False):
+        if shop:
+            self.rect.right = max(0, self.rect.right - 20*t)
+            self.shadow_rect = self.rect.copy()
+            self.shadow_rect.topleft = self.shadow_rect.topleft + pygame.Vector2(-5, 5)
+            return
         # FIXME: @Jutsin/Eason please use an enum instead of raw integers for state
         if self.state == PoliceCar.State.RANDOM:
             if len(self.objectives) == 0:

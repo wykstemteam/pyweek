@@ -24,13 +24,15 @@ class ObstacleManager:
         self.obstacles.add(new_obstacle)
         self.player_collision_group.add(new_obstacle)
 
-    def update(self, t: float) -> None:
+    def update(self, t: float, shop: bool) -> None:
+        self.obstacles.update(t)
+        if shop:
+            return
         if self.cooldown <= 0:
             self.add()
             self.cooldown = OBSTACLE_COOLDOWN
         else:
             self.cooldown -= t
-        self.obstacles.update(t)
 
     def draw(self, window: pygame.Surface) -> None:
         for obstacle in self.obstacles:
