@@ -121,11 +121,8 @@ class Game:
             # spaceship
             if self.distance_manager.dist >= BOMBER_APPEAR_DIST-1 and self.distance_manager.dist <= BOMBER_APPEAR_DIST+1:
                 self.spaceship.activated = True
-            # FIX: laser charging animation is not working
-            if self.distance_manager.dist >= 80 and self.distance_manager.dist <= 82:
+            if self.distance_manager.dist >= 80 and self.distance_manager.dist <= 81:
                 self.spaceship.is_charge = True
-            if self.distance_manager.dist >= 90 and self.distance_manager.dist <= 91:
-                self.spaceship.is_shoot = True
             self.spaceship.update(t)
 
             self.obstacle_manager.update(t, self.shop)

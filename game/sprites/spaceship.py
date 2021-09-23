@@ -15,7 +15,7 @@ class Spaceship(pygame.sprite.Sprite):
         self.laser_charge_ani = assets_manager.animations['laser_charge']
         self.lc_img = assets_manager.images['lc_charge_none']
         self.lc_rect = self.lc_img.get_rect()
-        self.lc_rect.topleft = (800, (SCREEN_WIDTH / 2) - 100)
+        self.lc_rect.topleft = (800, (SCREEN_HEIGHT / 2) - 100)
         self.lc_frame = 0.0
         self.is_charge = False
 
@@ -49,15 +49,6 @@ class Spaceship(pygame.sprite.Sprite):
 
         self.rect.topleft = (self.x, self.y)
 
-        if self.is_charge == True:
-            if self.lc_frame < len(self.laser_charge_ani):
-                self.lc_img = self.laser_charge_ani[int(self.lc_frame)]
-                self.lc_frame += 0.2
-            else:
-                self.ic_charge = False
-                self.lc_frame = 0.0
-                self.lc_img = assets_manager.images['lc_charge_none']
-
         if self.is_shoot == True:
             if self.ls_frame < len(self.laser_shoot_ani):
                 self.ls_img = self.laser_shoot_ani[int(self.ls_frame)]
@@ -66,6 +57,17 @@ class Spaceship(pygame.sprite.Sprite):
                 self.is_shoot = False
                 self.ls_frame = 0.0
                 self.ls_img = assets_manager.images['ls_shoot_none']
+
+
+        if self.is_charge == True:
+            if self.lc_frame < len(self.laser_charge_ani):
+                self.lc_img = self.laser_charge_ani[int(self.lc_frame)]
+                self.lc_frame += 0.2
+            else:
+                self.is_charge = False
+                self.is_shoot = True
+                self.lc_frame = 0.0
+                self.lc_img = assets_manager.images['lc_charge_none']
 
     def draw(self, window):
         window.blit(self.lc_img, self.lc_rect)
