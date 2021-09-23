@@ -11,8 +11,14 @@ class Player(pygame.sprite.Sprite):
         super().__init__()
 
         self.image = image
+        self.shadow = self.image.copy()
+        alpha = 128
+        self.shadow.fill((0, 0, 0, alpha), None, pygame.BLEND_RGBA_MULT)
+
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
+        self.shadow_rect = self.image.get_rect()
+        self.shadow_rect.topleft = (x-5, y+5)
 
         self.width = self.image.get_width()
         self.height = self.image.get_height()
@@ -37,6 +43,8 @@ class Player(pygame.sprite.Sprite):
         self.real_y += self.vy * t
         self.rect.left = self.real_x
         self.rect.top = self.real_y
+        self.shadow_rect.left = self.real_x - 5
+        self.shadow_rect.top = self.real_y + 5
 
         x = pygame.mouse.get_pos()[0] - (self.real_x + PLAYER_WIDTH / 2)
         y = (self.real_y + PLAYER_HEIGHT / 2) - pygame.mouse.get_pos()[1]
@@ -104,6 +112,7 @@ class Player(pygame.sprite.Sprite):
     def draw(self, window):
         for missile in self.missiles:
             missile.draw(window)
+        window.blit(self.shadow, self.shadow_rect)
         window.blit(self.image, self.rect)
 
     def in_bounds(self):

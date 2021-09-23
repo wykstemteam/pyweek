@@ -20,8 +20,13 @@ class PoliceCar(pygame.sprite.Sprite):
         super().__init__()
 
         self.image = image
+        self.shadow = self.image.copy()
+        alpha = 128
+        self.shadow.fill((0, 0, 0, alpha), None, pygame.BLEND_RGBA_MULT)
         self.rect = self.image.get_rect()
         self.rect.topleft = pos
+        self.shadow_rect = self.rect.copy()
+        self.shadow_rect.topleft = self.shadow_rect.topleft + pygame.Vector2(-5, 5)
 
         self.width = self.image.get_width()
         self.height = self.image.get_height()
@@ -103,9 +108,12 @@ class PoliceCar(pygame.sprite.Sprite):
                 self.objectives.append(470)
                 self.shoot_cooldown = 0
 
+        self.shadow_rect = self.rect.copy()
+        self.shadow_rect.topleft = self.shadow_rect.topleft + pygame.Vector2(-5, 5)
         self.bullets.update(t)
 
     def draw(self, window: pygame.Surface) -> None:
+        window.blit(self.shadow, self.shadow_rect)
         window.blit(self.image, self.rect)
         for bullet in self.bullets:
             bullet.draw(window)
