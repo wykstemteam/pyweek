@@ -15,8 +15,8 @@ class DistanceManager(pygame.sprite.Sprite):
 
     def update(self, t):
         self.dist_to_next_country -= -BACKGROUND_VELOCITY * t / 100
-        self.image = DistanceManager.font.render(f'Distance to next country: {self.dist_to_next_country: .1f} m', False,
-                                                 (255, 255, 255))
+        self.image = DistanceManager.font.render(f'Distance to next country: {self.dist_to_next_country: .0f} m', False,
+                                                 (255, 255, 0))
 
     def draw(self, window: pygame.Surface):
         window.blit(self.image, self.rect)
