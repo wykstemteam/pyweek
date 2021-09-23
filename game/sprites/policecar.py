@@ -14,8 +14,8 @@ class PoliceCar(pygame.sprite.Sprite):
         UP_TO_BOTTOM = 2
 
     def __init__(
-            self, image: pygame.Surface, pos: pygame.Vector2, bullet_image: pygame.Surface,
-            player_collision_group: pygame.sprite.Group
+        self, image: pygame.Surface, pos: pygame.Vector2, bullet_image: pygame.Surface,
+        player_collision_group: pygame.sprite.Group
     ) -> None:
         super().__init__()
 
@@ -66,7 +66,9 @@ class PoliceCar(pygame.sprite.Sprite):
             else:
                 self.shoot_cooldown -= t
             if len(self.objectives) == 0 and self.quickfire_skill_cooldown <= 0:
-                self.state = random.choice([PoliceCar.State.BOTTOM_TO_UP, PoliceCar.State.UP_TO_BOTTOM])
+                self.state = random.choice(
+                    [PoliceCar.State.BOTTOM_TO_UP, PoliceCar.State.UP_TO_BOTTOM]
+                )
                 if self.state == PoliceCar.State.BOTTOM_TO_UP:
                     self.objectives.append(SCREEN_HEIGHT)
                 else:

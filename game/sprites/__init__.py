@@ -1,3 +1,4 @@
+from .bomber import Bomber
 from .building import Building
 from .building_manager import BuildingManager
 from .bullet import Bullet
@@ -11,6 +12,6 @@ from .road import Road
 from .warningsign import Warn
 
 __all__ = [
-    'Building', 'BuildingManager', 'Bullet', 'Explode', 'Laser', 'Obstacle', 'ObstacleManager',
-    'Player', 'PoliceCar', 'Road', 'Warn'
+    'Bomber', 'Building', 'BuildingManager', 'Bullet', 'Explode', 'Laser', 'Obstacle',
+    'ObstacleManager', 'Player', 'PoliceCar', 'Road', 'Warn'
 ]
