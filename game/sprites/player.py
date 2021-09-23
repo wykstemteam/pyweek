@@ -171,7 +171,13 @@ class Player(pygame.sprite.Sprite):
         self.shadow_rect.left = self.rect.left - 5
         return self.rect.left > SCREEN_WIDTH
 
-    def hit(self):
+    def hit(self) -> bool:
+        if self.is_invincible():
+            return False
         self.invincibility_after_damage = INVINCIBILITY_AFTER_DAMAGE
         self.hp -= 1
         self.blink_cooldown = PLAYER_BLINK_COOLDOWN
+        return True
+
+    def is_invincible(self):
+        return self.invincibility_after_damage > 0
