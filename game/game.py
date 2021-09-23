@@ -31,7 +31,7 @@ class Game:
         self.distance_manager = DistanceManager()
         self.arrow = Arrow(assets_manager.images['arrow'], self.player)
         self.screen_shake_manager = ScreenShakeManager()
-        self.screen_shake_manager.shaking = True
+        # self.screen_shake_manager.shaking = True
 
         # Health_bar
         self.health_bar_image = assets_manager.images['HP4']

@@ -13,7 +13,7 @@ class ScreenShakeManager:
 
     def shake(self, window: pygame.Surface):
         if not self.shaking:
-            pass
+            return
         tmp = window.copy()
         window.fill((0, 0, 0))
         window.blit(tmp, ScreenShakeManager.get_shake())
