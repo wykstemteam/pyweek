@@ -19,12 +19,10 @@ class Game:
             assets_manager.images['bullet'], self.player_collision_group
         )
         self.bomber = Bomber()
-
-        self.warn = Warn(assets_manager.images['warning sign'], pygame.Vector2(30, 300))
         self.player = Player(
             assets_manager.images['motorbike'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2
         )
-        self.laser_manager = LaserManager()
+        self.laser_manager = LaserManager(self.player_collision_group)
         self.buildings = BuildingManager()
         self.obstacle_manager = ObstacleManager(self.player_collision_group)
         self.distance_manager = DistanceManager()
@@ -148,7 +146,6 @@ class Game:
         self.buildings.draw(window)
         self.policecar.draw(window)
         self.bomber.draw(window)
-        self.warn.draw(window)
         self.laser_manager.draw(window)
         self.obstacle_manager.draw(window)
         self.player.draw(window)
@@ -184,6 +181,8 @@ class Game:
                 if type(obj) == PoliceCar:
                     self.trigger_lose()
                 elif type(obj) == Bullet:
+                    obj.player_hit(self.player)
+                elif type(obj) == MissileAircraft:
                     obj.player_hit(self.player)
                 elif type(obj) == Obstacle:
                     self.player.resolve_collision(obj)
