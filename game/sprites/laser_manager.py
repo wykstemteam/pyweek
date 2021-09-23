@@ -9,9 +9,10 @@ from game.sprites import MissileAircraft
 
 
 class LaserManager:
-    def __init__(self):
+    def __init__(self, player_collision_group):
         self.lasers = pygame.sprite.Group()
         self.missiles = pygame.sprite.Group()
+        self.player_collision_group = player_collision_group
         self.last_laser_shoot = 0
         self.t = 0
         self.amounts = 0
@@ -22,6 +23,7 @@ class LaserManager:
         self.lasers.add(new_laser)
         new_missiles = MissileAircraft(assets_manager.images['missile_for_aircraft'], pos)
         self.missiles.add(new_missiles)
+        self.player_collision_group.add(new_missiles)
 
     def update(self, t):
         self.t += t
@@ -43,4 +45,5 @@ class LaserManager:
 
     def draw(self, window):
         self.lasers.draw(window)
-        self.missiles.draw(window)
+        for missile in self.missiles:
+            missile.draw(window)

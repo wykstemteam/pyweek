@@ -1,6 +1,6 @@
-
 import pygame
 
+from game.sprites.explode import Explode
 from game.constants import *
 
 
@@ -11,6 +11,7 @@ class MissileAircraft(pygame.sprite.Sprite):
         self.image = image
         self.rect = self.image.get_rect()
         self.rect.topleft = (-MISSILE_AIRCRAFT_WIDTH, pos)
+        self.explode = None
         self.t = 0
 
     def update(self, t):
@@ -20,5 +21,15 @@ class MissileAircraft(pygame.sprite.Sprite):
         if self.rect.left >= SCREEN_WIDTH:
             self.kill()
 
+    def player_hit(self, player) -> None:  # should be called when collided by player
+        if not self.explode:
+            self.image = None
+            self.explode = Explode(self.rect.center)
+            player.hp -= 1
+
     def draw(self, window):
-        window.blit(self.image, self.rect)
+        if self.image:
+            window.blit(self.image, self.rect)
+        elif self.explode and self.explode.image:
+            window.blit(self.explode.image, self.explode.rect)
+
