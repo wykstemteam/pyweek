@@ -110,7 +110,7 @@ class Game:
             self.player.update(t)
             self.policecar.update(t, self.shop)
 
-            if self.distance_manager.dist >= 49 and self.distance_manager.dist <= 51:
+            if self.distance_manager.dist >= BOMBER_APPEAR_DIST-1 and self.distance_manager.dist <= BOMBER_APPEAR_DIST+1:
                 self.bomber.activated = True
             # print(self.bomber.activated)
 

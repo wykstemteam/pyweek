@@ -10,7 +10,8 @@ class Bullet(pygame.sprite.Sprite):
 
         self.image = image
         self.rect = self.image.get_rect()
-        self.rect.center = pos
+        self.pos = pygame.Vector2(pos)
+        self.rect.center = self.pos
 
         self.width = self.image.get_width()
         self.height = self.image.get_height()
@@ -21,8 +22,8 @@ class Bullet(pygame.sprite.Sprite):
 
     def update(self, t) -> None:
         if not self.explode:
-            self.rect.left += self.velocity_x * t
-            self.rect.top += self.velocity_y * t
+            self.pos += pygame.Vector2(self.velocity_x, self.velocity_y)*t
+            self.rect.center = self.pos
             if self.rect.left <= 0 or self.rect.right >= SCREEN_WIDTH:
                 self.kill()
         elif not self.explode.update(t):
