@@ -1,10 +1,10 @@
-import numpy as np
 import pygame
 import pygame_gui
 
 from game.assets_manager import assets_manager
 from game.constants import *
 from game.sprites import *
+from game.sprites.arrow import Arrow
 from game.sprites.distance_manager import DistanceManager
 
 
@@ -16,12 +16,12 @@ class Game:
         )
         self.player_collision_group = pygame.sprite.Group()
         self.policecar = PoliceCar(
-            assets_manager.images['policecar'], (20, 280), assets_manager.images['bullet'],
+            assets_manager.images['policecar'], pygame.Vector2(20, 280), assets_manager.images['bullet'],
             self.player_collision_group
         )
         self.bomber = Bomber()
 
-        self.warn = Warn(assets_manager.images['warning sign'], 30, 300)
+        self.warn = Warn(assets_manager.images['warning sign'], pygame.Vector2(30, 300))
         self.player = Player(
             assets_manager.images['motorbike'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2
         )
@@ -29,21 +29,7 @@ class Game:
         self.buildings = BuildingManager()
         self.obstacle_manager = ObstacleManager(self.player_collision_group)
         self.distance_manager = DistanceManager()
-
-        # Arrow
-        self.arrow_image = pygame.transform.rotate(
-            assets_manager.images['arrow'], self.player.dir * 360 // (2 * np.pi)
-        )
-        self.arrow_rect = self.arrow_image.get_rect(
-            center=assets_manager.images['arrow'].get_rect(
-                center=(
-                    self.player.rect.left + (PLAYER_WIDTH / 2),
-                    self.player.rect.top + (PLAYER_HEIGHT / 2)
-                )
-            ).center
-        )
-        self.arrow_rect.left += np.cos(self.player.dir) * 150
-        self.arrow_rect.top -= np.sin(self.player.dir) * 150
+        self.arrow = Arrow(assets_manager.images['arrow'], self.player)
 
         # Health_bar
         self.health_bar_image = assets_manager.images['HP4']
@@ -117,20 +103,8 @@ class Game:
             self.bomber.update(t)
             self.obstacle_manager.update(t)
             self.laser.update(t)
-            self.arrow_image = pygame.transform.rotate(
-                assets_manager.images['arrow'], self.player.dir * 360 // (2 * np.pi)
-            )
-            self.arrow_rect = self.arrow_image.get_rect(
-                center=assets_manager.images['arrow'].get_rect(
-                    center=(
-                        self.player.rect.left + (PLAYER_WIDTH / 2),
-                        self.player.rect.top + (PLAYER_HEIGHT / 2)
-                    )
-                ).center
-            )
-            self.arrow_rect.left += np.cos(self.player.dir) * 150
-            self.arrow_rect.top -= np.sin(self.player.dir) * 150
             self.distance_manager.update(t)
+            self.arrow.update(self.player)
 
             self.player_collision()
 
@@ -152,7 +126,7 @@ class Game:
         self.obstacle_manager.draw(window)
         self.player.draw(window)
         self.distance_manager.draw(window)
-        window.blit(self.arrow_image, self.arrow_rect)
+        self.arrow.draw(window)
         window.blit(self.health_bar_image, pygame.Rect((10, 10), (400, 100)))
         if self.pause:
             window.blit(assets_manager.images['Darken'], pygame.Rect(0, 0, 0, 0))
