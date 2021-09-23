@@ -2,8 +2,8 @@ import numpy as np
 import pygame
 
 from game.constants import *
-from game.sprites.obstacle import Obstacle
 from game.sprites.missile import Missile
+from game.sprites.obstacle import Obstacle
 
 
 class Player(pygame.sprite.Sprite):
@@ -18,7 +18,7 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
         self.shadow_rect = self.image.get_rect()
-        self.shadow_rect.topleft = (x-5, y+5)
+        self.shadow_rect.topleft = (x - 5, y + 5)
 
         self.width = self.image.get_width()
         self.height = self.image.get_height()
@@ -153,6 +153,6 @@ class Player(pygame.sprite.Sprite):
         self.rect.top = self.real_y
 
     def go_right(self, t) -> bool:
-        self.rect.left += -BACKGROUND_VELOCITY*t
+        self.rect.left += -BACKGROUND_VELOCITY * t
         self.shadow_rect.left = self.rect.left - 5
         return self.rect.left > SCREEN_WIDTH

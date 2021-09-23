@@ -1,5 +1,6 @@
-import pygame, sys
-import pygame_gui
+import pygame
+import sys
+
 from shop import shop_main_menu
 
 pygame.init()
@@ -11,7 +12,6 @@ pygame.display.set_caption("GGGG")
 RED = (0, 0, 0)
 
 FPS = 60
-
 
 
 def main():
@@ -35,4 +35,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
