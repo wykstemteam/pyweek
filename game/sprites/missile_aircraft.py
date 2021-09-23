@@ -9,12 +9,14 @@ class MissileAircraft(pygame.sprite.Sprite):
         super().__init__()
 
         self.image = image
-        self.rect.topleft = (0, pos)
         self.rect = self.image.get_rect()
+        self.rect.topleft = (-MISSILE_AIRCRAFT_WIDTH, pos)
+        self.t = 0
 
     def update(self, t):
-        self.rect.left += MISSILE_AIRCRAFT_VELOCITY * t
-
+        self.t += t
+        if self.t >= LASERREMAINTIME:
+            self.rect.left += MISSILE_AIRCRAFT_VELOCITY * t
         if self.rect.left >= SCREEN_WIDTH:
             self.kill()
 

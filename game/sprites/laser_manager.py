@@ -12,7 +12,9 @@ class LaserManager:
     def __init__(self):
         self.lasers = pygame.sprite.Group()
         self.missiles = pygame.sprite.Group()
+        self.last_laser_shoot = 0
         self.t = 0
+        self.amounts = 0
 
     def add(self):
         pos = random.randint(BUILDING_HEIGHT, SCREEN_HEIGHT - LASER_HEIGHT)
@@ -23,20 +25,18 @@ class LaserManager:
 
     def update(self, t):
         self.t += t
-        if self.t < LASER_COOLDOWN * 2 + 5:
-            if len(self.lasers) < 1:
-                self.lasers.empty()
-                self.add()
-        elif self.t < LASER_COOLDOWN * 4 + 5:
-            if len(self.lasers) < 2:
-                self.lasers.empty()
-                self.add()
-                self.add()
-        elif self.t < LASER_COOLDOWN * 7 + 5:
-            if len(self.lasers) < 3:
-                self.lasers.empty()
-                self.add()
-                self.add()
+        if self.t < LASER_COOLDOWN:
+            pass
+        elif self.t < LASER_COOLDOWN * 2:
+            self.amounts = 1
+        elif self.t < LASER_COOLDOWN * 4:
+            self.amounts = 2
+        elif self.t < LASER_COOLDOWN * 7:
+            self.amounts = 3
+        if self.t - self.last_laser_shoot >= LASER_COOLDOWN:
+            self.last_laser_shoot = self.t
+            self.lasers.empty()
+            for i in range(self.amounts):
                 self.add()
         self.lasers.update(t)
         self.missiles.update(t)
@@ -44,4 +44,3 @@ class LaserManager:
     def draw(self, window):
         self.lasers.draw(window)
         self.missiles.draw(window)
-
