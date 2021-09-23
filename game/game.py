@@ -70,6 +70,8 @@ class Game:
         self.shop = False
         self.show_sea_time = SHOW_SEA_TIME
         self.show_shop_animation = False
+        self.dimming = False
+        self.darken_alpha = 0
 
         assets_manager.play_music("8bitaggressive1")
 
@@ -100,8 +102,8 @@ class Game:
         self.health_bar_image = assets_manager.images[f"HP{self.player.hp}"]
 
         if self.show_shop_animation:
-            if self.player.go_right(t):
-                self.fade_screen()
+            if self.player.go_right(t) and not self.dimming:
+                self.dimming = True
             return
 
         if not self.lose and not self.pause:
@@ -165,6 +167,13 @@ class Game:
         else:
             self.game_screen.draw_ui(window)
 
+        if self.dimming:
+            darken_image = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
+            darken_image.fill((0,0,0))
+            darken_image.set_alpha(self.darken_alpha)
+            window.blit(darken_image, pygame.Rect(0,0,0,0))
+            self.darken_alpha = min(self.darken_alpha+1, 255)
+            return
         self.screen_shake_manager.shake(window)
 
     def trigger_lose(self):
@@ -187,6 +196,3 @@ class Game:
                     obj.player_hit(self.player)
                 elif type(obj) == Obstacle:
                     self.player.resolve_collision(obj)
-
-    def fade_screen(self):
-        print('gg')
