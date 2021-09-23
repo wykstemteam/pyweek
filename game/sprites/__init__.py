@@ -11,8 +11,9 @@ from .policecar import PoliceCar
 from .road import Road
 from .warningsign import Warn
 from .laser_manager import LaserManager
+from .missile_aircraft import MissileAircraft
 
 __all__ = [
     'Bomber', 'Building', 'BuildingManager', 'Bullet', 'Explode', 'Laser', 'Obstacle',
-    'ObstacleManager', 'Player', 'PoliceCar', 'Road', 'Warn', 'LaserManager'
+    'ObstacleManager', 'Player', 'PoliceCar', 'Road', 'Warn', 'LaserManager', 'MissileAircraft'
 ]

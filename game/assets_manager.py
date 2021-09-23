@@ -55,6 +55,10 @@ class AssetsManager:
         self.images['missile'] = pygame.transform.scale(
             self.images['missile'], (MISSILE_WIDTH, MISSILE_HEIGHT)
         )
+        self.images['missile_for_aircraft'] = pygame.transform.scale(
+            self.images['missile_for_aircraft'], (MISSILE_AIRCRAFT_WIDTH, LASER_HEIGHT)
+        )
+
         for i in range(1, 4):
             self.images[f'obstacle{i}'] = pygame.transform.scale(
                 self.images[f'obstacle{i}'], (OBSTACLE_WIDTH, OBSTACLE_HEIGHT)

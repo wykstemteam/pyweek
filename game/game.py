@@ -5,9 +5,6 @@ import pygame_gui
 from game.assets_manager import assets_manager
 from game.constants import *
 from game.sprites import *
-from game.sprites.arrow import Arrow
-from game.sprites.distance_manager import DistanceManager
-from game.sprites.laser_manager import LaserManager
 
 
 class Game:
