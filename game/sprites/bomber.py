@@ -9,6 +9,8 @@ class Bomber(pygame.sprite.Sprite):
         super().__init__()
 
         self.animation = assets_manager.animations['bomber']
+        self.frame = 0
+
         self.image = self.animation[0]
         self.shadow = self.image.copy()
         alpha = 128
@@ -18,7 +20,8 @@ class Bomber(pygame.sprite.Sprite):
         self.rect.topleft = (0, (SCREEN_HEIGHT / 2) - (self.image.get_height() / 2))
         self.shadow_rect = self.rect.copy()
         self.shadow_rect.topleft = self.shadow_rect.topleft + pygame.Vector2(-15, 15)
-        self.frame = 0
+
+        self.dir = 0.0
 
     def update(self, t):
         if self.frame < len(self.animation):
@@ -30,6 +33,9 @@ class Bomber(pygame.sprite.Sprite):
             self.frame += 1
         else:
             self.frame = 0
+
+    def aim(self, px, py):
+        pass
 
     def draw(self, window):
         window.blit(self.shadow, self.shadow_rect)
