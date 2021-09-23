@@ -15,11 +15,12 @@ from .obstacle_manager import ObstacleManager
 from .player import Player
 from .policecar import PoliceCar
 from .road import Road
+from .spaceship import Spaceship
 
 
 
 __all__ = [
     'Arrow', 'Bomber', 'Building', 'BuildingManager', 'Bullet', 'MissileAircraft', 'DistanceManager', 'Explode',
     'LaserManager', 'Laser', 'Missile', 'Obstacle', 'ObstacleManager', 'Player', 'PoliceCar',
-    'Road'
+    'Road', 'Spaceship'
 ]

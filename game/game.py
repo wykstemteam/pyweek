@@ -19,6 +19,7 @@ class Game:
             assets_manager.images['bullet'], self.player_collision_group
         )
         self.bomber = Bomber(self.player_collision_group)
+        self.spaceship = Spaceship(self.player_collision_group)
         self.player = Player(
             assets_manager.images['motorbike'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2
         )
@@ -111,10 +112,21 @@ class Game:
             self.player.update(t)
             self.policecar.update(t, self.shop)
 
+            # bomber
+#            if self.distance_manager.dist >= BOMBER_APPEAR_DIST-1 and self.distance_manager.dist <= BOMBER_APPEAR_DIST+1:
+#                self.bomber.activated = True
+#            self.bomber.aim(self.player.rect.centerx, self.player.rect.centery)
+#            self.bomber.update(t)
+
+            # spaceship
             if self.distance_manager.dist >= BOMBER_APPEAR_DIST-1 and self.distance_manager.dist <= BOMBER_APPEAR_DIST+1:
-                self.bomber.activated = True
-            self.bomber.aim(self.player.rect.centerx, self.player.rect.centery)
-            self.bomber.update(t)
+                self.spaceship.activated = True
+            # FIX: laser charging animation is not working
+            if self.distance_manager.dist >= 80 and self.distance_manager.dist <= 82:
+                self.spaceship.is_charge = True
+            if self.distance_manager.dist >= 90 and self.distance_manager.dist <= 91:
+                self.spaceship.is_shoot = True
+            self.spaceship.update(t)
 
             self.obstacle_manager.update(t, self.shop)
             self.arrow.update(self.player)
@@ -143,12 +155,15 @@ class Game:
         self.roads.draw(window)
         self.buildings.draw(window)
         self.policecar.draw(window)
-        self.bomber.draw(window)
         self.laser_manager.draw(window)
         self.obstacle_manager.draw(window)
         self.player.draw(window)
         self.distance_manager.draw(window)
         self.arrow.draw(window)
+
+        # objects that fly
+        self.bomber.draw(window)
+        self.spaceship.draw(window)
         window.blit(self.health_bar_image, pygame.Rect((10, 10), (400, 100)))
         if self.pause:
             window.blit(assets_manager.images['Darken'], pygame.Rect(0, 0, 0, 0))
