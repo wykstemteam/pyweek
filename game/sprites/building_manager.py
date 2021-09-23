@@ -4,7 +4,7 @@ import pygame.sprite
 
 from game.assets_manager import assets_manager
 from game.constants import *
-from game.sprites import Building
+from game.sprites.building import Building
 
 
 class BuildingManager:

@@ -2,7 +2,7 @@ import numpy as np
 import pygame
 
 from game.constants import *
-from game.sprites import Obstacle
+from game.sprites.obstacle import Obstacle
 from game.sprites.missile import Missile
 
 

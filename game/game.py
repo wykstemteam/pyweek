@@ -5,9 +5,6 @@ import pygame_gui
 from game.assets_manager import assets_manager
 from game.constants import *
 from game.sprites import *
-from game.sprites.arrow import Arrow
-from game.sprites.distance_manager import DistanceManager
-from game.sprites.laser_manager import LaserManager
 
 
 class Game:
@@ -18,8 +15,8 @@ class Game:
         )
         self.player_collision_group = pygame.sprite.Group()
         self.policecar = PoliceCar(
-            assets_manager.images['policecar'], pygame.Vector2(20, 280), assets_manager.images['bullet'],
-            self.player_collision_group
+            assets_manager.images['policecar'], pygame.Vector2(20, 280),
+            assets_manager.images['bullet'], self.player_collision_group
         )
         self.bomber = Bomber()
 

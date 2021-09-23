@@ -3,7 +3,7 @@ import random
 import pygame
 
 from game.constants import *
-from game.sprites import Laser
+from game.sprites.laserbeam import Laser
 
 
 class LaserManager:
@@ -18,7 +18,7 @@ class LaserManager:
         new_laser = Laser()
         self.lasers.add(new_laser)
 
-    def update(self, t):    
+    def update(self, t):
         self.t += t
         if self.t < LASER_COOLDOWN * 2:
             if len(self.lasers) < 1:
@@ -34,4 +34,3 @@ class LaserManager:
 
     def draw(self, window):
         self.lasers.draw(window)
-
