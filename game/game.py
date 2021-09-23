@@ -102,7 +102,12 @@ class Game:
             self.buildings.update(t)
             self.player.update(t)
             self.policecar.update(t)
+
+            # bomber
+            if self.distance_manager.dist_to_next_country <= 950:
+                self.bomber.goin()
             self.bomber.update(t)
+            
             self.obstacle_manager.update(t)
             self.laser_manager.update(t)
             self.distance_manager.update(t)
