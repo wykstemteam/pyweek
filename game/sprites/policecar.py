@@ -4,7 +4,7 @@ from enum import Enum
 import pygame
 
 from game.constants import *
-from game.sprites import Bullet
+from game.sprites.bullet import Bullet
 
 
 class PoliceCar(pygame.sprite.Sprite):

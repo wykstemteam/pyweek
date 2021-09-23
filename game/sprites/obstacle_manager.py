@@ -4,7 +4,7 @@ import pygame.sprite
 
 from game.assets_manager import assets_manager
 from game.constants import *
-from game.sprites import Obstacle
+from game.sprites.obstacle import Obstacle
 
 
 class ObstacleManager:

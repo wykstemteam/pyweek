@@ -1,11 +1,10 @@
+import numpy as np
 import pygame
 import pygame_gui
 
 from game.assets_manager import assets_manager
 from game.constants import *
 from game.sprites import *
-from game.sprites.arrow import Arrow
-from game.sprites.distance_manager import DistanceManager
 
 
 class Game:
@@ -16,8 +15,8 @@ class Game:
         )
         self.player_collision_group = pygame.sprite.Group()
         self.policecar = PoliceCar(
-            assets_manager.images['policecar'], pygame.Vector2(20, 280), assets_manager.images['bullet'],
-            self.player_collision_group
+            assets_manager.images['policecar'], pygame.Vector2(20, 280),
+            assets_manager.images['bullet'], self.player_collision_group
         )
         self.bomber = Bomber()
 
@@ -25,7 +24,7 @@ class Game:
         self.player = Player(
             assets_manager.images['motorbike'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2
         )
-        self.laser = Laser()
+        self.laser_manager = LaserManager()
         self.buildings = BuildingManager()
         self.obstacle_manager = ObstacleManager(self.player_collision_group)
         self.distance_manager = DistanceManager()
@@ -102,7 +101,20 @@ class Game:
             self.policecar.update(t)
             self.bomber.update(t)
             self.obstacle_manager.update(t)
-            self.laser.update(t)
+            self.laser_manager.update(t)
+            self.arrow_image = pygame.transform.rotate(
+                assets_manager.images['arrow'], self.player.dir * 360 // (2 * np.pi)
+            )
+            self.arrow_rect = self.arrow_image.get_rect(
+                center=assets_manager.images['arrow'].get_rect(
+                    center=(
+                        self.player.rect.left + (PLAYER_WIDTH / 2),
+                        self.player.rect.top + (PLAYER_HEIGHT / 2)
+                    )
+                ).center
+            )
+            self.arrow_rect.left += np.cos(self.player.dir) * 150
+            self.arrow_rect.top -= np.sin(self.player.dir) * 150
             self.distance_manager.update(t)
             self.arrow.update(self.player)
 
@@ -122,7 +134,7 @@ class Game:
         self.policecar.draw(window)
         self.bomber.draw(window)
         self.warn.draw(window)
-        self.laser.draw(window)
+        self.laser_manager.draw(window)
         self.obstacle_manager.draw(window)
         self.player.draw(window)
         self.distance_manager.draw(window)
