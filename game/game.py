@@ -99,9 +99,15 @@ class Game:
             self.buildings.update(t)
             self.player.update(t)
             self.policecar.update(t)
+
+            # bomber
+            if self.distance_manager.dist_to_next_country <= 950:
+                self.bomber.goin()
             self.bomber.update(t)
+            
             self.obstacle_manager.update(t)
             self.laser_manager.update(t)
+            self.distance_manager.update(t)
             self.arrow_image = pygame.transform.rotate(
                 assets_manager.images['arrow'], self.player.dir * 360 // (2 * np.pi)
             )
@@ -115,7 +121,6 @@ class Game:
             )
             self.arrow_rect.left += np.cos(self.player.dir) * 150
             self.arrow_rect.top -= np.sin(self.player.dir) * 150
-            self.distance_manager.update(t)
             self.arrow.update(self.player)
 
             self.player_collision()
