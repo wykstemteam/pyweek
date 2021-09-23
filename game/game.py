@@ -125,7 +125,7 @@ class Game:
             self.bomber.aim(self.player.rect.centerx, self.player.rect.centery)
             self.obstacle_manager.update(t, self.shop)
             self.arrow.update(self.player)
-            self.laser_manager.update(t)
+            self.laser_manager.update(t, self.shop)
             if not self.shop:
                 self.distance_manager.update(t)
                 self.player_collision()

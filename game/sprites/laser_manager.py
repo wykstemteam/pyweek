@@ -25,8 +25,9 @@ class LaserManager:
         self.missiles.add(new_missiles)
         self.player_collision_group.add(new_missiles)
 
-    def update(self, t):
-        self.t += t
+    def update(self, t, shop):
+        if not shop:
+            self.t += t
         if self.t < LASER_COOLDOWN:
             pass
         elif self.t < LASER_COOLDOWN * 2:
