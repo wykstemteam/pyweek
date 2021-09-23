@@ -5,6 +5,7 @@ import pygame_gui
 from game.assets_manager import assets_manager
 from game.constants import *
 from game.sprites import *
+from game.sprites.distance_manager import DistanceManager
 
 
 class Game:
@@ -27,6 +28,7 @@ class Game:
         self.laser = Laser()
         self.buildings = BuildingManager()
         self.obstacle_manager = ObstacleManager(self.player_collision_group)
+        self.distance_manager = DistanceManager()
 
         # Arrow
         self.arrow_image = pygame.transform.rotate(
@@ -128,6 +130,7 @@ class Game:
             )
             self.arrow_rect.left += np.cos(self.player.dir) * 150
             self.arrow_rect.top -= np.sin(self.player.dir) * 150
+            self.distance_manager.update(t)
 
             self.player_collision()
 
@@ -148,6 +151,7 @@ class Game:
         self.laser.draw(window)
         self.obstacle_manager.draw(window)
         self.player.draw(window)
+        self.distance_manager.draw(window)
         window.blit(self.arrow_image, self.arrow_rect)
         window.blit(self.health_bar_image, pygame.Rect((10, 10), (400, 100)))
         if self.pause:

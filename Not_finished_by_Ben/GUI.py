@@ -15,11 +15,11 @@ button_layout_rect = pygame.Rect(30, 20, 100, 20)
 button_layout_rect.bottomright = (-30, -20)
 
 hello_button = pygame_gui.elements.UIButton(relative_rect=button_layout_rect,
-          text='Hello', manager=manager,
-          anchors={'left': 'right',
-                   'right': 'right',
-                   'top': 'bottom',
-                   'bottom': 'bottom'})
+                                            text='Hello', manager=manager,
+                                            anchors={'left': 'right',
+                                                     'right': 'right',
+                                                     'top': 'bottom',
+                                                     'bottom': 'bottom'})
 
 clock = pygame.time.Clock()
 is_running = True
@@ -30,7 +30,7 @@ while is_running:
         if event.type == pygame.QUIT:
             is_running = False
 
-        key_pressed= pygame.key.get_pressed()
+        key_pressed = pygame.key.get_pressed()
         if key_pressed[pygame.K_p]:
             manager.set_visual_debug_mode(True)
 
