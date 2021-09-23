@@ -102,19 +102,6 @@ class Game:
             self.bomber.update(t)
             self.obstacle_manager.update(t)
             self.laser_manager.update(t)
-            self.arrow_image = pygame.transform.rotate(
-                assets_manager.images['arrow'], self.player.dir * 360 // (2 * np.pi)
-            )
-            self.arrow_rect = self.arrow_image.get_rect(
-                center=assets_manager.images['arrow'].get_rect(
-                    center=(
-                        self.player.rect.left + (PLAYER_WIDTH / 2),
-                        self.player.rect.top + (PLAYER_HEIGHT / 2)
-                    )
-                ).center
-            )
-            self.arrow_rect.left += np.cos(self.player.dir) * 150
-            self.arrow_rect.top -= np.sin(self.player.dir) * 150
             self.distance_manager.update(t)
             self.arrow.update(self.player)
 
