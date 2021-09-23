@@ -34,6 +34,10 @@ class Player(pygame.sprite.Sprite):
         self.items = {1: 0, 2: 0}
         self.holding = 1
 
+        self.invincibility_after_damage = 0
+        self.blink_state = 1
+        self.blink_cooldown = PLAYER_BLINK_COOLDOWN
+
     def acc(self, dx, dy):
         self.vx = min(self.vx + dx, PLAYER_MAX_HORI_SPEED)
         self.vy += dy
@@ -45,6 +49,16 @@ class Player(pygame.sprite.Sprite):
         self.rect.top = self.real_y
         self.shadow_rect.left = self.real_x - 5
         self.shadow_rect.top = self.real_y + 5
+
+        self.invincibility_after_damage -= t
+        if self.invincibility_after_damage <= 0:
+            self.blink_state = 1
+        else:
+            self.blink_cooldown -= t
+            if self.blink_cooldown <= 0:
+                self.blink_state = 1- self.blink_state
+                self.blink_cooldown = PLAYER_BLINK_COOLDOWN
+        self.image.set_alpha(self.blink_state*255)
 
         x = pygame.mouse.get_pos()[0] - (self.real_x + PLAYER_WIDTH / 2)
         y = (self.real_y + PLAYER_HEIGHT / 2) - pygame.mouse.get_pos()[1]
@@ -156,3 +170,8 @@ class Player(pygame.sprite.Sprite):
         self.rect.left += -BACKGROUND_VELOCITY * t
         self.shadow_rect.left = self.rect.left - 5
         return self.rect.left > SCREEN_WIDTH
+
+    def hit(self):
+        self.invincibility_after_damage = INVINCIBILITY_AFTER_DAMAGE
+        self.hp -= 1
+        self.blink_cooldown = PLAYER_BLINK_COOLDOWN

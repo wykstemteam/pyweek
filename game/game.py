@@ -97,6 +97,7 @@ class Game:
             self.lose_screen.process_events(event)
 
     def update(self, t):
+        self.player.hp = max(self.player.hp, 0)
         self.health_bar_image = assets_manager.images[f"HP{self.player.hp}"]
 
         if self.show_shop_animation:

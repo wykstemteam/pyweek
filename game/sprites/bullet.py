@@ -33,7 +33,7 @@ class Bullet(pygame.sprite.Sprite):
         if not self.explode:
             self.image = None
             self.explode = Explode(self.rect.center)
-            player.hp -= 1
+            player.hit()
 
     def draw(self, window):
         if self.image:
