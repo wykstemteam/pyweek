@@ -18,7 +18,7 @@ class Game:
             assets_manager.images['policecar'], pygame.Vector2(20, 280),
             assets_manager.images['bullet'], self.player_collision_group
         )
-        self.bomber = Bomber()
+        self.bomber = Bomber(self.player_collision_group)
         self.player = Player(
             assets_manager.images['motorbike'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2
         )
@@ -116,10 +116,12 @@ class Game:
 
             if self.bomber.activated:
                 self.bomber.goin(t)
+                self.bomber.shoot()
             else:
                 self.bomber.goout(t)
 
             self.bomber.update(t)
+            self.bomber.aim(self.player.rect.centerx, self.player.rect.centery)
             self.obstacle_manager.update(t, self.shop)
             self.arrow.update(self.player)
             if not self.shop:

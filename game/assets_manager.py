@@ -39,6 +39,9 @@ class AssetsManager:
         self.images['bullet'] = pygame.transform.scale(
             self.images['bullet'], (BULLET_WIDTH, BULLET_HEIGHT)
         )
+        self.images['bomber_bullet'] = pygame.transform.scale(
+            self.images['bomber_bullet'], (BOMBER_BULLET_WIDTH, BOMBER_BULLET_HEIGHT)
+        )
         self.images['3buildings'] = pygame.transform.scale(
             self.images['3buildings'], (BUILDING_WIDTH, BUILDING_HEIGHT)
         )
