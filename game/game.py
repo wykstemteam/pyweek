@@ -6,6 +6,7 @@ from game.assets_manager import assets_manager
 from game.constants import *
 from game.sprites import *
 from game.sprites.distance_manager import DistanceManager
+from game.sprites.laser_manager import LaserManager
 
 
 class Game:
@@ -25,7 +26,7 @@ class Game:
         self.player = Player(
             assets_manager.images['motorbike'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2
         )
-        self.laser = Laser()
+        self.laser_manager = LaserManager()
         self.buildings = BuildingManager()
         self.obstacle_manager = ObstacleManager(self.player_collision_group)
         self.distance_manager = DistanceManager()
@@ -116,7 +117,7 @@ class Game:
             self.policecar.update(t)
             self.bomber.update(t)
             self.obstacle_manager.update(t)
-            self.laser.update(t)
+            self.laser_manager.update(t)
             self.arrow_image = pygame.transform.rotate(
                 assets_manager.images['arrow'], self.player.dir * 360 // (2 * np.pi)
             )
@@ -148,7 +149,7 @@ class Game:
         self.policecar.draw(window)
         self.bomber.draw(window)
         self.warn.draw(window)
-        self.laser.draw(window)
+        self.laser_manager.draw(window)
         self.obstacle_manager.draw(window)
         self.player.draw(window)
         self.distance_manager.draw(window)

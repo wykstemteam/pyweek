@@ -15,6 +15,7 @@ class Laser(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.last_laser_shoot = 0
         self.t = 0
+        self.laser_amount = 0
 
     def update(self, dt):
         self.t += dt
