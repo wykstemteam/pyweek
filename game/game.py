@@ -101,7 +101,7 @@ class Game:
             self.policecar.update(t)
 
             # bomber
-            if self.distance_manager.dist_to_next_country <= 950:
+            if self.distance_manager.dist >= 50:
                 self.bomber.goin()
             self.bomber.update(t)
             
