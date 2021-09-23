@@ -27,9 +27,6 @@ class AssetsManager:
             self.images[base_fn] = pygame.image.load(os.path.join('assets', 'images', fn))
 
     def scale_images(self) -> None:
-        self.images['warning sign'] = pygame.transform.scale(
-            self.images['warning sign'], (WARN_WIDTH, WARN_HEIGHT)
-        )
         self.images['policecar'] = pygame.transform.scale(
             self.images['policecar'], (POLICECAR_WIDTH, POLICECAR_HEIGHT)
         )
@@ -41,6 +38,9 @@ class AssetsManager:
         )
         self.images['bullet'] = pygame.transform.scale(
             self.images['bullet'], (BULLET_WIDTH, BULLET_HEIGHT)
+        )
+        self.images['bomber_bullet'] = pygame.transform.scale(
+            self.images['bomber_bullet'], (BOMBER_BULLET_WIDTH, BOMBER_BULLET_HEIGHT)
         )
         self.images['3buildings'] = pygame.transform.scale(
             self.images['3buildings'], (BUILDING_WIDTH, BUILDING_HEIGHT)

@@ -18,13 +18,11 @@ class Game:
             assets_manager.images['policecar'], pygame.Vector2(20, 280),
             assets_manager.images['bullet'], self.player_collision_group
         )
-        self.bomber = Bomber()
-
-        self.warn = Warn(assets_manager.images['warning sign'], pygame.Vector2(30, 300))
+        self.bomber = Bomber(self.player_collision_group)
         self.player = Player(
             assets_manager.images['motorbike'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2
         )
-        self.laser_manager = LaserManager()
+        self.laser_manager = LaserManager(self.player_collision_group)
         self.buildings = BuildingManager()
         self.obstacle_manager = ObstacleManager(self.player_collision_group)
         self.distance_manager = DistanceManager()
@@ -70,6 +68,8 @@ class Game:
         self.shop = False
         self.show_sea_time = SHOW_SEA_TIME
         self.show_shop_animation = False
+        self.dimming = False
+        self.darken_alpha = 0
 
         assets_manager.play_music("8bitaggressive1")
 
@@ -100,8 +100,8 @@ class Game:
         self.health_bar_image = assets_manager.images[f"HP{self.player.hp}"]
 
         if self.show_shop_animation:
-            if self.player.go_right(t):
-                self.fade_screen()
+            if self.player.go_right(t) and not self.dimming:
+                self.dimming = True
             return
 
         if not self.lose and not self.pause:
@@ -112,19 +112,21 @@ class Game:
 
             if self.distance_manager.dist >= 49 and self.distance_manager.dist <= 51:
                 self.bomber.activated = True
-            print(self.bomber.activated)
+            # print(self.bomber.activated)
 
             if self.bomber.activated:
                 self.bomber.goin(t)
+                self.bomber.shoot()
             else:
                 self.bomber.goout(t)
 
             self.bomber.update(t)
+            self.bomber.aim(self.player.rect.centerx, self.player.rect.centery)
             self.obstacle_manager.update(t, self.shop)
             self.arrow.update(self.player)
+            self.laser_manager.update(t)
             if not self.shop:
                 self.distance_manager.update(t)
-                self.laser_manager.update(t)
                 self.player_collision()
             else:
                 self.show_sea_time -= t
@@ -148,7 +150,6 @@ class Game:
         self.buildings.draw(window)
         self.policecar.draw(window)
         self.bomber.draw(window)
-        self.warn.draw(window)
         self.laser_manager.draw(window)
         self.obstacle_manager.draw(window)
         self.player.draw(window)
@@ -165,6 +166,13 @@ class Game:
         else:
             self.game_screen.draw_ui(window)
 
+        if self.dimming:
+            darken_image = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
+            darken_image.fill((0,0,0))
+            darken_image.set_alpha(self.darken_alpha)
+            window.blit(darken_image, pygame.Rect(0,0,0,0))
+            self.darken_alpha = min(self.darken_alpha+1, 255)
+            return
         self.screen_shake_manager.shake(window)
 
     def trigger_lose(self):
@@ -185,8 +193,7 @@ class Game:
                     self.trigger_lose()
                 elif type(obj) == Bullet:
                     obj.player_hit(self.player)
+                elif type(obj) == MissileAircraft:
+                    obj.player_hit(self.player)
                 elif type(obj) == Obstacle:
                     self.player.resolve_collision(obj)
-
-    def fade_screen(self):
-        print('gg')
