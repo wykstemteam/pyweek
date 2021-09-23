@@ -64,6 +64,7 @@ class PoliceCar(pygame.sprite.Sprite):
             self.rect.right = max(0, self.rect.right - 20 * t)
             self.shadow_rect = self.rect.copy()
             self.shadow_rect.topleft = self.shadow_rect.topleft + pygame.Vector2(-5, 5)
+            self.bullets.update(t)
             return
         # FIXME: @Jutsin/Eason please use an enum instead of raw integers for state
         if self.state == PoliceCar.State.RANDOM:
