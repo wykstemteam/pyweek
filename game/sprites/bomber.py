@@ -25,30 +25,26 @@ class Bomber(pygame.sprite.Sprite):
         self.shadow_rect.topleft = self.shadow_rect.topleft + pygame.Vector2(-15, 15)
 
         self.dir = 0.0
+        self.activated = False
 
-    def go_in(self):
+    def goin(self, t):
         if self.x < -100:
             self.x += 1
 
-    def go_out(self):
+    def goout(self, t):
         if self.x > -400:
             self.x -= 1
 
-    def update(self, t, shop: bool):
-        if shop:
-            self.rect.right = max(0, self.rect.right - 20 * t)
-            self.shadow_rect = self.rect.copy()
-            self.shadow_rect.topleft = self.shadow_rect.topleft + pygame.Vector2(-5, 5)
-            return
-        if self.frame < len(self.animation):
-            self.image = self.animation[self.frame]
-            self.rect = self.animation[self.frame].get_rect()
-            self.rect.topleft = (self.x, (SCREEN_HEIGHT / 2) - (self.image.get_height() / 2))
-            self.shadow_rect = self.rect.copy()
-            self.shadow_rect.topleft = self.shadow_rect.topleft + pygame.Vector2(-15, 15)
-            self.frame += 1
-        else:
+    def update(self, t):
+        if self.frame >= len(self.animation):
             self.frame = 0
+
+        self.image = self.animation[self.frame]
+        self.rect = self.animation[self.frame].get_rect()
+        self.rect.topleft = (self.x, (SCREEN_HEIGHT / 2) - (self.image.get_height() / 2))
+        self.shadow_rect = self.rect.copy()
+        self.shadow_rect.topleft = self.shadow_rect.topleft + pygame.Vector2(-15, 15)
+        self.frame += 1
 
     def aim(self, px, py):
         self.dir = np.arctan2(self.rect.centery - py, px - self.rect.centerx)

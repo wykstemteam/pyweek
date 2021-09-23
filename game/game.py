@@ -109,9 +109,17 @@ class Game:
             self.buildings.update(t, self.shop)
             self.player.update(t)
             self.policecar.update(t, self.shop)
-            if self.distance_manager.dist >= 50:
-                self.bomber.go_in()
-            self.bomber.update(t, self.shop)
+
+            if self.distance_manager.dist >= 49 and self.distance_manager.dist <= 51:
+                self.bomber.activated = True
+            print(self.bomber.activated)
+
+            if self.bomber.activated:
+                self.bomber.goin(t)
+            else:
+                self.bomber.goout(t)
+
+            self.bomber.update(t)
             self.obstacle_manager.update(t, self.shop)
             self.arrow.update(self.player)
             if not self.shop:
@@ -168,6 +176,7 @@ class Game:
         if not self.shop and not self.pause:
             # assets_manager.play_music("greensleeves") FIXME jono music pls
             self.shop = True
+            self.bomber.activated = False
 
     def player_collision(self):
         for obj in self.player_collision_group:
