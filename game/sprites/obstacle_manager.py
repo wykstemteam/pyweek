@@ -16,11 +16,9 @@ class ObstacleManager:
     def add(self) -> None:
         obstacle_num = random.randint(1, 3)
         new_obstacle = Obstacle(
-            assets_manager.images[f'obstacle{obstacle_num}'], (
-                SCREEN_WIDTH - OBSTACLE_WIDTH / 2 - 1,
-                random.randint(
-                    BUILDING_HEIGHT + OBSTACLE_HEIGHT / 2, SCREEN_HEIGHT - OBSTACLE_WIDTH / 2
-                )
+            assets_manager.images[f'obstacle{obstacle_num}'], pygame.Vector2(
+                SCREEN_WIDTH + OBSTACLE_WIDTH / 2,
+                random.randint(BUILDING_HEIGHT + OBSTACLE_HEIGHT / 2, SCREEN_HEIGHT - OBSTACLE_WIDTH / 2),
             )
         )
         self.obstacles.add(new_obstacle)
