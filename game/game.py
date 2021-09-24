@@ -114,16 +114,19 @@ class Game:
 
             # bomber
             # if self.distance_manager.dist >= BOMBER_APPEAR_DIST-1 and self.distance_manager.dist <= BOMBER_APPEAR_DIST+1:
-            #     self.bomber.activated = True
-            #     self.bomber.aim(self.player.rect.centerx, self.player.rect.centery)
-            #     self.bomber.update(t)
+            #    self.bomber.activated = True
+            # self.bomber.aim(self.player.rect.centerx, self.player.rect.centery)
+            # self.bomber.update(t)
 
             # spaceship
-            if self.distance_manager.dist >= 50 and self.distance_manager.dist <= 51:
-                self.spaceship.activated = True
-            if self.distance_manager.dist >= 70 and self.distance_manager.dist <= 71:
-                self.spaceship.is_charge = True
-            self.spaceship.update(t)
+            # TODO: Hitbox for laser
+            # if self.distance_manager.dist >= 50 and self.distance_manager.dist <= 51:
+            #    self.spaceship.activated = True
+            # if self.distance_manager.dist >= 70 and self.distance_manager.dist <= 71:
+            #    self.spaceship.is_charge = True
+            # self.spaceship.update(t)
+
+            # UFO
 
             self.obstacle_manager.update(t, self.shop)
             self.arrow.update(self.player)
