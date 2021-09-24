@@ -9,7 +9,7 @@ from game.sprites import MissileAircraft
 
 
 class LaserManager:
-    def __init__(self, player_collision_group):
+    def __init__(self, player_collision_group: pygame.sprite.Group) -> None:
         self.lasers = pygame.sprite.Group()
         self.missiles = pygame.sprite.Group()
         self.player_collision_group = player_collision_group
@@ -17,7 +17,7 @@ class LaserManager:
         self.t = 0
         self.amounts = 0
 
-    def add(self):
+    def add(self) -> None:
         pos = random.randint(BUILDING_HEIGHT, SCREEN_HEIGHT - LASER_HEIGHT)
         new_laser = Laser(pos)
         self.lasers.add(new_laser)
@@ -25,8 +25,9 @@ class LaserManager:
         self.missiles.add(new_missiles)
         self.player_collision_group.add(new_missiles)
 
-    def update(self, t):
-        self.t += t
+    def update(self, t: float, shop: bool) -> None:
+        if not shop:
+            self.t += t
         if self.t < LASER_COOLDOWN:
             pass
         elif self.t < LASER_COOLDOWN * 2:
@@ -39,11 +40,11 @@ class LaserManager:
             self.last_laser_shoot = self.t
             self.lasers.empty()
             for i in range(self.amounts):
-                self.add()
+                self.add()  # FIXME: ??? if don't use iterator then use _ instead of i
         self.lasers.update(t)
         self.missiles.update(t)
 
-    def draw(self, window):
+    def draw(self, window: pygame.Surface) -> None:
         self.lasers.draw(window)
         for missile in self.missiles:
             missile.draw(window)

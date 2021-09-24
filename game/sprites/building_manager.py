@@ -1,6 +1,6 @@
 from collections import deque
 
-import pygame.sprite
+import pygame
 
 from game.assets_manager import assets_manager
 from game.constants import *
@@ -15,19 +15,15 @@ class BuildingManager:
         self.buildings = deque()
         self.xs = deque()
         self.xs.append(SCREEN_WIDTH // 2 - BUILDING_WIDTH // 2)
-        self.buildings.append(
-            Building(assets_manager.images['3buildings'], self.xs[0]))
+        self.buildings.append(Building(assets_manager.images['3buildings'], self.xs[0]))
         while self.xs[0] + (1 - BUILDING_RATIO) * BUILDING_WIDTH / 2 + self.buildings[0].sx > 0:
             self.xs.appendleft(self.xs[0] - BUILDING_WIDTH)
-            self.buildings.appendleft(
-                Building(assets_manager.images['3buildings'], self.xs[0]))
+            self.buildings.appendleft(Building(assets_manager.images['3buildings'], self.xs[0]))
         while self.xs[-1] + BUILDING_WIDTH + self.buildings[-1].sx < SCREEN_WIDTH:
             self.xs.append(self.xs[-1] + BUILDING_WIDTH)
-            self.buildings.append(
-                Building(assets_manager.images['3buildings'], self.xs[-1]))
+            self.buildings.append(Building(assets_manager.images['3buildings'], self.xs[-1]))
         self.xs.append(self.xs[-1] + BUILDING_WIDTH)
-        self.buildings.append(
-            Building(assets_manager.images['3buildings'], self.xs[-1]))
+        self.buildings.append(Building(assets_manager.images['3buildings'], self.xs[-1]))
 
     def update(self, t: float, shop: bool = False) -> None:
         if DISABLE_BUILDINGS:
@@ -48,5 +44,6 @@ class BuildingManager:
     def draw(self, window: pygame.Surface) -> None:
         if DISABLE_BUILDINGS:
             return
+
         for i in range(len(self.xs)):
             window.blit(self.buildings[i].image, self.buildings[i].rect)

@@ -18,7 +18,7 @@ class Missile(pygame.sprite.Sprite):
 
         self.explode = None
 
-    def update(self, t) -> None:
+    def update(self, t: float) -> None:
         self.pos += (MISSILE_SPEED * t * np.cos(self.dir), -MISSILE_SPEED * t * np.sin(self.dir))
         self.image = pygame.transform.rotate(
             assets_manager.images['missile'], self.dir * 360 // (2 * np.pi)
@@ -30,7 +30,7 @@ class Missile(pygame.sprite.Sprite):
     #         self.image = None
     #         self.explode = Explode(self.rect.center)
 
-    def draw(self, window):
+    def draw(self, window: pygame.Surface) -> None:
         if self.image:
             window.blit(self.image, self.rect)
         elif self.explode and self.explode.image:

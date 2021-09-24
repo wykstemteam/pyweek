@@ -6,6 +6,8 @@ from game.constants import *
 from game.screen_shake_manager import ScreenShakeManager
 from game.sprites import *
 
+# TODO: Replace self.pause and self.lose with self.state which is GAMING, PAUSE or LOSE
+
 
 class Game:
     def __init__(self) -> None:
@@ -19,6 +21,7 @@ class Game:
             assets_manager.images['bullet'], self.player_collision_group
         )
         self.bomber = Bomber(self.player_collision_group)
+        self.spaceship = Spaceship(self.player_collision_group)
         self.player = Player(
             assets_manager.images['motorbike'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2
         )
@@ -32,6 +35,15 @@ class Game:
 
         # Health_bar
         self.health_bar_image = assets_manager.images['HP4']
+
+        #shop
+        self.beach_image = assets_manager.images['beach_full']
+        self.shop = False
+        self.show_sea_time = SHOW_SEA_TIME
+        self.show_shop_animation = False
+        self.dimming = False
+        self.darken_alpha = 0
+        self.beach_rect = pygame.Rect(0, 0, 0, 0)
 
         # game_screen
         self.game_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -65,11 +77,6 @@ class Game:
             manager=self.lose_screen
         )
         self.lose = False
-        self.shop = False
-        self.show_sea_time = SHOW_SEA_TIME
-        self.show_shop_animation = False
-        self.dimming = False
-        self.darken_alpha = 0
 
         assets_manager.play_music("8bitaggressive1")
 
@@ -82,21 +89,20 @@ class Game:
                 if not self.pause and not self.lose and event.ui_element == self.pause_button:
                     self.pause = True
                     break  # Otherwise will click both pause and return buttons
-
-                if self.pause and event.ui_element == self.return_button:
+                elif self.pause and event.ui_element == self.return_button:
                     self.pause = False
-
-                if self.lose and event.ui_element == self.restart_button:
-                    self.__init__()  # Reinitialize
-
-                if self.lose and event.ui_element == self.return_title_button:
-                    return True  # Stop gaming
+                elif self.lose:
+                    if event.ui_element == self.restart_button:
+                        self.__init__()  # Reinitialize
+                    elif event.ui_element == self.return_title_button:
+                        return True  # Stop gaming
 
             self.game_screen.process_events(event)
             self.pause_screen.process_events(event)
             self.lose_screen.process_events(event)
 
-    def update(self, t):
+    def update(self, t: float) -> None:
+        self.player.hp = max(self.player.hp, 0)
         self.health_bar_image = assets_manager.images[f"HP{self.player.hp}"]
 
         if self.show_shop_animation:
@@ -110,21 +116,27 @@ class Game:
             self.player.update(t)
             self.policecar.update(t, self.shop)
 
-            if self.distance_manager.dist >= 49 and self.distance_manager.dist <= 51:
-                self.bomber.activated = True
-            # print(self.bomber.activated)
+            # bomber
+            # if self.distance_manager.dist >= BOMBER_APPEAR_DIST-1 and self.distance_manager.dist <= BOMBER_APPEAR_DIST+1:
+            #    self.bomber.activated = True
+            # self.bomber.aim(self.player.rect.centerx, self.player.rect.centery)
+            # self.bomber.update(t)
 
-            if self.bomber.activated:
-                self.bomber.goin(t)
-                self.bomber.shoot()
-            else:
-                self.bomber.goout(t)
+            # spaceship
+            # TODO: Hitbox for laser
+            if self.distance_manager.dist >= 50 and self.distance_manager.dist <= 51:
+               self.spaceship.activated = True
+            if self.distance_manager.dist >= 20 and self.distance_manager.dist <= 21:
+               self.spaceship.is_charge = True
+            self.spaceship.update(t)
 
-            self.bomber.update(t)
-            self.bomber.aim(self.player.rect.centerx, self.player.rect.centery)
+            # UFO
+
             self.obstacle_manager.update(t, self.shop)
             self.arrow.update(self.player)
-            self.laser_manager.update(t)
+            self.laser_manager.update(t, self.shop)
+            if self.shop:
+                self.beach_rect.move_ip(BACKGROUND_VELOCITY//100, 0)
             if not self.shop:
                 self.distance_manager.update(t)
                 self.player_collision()
@@ -135,7 +147,8 @@ class Game:
 
         if self.player.hp <= 0 and not self.shop and not self.lose:
             print(self.player.hp)
-            self.trigger_lose()
+            if not PLAYER_INVIN:
+                self.trigger_lose()
 
         if self.distance_manager.dist_to_next_country <= 0 and not self.shop:
             self.trigger_shop()
@@ -144,17 +157,23 @@ class Game:
         self.pause_screen.update(t)
         self.lose_screen.update(t)
 
-    def draw(self, window: pygame.Surface):
+    def draw(self, window: pygame.Surface) -> None:
         window.fill((0, 0, 0))
         self.roads.draw(window)
+        if self.shop:
+            window.blit(self.beach_image, self.beach_rect)
         self.buildings.draw(window)
         self.policecar.draw(window)
-        self.bomber.draw(window)
         self.laser_manager.draw(window)
         self.obstacle_manager.draw(window)
         self.player.draw(window)
         self.distance_manager.draw(window)
         self.arrow.draw(window)
+
+        # objects that fly
+        self.bomber.draw(window)
+        self.spaceship.draw(window)
+
         window.blit(self.health_bar_image, pygame.Rect((10, 10), (400, 100)))
         if self.pause:
             window.blit(assets_manager.images['Darken'], pygame.Rect(0, 0, 0, 0))
@@ -168,29 +187,34 @@ class Game:
 
         if self.dimming:
             darken_image = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
-            darken_image.fill((0,0,0))
+            darken_image.fill((0, 0, 0))
             darken_image.set_alpha(self.darken_alpha)
-            window.blit(darken_image, pygame.Rect(0,0,0,0))
-            self.darken_alpha = min(self.darken_alpha+1, 255)
+            window.blit(darken_image, pygame.Rect(0, 0, 0, 0))
+            self.darken_alpha = min(self.darken_alpha + 1, 255)
             return
+
         self.screen_shake_manager.shake(window)
 
-    def trigger_lose(self):
+    def trigger_lose(self) -> None:
         if not self.lose and not self.pause:
             assets_manager.play_music("greensleeves")
             self.lose = True
 
-    def trigger_shop(self):
+    def trigger_shop(self) -> None:
         if not self.shop and not self.pause:
             # assets_manager.play_music("greensleeves") FIXME jono music pls
             self.shop = True
             self.bomber.activated = False
+            self.spaceship.activated = False
 
-    def player_collision(self):
+    def player_collision(self) -> None:
         for obj in self.player_collision_group:
+            if type(obj) == Spaceship:
+                obj.collision_player(self.player)
             if self.player.rect.colliderect(obj.rect):
                 if type(obj) == PoliceCar:
-                    self.trigger_lose()
+                    if not PLAYER_INVIN:
+                        self.trigger_lose()
                 elif type(obj) == Bullet:
                     obj.player_hit(self.player)
                 elif type(obj) == MissileAircraft:

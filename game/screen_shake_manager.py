@@ -4,16 +4,15 @@ import pygame
 
 
 class ScreenShakeManager:
-    def __init__(self):
+    def __init__(self) -> None:
         self.shaking = False
 
     @staticmethod
-    def get_shake():
-        return random.randint(-20, 20), random.randint(-20, 20)
+    def get_shake() -> None:
+        return (random.randint(-20, 20), random.randint(-20, 20))
 
-    def shake(self, window: pygame.Surface):
-        if not self.shaking:
-            return
-        tmp = window.copy()
-        window.fill((0, 0, 0))
-        window.blit(tmp, ScreenShakeManager.get_shake())
+    def shake(self, window: pygame.Surface) -> None:
+        if self.shaking:
+            window_copy = window.copy()
+            window.fill((0, 0, 0))
+            window.blit(window_copy, ScreenShakeManager.get_shake())

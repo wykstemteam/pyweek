@@ -7,7 +7,7 @@ from game.sprites.obstacle import Obstacle
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, image: pygame.Surface, x: int, y: int):
+    def __init__(self, image: pygame.Surface, x: int, y: int) -> None:
         super().__init__()
 
         self.image = image
@@ -34,17 +34,31 @@ class Player(pygame.sprite.Sprite):
         self.items = {1: 0, 2: 0}
         self.holding = 1
 
-    def acc(self, dx, dy):
+        self.invincibility_after_damage = 0
+        self.blink_state = 1
+        self.blink_cooldown = PLAYER_BLINK_COOLDOWN
+
+    def acc(self, dx: int, dy: int) -> None:
         self.vx = min(self.vx + dx, PLAYER_MAX_HORI_SPEED)
         self.vy += dy
 
-    def update(self, t):
+    def update(self, t: float) -> None:
         self.real_x += (self.vx + BACKGROUND_VELOCITY) * t
         self.real_y += self.vy * t
         self.rect.left = self.real_x
         self.rect.top = self.real_y
         self.shadow_rect.left = self.real_x - 5
         self.shadow_rect.top = self.real_y + 5
+
+        self.invincibility_after_damage -= t
+        if self.invincibility_after_damage <= 0:
+            self.blink_state = 1
+        else:
+            self.blink_cooldown -= t
+            if self.blink_cooldown <= 0:
+                self.blink_state = 1 - self.blink_state
+                self.blink_cooldown = PLAYER_BLINK_COOLDOWN
+        self.image.set_alpha(self.blink_state * 255)
 
         x = pygame.mouse.get_pos()[0] - (self.real_x + PLAYER_WIDTH / 2)
         y = (self.real_y + PLAYER_HEIGHT / 2) - pygame.mouse.get_pos()[1]
@@ -109,20 +123,20 @@ class Player(pygame.sprite.Sprite):
         else:
             self.vy = min(0, self.vy + FRICTION_VERT)
 
-    def draw(self, window):
+    def draw(self, window: pygame.Surface) -> None:
         for missile in self.missiles:
             missile.draw(window)
         window.blit(self.shadow, self.shadow_rect)
         window.blit(self.image, self.rect)
 
-    def in_bounds(self):
+    def in_bounds(self) -> bool:
         return BUILDING_HEIGHT < self.real_y < SCREEN_HEIGHT - PLAYER_HEIGHT
 
-    def shoot_missile(self):
+    def shoot_missile(self) -> None:
         new_missile = Missile(self.rect.center, self.dir)
         self.missiles.add(new_missile)
 
-    def resolve_collision(self, obstacle: Obstacle):
+    def resolve_collision(self, obstacle: Obstacle) -> None:
         obstacle_left = obstacle.pos.x - OBSTACLE_WIDTH // 2
         obstacle_right = obstacle.pos.x + OBSTACLE_WIDTH // 2
         obstacle_top = obstacle.pos.y - OBSTACLE_HEIGHT // 2
@@ -135,6 +149,7 @@ class Player(pygame.sprite.Sprite):
             (self_right - obstacle_left, 0), (obstacle_right - self_left, 1),
             (self_bottom - obstacle_top, 2), (obstacle_bottom - self_top, 3)
         ]
+        # TODO: Replace with list comprehension
         distances = sorted(filter(lambda x: x[0] >= 0, distances))
 
         if distances[0][1] == 0:  # right
@@ -152,7 +167,18 @@ class Player(pygame.sprite.Sprite):
         self.rect.left = self.real_x
         self.rect.top = self.real_y
 
-    def go_right(self, t) -> bool:
+    def go_right(self, t: float) -> bool:
         self.rect.left += -BACKGROUND_VELOCITY * t
         self.shadow_rect.left = self.rect.left - 5
         return self.rect.left > SCREEN_WIDTH
+
+    def hit(self) -> bool:
+        if self.is_invincible():
+            return False
+        self.invincibility_after_damage = INVINCIBILITY_AFTER_DAMAGE
+        self.hp -= 1
+        self.blink_cooldown = PLAYER_BLINK_COOLDOWN
+        return True
+
+    def is_invincible(self) -> bool:
+        return self.invincibility_after_damage > 0

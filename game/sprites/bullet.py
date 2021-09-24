@@ -2,6 +2,7 @@ import pygame
 
 from game.constants import *
 from game.sprites.explode import Explode
+from game.sprites.player import Player
 
 
 class Bullet(pygame.sprite.Sprite):
@@ -10,7 +11,8 @@ class Bullet(pygame.sprite.Sprite):
 
         self.image = image
         self.rect = self.image.get_rect()
-        self.rect.center = pos
+        self.pos = pygame.Vector2(pos)
+        self.rect.center = self.pos
 
         self.width = self.image.get_width()
         self.height = self.image.get_height()
@@ -19,22 +21,22 @@ class Bullet(pygame.sprite.Sprite):
 
         self.explode = None
 
-    def update(self, t) -> None:
+    def update(self, t: float) -> None:
         if not self.explode:
-            self.rect.left += self.velocity_x * t
-            self.rect.top += self.velocity_y * t
+            self.pos += pygame.Vector2(self.velocity_x, self.velocity_y) * t
+            self.rect.center = self.pos
             if self.rect.left <= 0 or self.rect.right >= SCREEN_WIDTH:
                 self.kill()
         elif not self.explode.update(t):
             self.kill()
 
-    def player_hit(self, player) -> None:  # should be called when collided by player
+    def player_hit(self, player: Player) -> None:  # should be called when collided by player
         if not self.explode:
-            self.image = None
-            self.explode = Explode(self.rect.center)
-            player.hp -= 1
+            if player.hit():
+                self.image = None
+                self.explode = Explode(self.rect.center)
 
-    def draw(self, window):
+    def draw(self, window: pygame.Surface) -> None:
         if self.image:
             window.blit(self.image, self.rect)
         elif self.explode and self.explode.image:
