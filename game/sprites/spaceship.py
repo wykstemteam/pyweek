@@ -1,5 +1,6 @@
-import numpy as np
 import random
+
+import numpy as np
 import pygame
 
 from game.assets_manager import assets_manager
@@ -44,44 +45,53 @@ class Spaceship(pygame.sprite.Sprite):
         self.pattern_dur = 0.0
         self.shoot_cooldown = SPACESHIP_SHOOT_COOLDOWN
 
-    def shoot(self):
+    def shoot(self) -> None:
         if self.shoot_cooldown <= 0:
+            new_bullets = []
             if self.bullet_pattern == 1:
-                new_bullet1 = Bullet(self.bullet_image,
-                                     pygame.Vector2(self.rect.centerx, self.rect.centery - 200),
-                                     -SPACESHIP_BULLET_SPEED, 0)
-                new_bullet2 = Bullet(self.bullet_image,
-                                     pygame.Vector2(self.rect.centerx, self.rect.centery - 100),
-                                     -SPACESHIP_BULLET_SPEED, 0)
-                new_bullet3 = Bullet(self.bullet_image,
-                                     pygame.Vector2(self.rect.centerx, self.rect.centery + 100),
-                                     -SPACESHIP_BULLET_SPEED, 0)
-                new_bullet4 = Bullet(self.bullet_image,
-                                     pygame.Vector2(self.rect.centerx, self.rect.centery + 200),
-                                     -SPACESHIP_BULLET_SPEED, 0)
-                self.bullets.add(new_bullet1)
-                self.bullets.add(new_bullet2)
-                self.bullets.add(new_bullet3)
-                self.bullets.add(new_bullet4)
-                self.player_collision_group.add(new_bullet1)
-                self.player_collision_group.add(new_bullet2)
-                self.player_collision_group.add(new_bullet3)
-                self.player_collision_group.add(new_bullet4)
+                new_bullets = [
+                    Bullet(
+                        self.bullet_image,
+                        pygame.Vector2(self.rect.centerx,
+                                       self.rect.centery - 200), -SPACESHIP_BULLET_SPEED, 0
+                    ),
+                    Bullet(
+                        self.bullet_image,
+                        pygame.Vector2(self.rect.centerx,
+                                       self.rect.centery - 100), -SPACESHIP_BULLET_SPEED, 0
+                    ),
+                    Bullet(
+                        self.bullet_image,
+                        pygame.Vector2(self.rect.centerx,
+                                       self.rect.centery + 100), -SPACESHIP_BULLET_SPEED, 0
+                    ),
+                    Bullet(
+                        self.bullet_image,
+                        pygame.Vector2(self.rect.centerx,
+                                       self.rect.centery + 200), -SPACESHIP_BULLET_SPEED, 0
+                    )
+                ]
             elif self.bullet_pattern == 2:
-                new_bullet1 = Bullet(self.bullet_image,
-                                     pygame.Vector2(self.rect.centerx, self.rect.centery - 150),
-                                     -SPACESHIP_BULLET_SPEED, 0)
-                new_bullet2 = Bullet(self.bullet_image,
-                                     pygame.Vector2(self.rect.centerx, self.rect.centery + 150),
-                                     -SPACESHIP_BULLET_SPEED, 0)
-                self.bullets.add(new_bullet1)
-                self.bullets.add(new_bullet2)
-                self.player_collision_group.add(new_bullet1)
-                self.player_collision_group.add(new_bullet2)
+                new_bullets = [
+                    Bullet(
+                        self.bullet_image,
+                        pygame.Vector2(self.rect.centerx,
+                                       self.rect.centery - 150), -SPACESHIP_BULLET_SPEED, 0
+                    ),
+                    Bullet(
+                        self.bullet_image,
+                        pygame.Vector2(self.rect.centerx,
+                                       self.rect.centery + 150), -SPACESHIP_BULLET_SPEED, 0
+                    )
+                ]
+
+            for bullet in new_bullets:
+                self.bullets.add(bullet)
+                self.player_collision_group.add(bullet)
 
             self.shoot_cooldown = SPACESHIP_SHOOT_COOLDOWN
 
-    def update(self, t):
+    def update(self, t: float) -> None:
         if not self.activated:
             if self.x < 1600:
                 self.x += 5
@@ -120,8 +130,7 @@ class Spaceship(pygame.sprite.Sprite):
         self.shoot()
         self.bullets.update(t)
 
-
-    def draw(self, window):
+    def draw(self, window: pygame.Surface) -> None:
         window.blit(self.lc_img, self.lc_rect)
         window.blit(self.ls_img, self.ls_rect)
         window.blit(self.image, self.rect)
