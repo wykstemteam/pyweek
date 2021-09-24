@@ -6,6 +6,8 @@ from game.constants import *
 from game.screen_shake_manager import ScreenShakeManager
 from game.sprites import *
 
+# TODO: Replace self.pause and self.lose with self.state which is GAMING, PAUSE or LOSE
+
 
 class Game:
     def __init__(self) -> None:
@@ -83,21 +85,19 @@ class Game:
                 if not self.pause and not self.lose and event.ui_element == self.pause_button:
                     self.pause = True
                     break  # Otherwise will click both pause and return buttons
-
-                if self.pause and event.ui_element == self.return_button:
+                elif self.pause and event.ui_element == self.return_button:
                     self.pause = False
-
-                if self.lose and event.ui_element == self.restart_button:
-                    self.__init__()  # Reinitialize
-
-                if self.lose and event.ui_element == self.return_title_button:
-                    return True  # Stop gaming
+                elif self.lose:
+                    if event.ui_element == self.restart_button:
+                        self.__init__()  # Reinitialize
+                    elif event.ui_element == self.return_title_button:
+                        return True  # Stop gaming
 
             self.game_screen.process_events(event)
             self.pause_screen.process_events(event)
             self.lose_screen.process_events(event)
 
-    def update(self, t):
+    def update(self, t: float) -> None:
         self.player.hp = max(self.player.hp, 0)
         self.health_bar_image = assets_manager.images[f"HP{self.player.hp}"]
 
@@ -113,13 +113,13 @@ class Game:
             self.policecar.update(t, self.shop)
 
             # bomber
-#            if self.distance_manager.dist >= BOMBER_APPEAR_DIST-1 and self.distance_manager.dist <= BOMBER_APPEAR_DIST+1:
-#                self.bomber.activated = True
-#            self.bomber.aim(self.player.rect.centerx, self.player.rect.centery)
-#            self.bomber.update(t)
+            # if self.distance_manager.dist >= BOMBER_APPEAR_DIST-1 and self.distance_manager.dist <= BOMBER_APPEAR_DIST+1:
+            #     self.bomber.activated = True
+            #     self.bomber.aim(self.player.rect.centerx, self.player.rect.centery)
+            #     self.bomber.update(t)
 
             # spaceship
-            if self.distance_manager.dist >= BOMBER_APPEAR_DIST-1 and self.distance_manager.dist <= BOMBER_APPEAR_DIST+1:
+            if self.distance_manager.dist >= BOMBER_APPEAR_DIST - 1 and self.distance_manager.dist <= BOMBER_APPEAR_DIST + 1:
                 self.spaceship.activated = True
             if self.distance_manager.dist >= 80 and self.distance_manager.dist <= 81:
                 self.spaceship.is_charge = True
@@ -147,7 +147,7 @@ class Game:
         self.pause_screen.update(t)
         self.lose_screen.update(t)
 
-    def draw(self, window: pygame.Surface):
+    def draw(self, window: pygame.Surface) -> None:
         window.fill((0, 0, 0))
         self.roads.draw(window)
         self.buildings.draw(window)
@@ -174,25 +174,26 @@ class Game:
 
         if self.dimming:
             darken_image = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
-            darken_image.fill((0,0,0))
+            darken_image.fill((0, 0, 0))
             darken_image.set_alpha(self.darken_alpha)
-            window.blit(darken_image, pygame.Rect(0,0,0,0))
-            self.darken_alpha = min(self.darken_alpha+1, 255)
+            window.blit(darken_image, pygame.Rect(0, 0, 0, 0))
+            self.darken_alpha = min(self.darken_alpha + 1, 255)
             return
+
         self.screen_shake_manager.shake(window)
 
-    def trigger_lose(self):
+    def trigger_lose(self) -> None:
         if not self.lose and not self.pause:
             assets_manager.play_music("greensleeves")
             self.lose = True
 
-    def trigger_shop(self):
+    def trigger_shop(self) -> None:
         if not self.shop and not self.pause:
             # assets_manager.play_music("greensleeves") FIXME jono music pls
             self.shop = True
             self.bomber.activated = False
 
-    def player_collision(self):
+    def player_collision(self) -> None:
         for obj in self.player_collision_group:
             if self.player.rect.colliderect(obj.rect):
                 if type(obj) == PoliceCar:
