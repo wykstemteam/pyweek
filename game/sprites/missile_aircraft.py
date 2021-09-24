@@ -26,10 +26,9 @@ class MissileAircraft(pygame.sprite.Sprite):
             self.kill()
 
     def player_hit(self, player: Player) -> None:  # should be called when collided by player
-        if not self.explode:
-            if player.hit():
-                self.image = None
-                self.explode = Explode(self.rect.center)
+        if not self.explode and player.hit():
+            self.image = None
+            self.explode = Explode(self.rect.center)
 
     def draw(self, window: pygame.Surface) -> None:
         if self.image:
