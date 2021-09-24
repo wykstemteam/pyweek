@@ -31,7 +31,7 @@ class Spaceship(pygame.sprite.Sprite):
         self.ls_frame = 0.0
         self.is_shoot = False
 
-        self.x = 1500
+        self.x = 1600
         self.y = (SCREEN_HEIGHT / 2) - (self.image.get_height() / 2)
 
         self.rect = self.image.get_rect()
@@ -43,7 +43,7 @@ class Spaceship(pygame.sprite.Sprite):
         self.activated = False
 
         self.bullets = pygame.sprite.Group()
-        self.bullet_pattern = 0
+        self.bullet_pattern = 1
         self.pattern_dur = 0.0
         self.shoot_cooldown = SPACESHIP_SHOOT_COOLDOWN
 

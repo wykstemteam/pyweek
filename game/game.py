@@ -22,6 +22,7 @@ class Game:
         )
         self.bomber = Bomber(self.player_collision_group)
         self.spaceship = Spaceship(self.player_collision_group)
+        self.ufo = UFO(self.player_collision_group)
         self.player = Player(
             assets_manager.images['motorbike'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2
         )
@@ -124,13 +125,16 @@ class Game:
 
             # spaceship
             # TODO: Hitbox for laser
-            if self.distance_manager.dist >= 50 and self.distance_manager.dist <= 51:
-               self.spaceship.activated = True
-            if self.distance_manager.dist >= 70 and self.distance_manager.dist <= 71:
-               self.spaceship.is_charge = True
-            self.spaceship.update(t)
+            # if self.distance_manager.dist >= 50 and self.distance_manager.dist <= 51:
+            #    self.spaceship.activated = True
+            # if self.distance_manager.dist >= 70 and self.distance_manager.dist <= 71:
+            #    self.spaceship.is_charge = True
+            # self.spaceship.update(t)
 
             # UFO
+            if self.distance_manager.dist >= 50 and self.distance_manager.dist <= 51:
+               self.ufo.activated = True
+            self.ufo.update(t)
 
             self.obstacle_manager.update(t, self.shop)
             self.arrow.update(self.player)
@@ -167,12 +171,14 @@ class Game:
         self.laser_manager.draw(window)
         self.obstacle_manager.draw(window)
         self.player.draw(window)
-        self.distance_manager.draw(window)
         self.arrow.draw(window)
 
         # objects that fly
         self.bomber.draw(window)
         self.spaceship.draw(window)
+        self.ufo.draw(window)
+
+        self.distance_manager.draw(window)
 
         window.blit(self.health_bar_image, pygame.Rect((10, 10), (400, 100)))
         if self.pause:
@@ -206,6 +212,7 @@ class Game:
             self.shop = True
             self.bomber.activated = False
             self.spaceship.activated = False
+            self.ufo.activated = False
 
     def player_collision(self) -> None:
         for obj in self.player_collision_group:
