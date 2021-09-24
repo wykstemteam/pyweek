@@ -45,6 +45,8 @@ class Player(pygame.sprite.Sprite):
         self.blink_state = 1
         self.blink_cooldown = PLAYER_BLINK_COOLDOWN
 
+        self.shield_activate = False
+
         self.item_invincible = False
         self.invincible_color = 0x000000
         self.item_invincible_time = ITEM_INVINCIBILITY_TIME
