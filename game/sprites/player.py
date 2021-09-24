@@ -7,8 +7,10 @@ from game.sprites.obstacle import Obstacle
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, image: pygame.Surface, x: int, y: int) -> None:
+    def __init__(self, image: pygame.Surface, x: int, y: int, game) -> None:
         super().__init__()
+
+        self.game = game
 
         self.ori_image = image.copy()
         self.image = image.copy()
@@ -46,6 +48,17 @@ class Player(pygame.sprite.Sprite):
     def acc(self, dx: int, dy: int) -> None:
         self.vx = min(self.vx + dx, PLAYER_MAX_HORI_SPEED)
         self.vy += dy
+
+    def apply_friction(self) -> None:
+        if self.vx > 0:
+            self.vx = max(0, self.vx - FRICTION_HORI)
+        else:
+            self.vx = min(0, self.vx + FRICTION_HORI)
+
+        if self.vy > 0:
+            self.vy = max(0, self.vy - FRICTION_VERT)
+        else:
+            self.vy = min(0, self.vy + FRICTION_VERT)
 
     def update(self, t: float) -> None:
         self.real_x += (self.vx + BACKGROUND_VELOCITY) * t
@@ -95,8 +108,8 @@ class Player(pygame.sprite.Sprite):
 
         if FREE_ITEMS:
             for i in range(6):
-                if keys[pygame.K_KP_1+i]:
-                    self.items[self.holding] = i+1
+                if keys[pygame.K_KP_1 + i]:
+                    self.items[self.holding] = i + 1
 
         if keys[pygame.K_1]:
             self.holding = 1
@@ -106,7 +119,8 @@ class Player(pygame.sprite.Sprite):
         if left_button_pressed:
             if self.items[self.holding] == 1:
                 # FIXME: play some sound effect maybe
-                self.hp += 1
+                if self.hp < 4:
+                    self.hp += 1
             elif self.items[self.holding] == 2:  # invincible
                 self.become_item_invincible()
             elif self.items[self.holding] == 3:
@@ -118,20 +132,13 @@ class Player(pygame.sprite.Sprite):
             elif self.items[self.holding] == 5:  # shield
                 pass
             elif self.items[self.holding] == 6:  # bullet time
-                pass
+                self.game.bullet_time = True
+                self.game.bullet_time_t = ITEM_BULLET_TIME_DURATION
             self.items[self.holding] = 0
 
         self.missiles.update(t)
 
-        if self.vx > 0:
-            self.vx = max(0, self.vx - FRICTION_HORI)
-        else:
-            self.vx = min(0, self.vx + FRICTION_HORI)
-
-        if self.vy > 0:
-            self.vy = max(0, self.vy - FRICTION_VERT)
-        else:
-            self.vy = min(0, self.vy + FRICTION_VERT)
+        self.apply_friction()
 
         if self.item_invincible:
             self.item_invincible_time -= t
@@ -141,7 +148,7 @@ class Player(pygame.sprite.Sprite):
             else:
                 self.image = self.ori_image.copy()
                 self.image.fill(self.invincible_color, special_flags=pygame.BLEND_RGB_MULT)
-                self.invincible_color += 0xFFFFFF // (60*ITEM_INVINCIBILITY_TIME)
+                self.invincible_color += 0xFFFFFF // (60 * ITEM_INVINCIBILITY_TIME)
 
     def draw(self, window: pygame.Surface) -> None:
         for missile in self.missiles:
@@ -195,6 +202,7 @@ class Player(pygame.sprite.Sprite):
     def hit(self) -> bool:
         if self.is_invincible():
             return False
+
         self.invincibility_after_damage = INVINCIBILITY_AFTER_DAMAGE
         self.hp -= 1
         self.blink_cooldown = PLAYER_BLINK_COOLDOWN
