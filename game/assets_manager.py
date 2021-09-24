@@ -123,6 +123,10 @@ class AssetsManager:
             self.animations['laser_shoot'][i] = pygame.transform.scale(
                 self.animations['laser_shoot'][i], (SCREEN_WIDTH, SCREEN_HEIGHT)
             )
+        for i in range(len(self.animations['coin'])):
+            self.animations['coin'][i] = pygame.transform.scale(
+                self.animations['coin'][i], (COIN_WIDTH, COIN_HEIGHT)
+            )
 
     def init_sounds(self) -> None:
         for fn in os.listdir(os.path.join('assets', 'sounds')):
