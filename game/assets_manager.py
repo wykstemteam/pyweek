@@ -74,6 +74,13 @@ class AssetsManager:
         self.images['spaceship_bullet'] = pygame.transform.scale(
             self.images['spaceship_bullet'], (SPACESHIP_BULLET_WIDTH, SPACESHIP_BULLET_HEIGHT)
         )
+        self.images['UFO'] = pygame.transform.scale(
+            self.images['UFO'], (450, 450)
+        )
+        self.images['UFO_bullet'] = pygame.transform.scale(
+            self.images['UFO_bullet'], (UFO_BULLET_WIDTH, UFO_BULLET_HEIGHT)
+        )
+
 
         for i in range(1, 4):
             self.images[f'obstacle{i}'] = pygame.transform.scale(
