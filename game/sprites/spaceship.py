@@ -11,6 +11,7 @@ class Spaceship(pygame.sprite.Sprite):
         super().__init__()
 
         self.image = assets_manager.images['space_ship']
+        self.bullet_image = assets_manager.images['spaceship_bullet']
 
         self.laser_charge_ani = assets_manager.animations['laser_charge']
         self.lc_img = assets_manager.images['lc_charge_none']
@@ -37,19 +38,49 @@ class Spaceship(pygame.sprite.Sprite):
         self.dir = 0.0
         self.activated = False
 
-        self.bullet_pattern = {}
+        self.bullets = pygame.sprite.Group()
+        self.bullet_pattern = 1
+        self.shoot_cooldown = SPACESHIP_SHOOT_COOLDOWN
+
+    def shoot(self):
+        if self.shoot_cooldown <= 0:
+            if self.bullet_pattern == 1:
+                new_bullet1 = Bullet(self.bullet_image,
+                                     pygame.Vector2(self.rect.centerx, self.rect.centery - 200),
+                                     -SPACESHIP_BULLET_SPEED, 0)
+                new_bullet2 = Bullet(self.bullet_image,
+                                     pygame.Vector2(self.rect.centerx, self.rect.centery - 100),
+                                     -SPACESHIP_BULLET_SPEED, 0)
+                new_bullet3 = Bullet(self.bullet_image,
+                                     pygame.Vector2(self.rect.centerx, self.rect.centery + 100),
+                                     -SPACESHIP_BULLET_SPEED, 0)
+                new_bullet4 = Bullet(self.bullet_image,
+                                     pygame.Vector2(self.rect.centerx, self.rect.centery + 200),
+                                     -SPACESHIP_BULLET_SPEED, 0)
+                self.bullets.add(new_bullet1)
+                self.bullets.add(new_bullet2)
+                self.bullets.add(new_bullet3)
+                self.bullets.add(new_bullet4)
+                self.player_collision_group.add(new_bullet1)
+                self.player_collision_group.add(new_bullet2)
+                self.player_collision_group.add(new_bullet3)
+                self.player_collision_group.add(new_bullet4)
+            elif self.bullet_pattern == 2:
+                pass
+
+            self.shoot_cooldown = SPACESHIP_SHOOT_COOLDOWN
 
     def update(self, t):
-        if self.activated:
-            if self.x > 1000:
-                self.x -= 2
-        else:
+        if not self.activated:
             if self.x < 1600:
-                self.x += 2
+                self.x += 5
+        else:
+            if self.x > 1000:
+                self.x -= 5
 
         self.rect.topleft = (self.x, self.y)
 
-        if self.is_shoot == True:
+        if self.is_shoot:
             if self.ls_frame < len(self.laser_shoot_ani):
                 self.ls_img = self.laser_shoot_ani[int(self.ls_frame)]
                 self.ls_frame += 0.2
@@ -57,9 +88,7 @@ class Spaceship(pygame.sprite.Sprite):
                 self.is_shoot = False
                 self.ls_frame = 0.0
                 self.ls_img = assets_manager.images['ls_shoot_none']
-
-
-        if self.is_charge == True:
+        elif self.is_charge:
             if self.lc_frame < len(self.laser_charge_ani):
                 self.lc_img = self.laser_charge_ani[int(self.lc_frame)]
                 self.lc_frame += 0.2
@@ -69,7 +98,14 @@ class Spaceship(pygame.sprite.Sprite):
                 self.lc_frame = 0.0
                 self.lc_img = assets_manager.images['lc_charge_none']
 
+        self.shoot_cooldown -= t
+        self.shoot()
+        self.bullets.update(t)
+
+
     def draw(self, window):
         window.blit(self.lc_img, self.lc_rect)
         window.blit(self.ls_img, self.ls_rect)
         window.blit(self.image, self.rect)
+        for bullet in self.bullets:
+            bullet.draw(window)

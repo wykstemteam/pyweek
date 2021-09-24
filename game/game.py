@@ -119,9 +119,9 @@ class Game:
 #            self.bomber.update(t)
 
             # spaceship
-            if self.distance_manager.dist >= BOMBER_APPEAR_DIST-1 and self.distance_manager.dist <= BOMBER_APPEAR_DIST+1:
+            if self.distance_manager.dist >= 50 and self.distance_manager.dist <= 51:
                 self.spaceship.activated = True
-            if self.distance_manager.dist >= 80 and self.distance_manager.dist <= 81:
+            if self.distance_manager.dist >= 70 and self.distance_manager.dist <= 71:
                 self.spaceship.is_charge = True
             self.spaceship.update(t)
 
@@ -138,7 +138,8 @@ class Game:
 
         if self.player.hp <= 0 and not self.shop and not self.lose:
             print(self.player.hp)
-            self.trigger_lose()
+            if not PLAYER_INVIN:
+                self.trigger_lose()
 
         if self.distance_manager.dist_to_next_country <= 0 and not self.shop:
             self.trigger_shop()
@@ -161,6 +162,7 @@ class Game:
         # objects that fly
         self.bomber.draw(window)
         self.spaceship.draw(window)
+
         window.blit(self.health_bar_image, pygame.Rect((10, 10), (400, 100)))
         if self.pause:
             window.blit(assets_manager.images['Darken'], pygame.Rect(0, 0, 0, 0))
@@ -191,12 +193,14 @@ class Game:
             # assets_manager.play_music("greensleeves") FIXME jono music pls
             self.shop = True
             self.bomber.activated = False
+            self.spaceship.activated = False
 
     def player_collision(self):
         for obj in self.player_collision_group:
             if self.player.rect.colliderect(obj.rect):
                 if type(obj) == PoliceCar:
-                    self.trigger_lose()
+                    if not PLAYER_INVIN:
+                        self.trigger_lose()
                 elif type(obj) == Bullet:
                     obj.player_hit(self.player)
                 elif type(obj) == MissileAircraft:
