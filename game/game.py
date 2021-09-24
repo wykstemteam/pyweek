@@ -51,6 +51,9 @@ class Game:
         self.darken_alpha = 0
         self.beach_rect = pygame.Rect(0, 0, 0, 0)
 
+        #coins
+        self.coin_manager = CoinManager(self.player_collision_group)
+
         # game_screen
         self.game_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.pause_button = pygame_gui.elements.UIButton(
@@ -167,6 +170,7 @@ class Game:
             self.ufo.update(t)
 
             self.obstacle_manager.update(t, self.shop)
+            self.coin_manager.update(t)
             self.arrow.update(self.player)
             self.laser_manager.update(t, self.shop)
             if self.shop:
@@ -210,6 +214,7 @@ class Game:
         self.policecar.draw(window)
         self.laser_manager.draw(window)
         self.obstacle_manager.draw(window)
+        self.coin_manager.draw(window)
         self.player.draw(window)
         self.arrow.draw(window)
 
@@ -266,6 +271,8 @@ class Game:
                     obj.player_hit(self.player)
                 elif type(obj) == Obstacle:
                     self.player.resolve_collision(obj)
+                elif type(obj) == Coin:
+                    obj.player_hit(self.player)
 
     def start_earthquake(self):
         self.screen_shake_manager.shaking = True

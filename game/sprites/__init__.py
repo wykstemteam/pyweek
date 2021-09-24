@@ -18,9 +18,11 @@ from .road import Road
 from .shop import Shop
 from .spaceship import Spaceship
 from .ufo import UFO
+from .coin_manager import CoinManager
+from .coin import Coin
 
 __all__ = [
     'Arrow', 'Bomber', 'Building', 'BuildingManager', 'Bullet', 'MissileAircraft',
     'DistanceManager', 'Explode', 'FadeInManager', 'LaserManager', 'Laser', 'Missile', 'Obstacle',
-    'ObstacleManager', 'Player', 'PoliceCar', 'Road', 'Shop', 'Spaceship', 'UFO'
+    'ObstacleManager', 'Player', 'PoliceCar', 'Road', 'Shop', 'Spaceship', 'UFO', 'CoinManager', 'Coin'
 ]

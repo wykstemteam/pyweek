@@ -34,6 +34,8 @@ class Player(pygame.sprite.Sprite):
         self.hp = 4
         self.missiles = pygame.sprite.Group()
 
+        self.coins = 0
+
         self.items = {1: 0, 2: 0}
         self.holding = 1
 

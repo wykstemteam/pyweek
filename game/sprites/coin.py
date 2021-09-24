@@ -1,7 +1,8 @@
 import pygame
 
 from game.constants import *
-from assets_manager import assets_manager
+from game.assets_manager import assets_manager
+from game.sprites.player import Player
 
 class Coin(pygame.sprite.Sprite):
     def __init__(self, pos: pygame.Vector2) -> None:
@@ -12,28 +13,22 @@ class Coin(pygame.sprite.Sprite):
         self.pos = pygame.Vector2(pos)
         self.rect.center = self.pos
 
-        self.width = self.image.get_width()
-        self.height = self.image.get_height()
-
-        self.explode = None
+        self.frame = 0
 
     def update(self, t: float) -> None:
-        if not self.explode:
-            self.pos += pygame.Vector2(self.velocity_x, self.velocity_y) * t
-            self.rect.center = self.pos
-            if self.rect.left <= 0 or self.rect.right >= SCREEN_WIDTH:
-                self.kill()
-        elif not self.explode.update(t):
+        self.image = self.animation[int(self.frame)]
+        self.rect.move_ip(BACKGROUND_VELOCITY*t, 0)
+        self.frame += 0.5
+        if self.frame > len(self.animation)-1:
+            self.frame -= len(self.animation)
+        if self.rect.right <= 0:
             self.kill()
 
+
     def player_hit(self, player: Player) -> None:  # should be called when collided by player
-        if not self.explode:
-            if player.hit():
-                self.image = None
-                self.explode = Explode(self.rect.center)
+        player.coins += 1
+        self.kill()
 
     def draw(self, window: pygame.Surface) -> None:
-        if self.image:
-            window.blit(self.image, self.rect)
-        elif self.explode and self.explode.image:
-            window.blit(self.explode.image, self.explode.rect)
+        pygame.draw.rect(window, (0,0,0), self.rect)
+        window.blit(self.image, self.rect)
