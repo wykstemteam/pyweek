@@ -14,7 +14,7 @@ class Explode(pygame.sprite.Sprite):
         self.rect.center = self.pos
         self.frame = 0
 
-    def update(self, t) -> bool:
+    def update(self, t: float) -> bool:
         if self.frame < len(self.animation):
             self.image = self.animation[self.frame]
             self.rect = self.animation[self.frame].get_rect()
@@ -23,5 +23,5 @@ class Explode(pygame.sprite.Sprite):
             return True
         return False
 
-    def draw(self, window):
+    def draw(self, window: pygame.Surface) -> None:
         window.blit(self.image, self.rect)

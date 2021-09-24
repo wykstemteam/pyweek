@@ -20,7 +20,6 @@ class Obstacle(pygame.sprite.Sprite):
         self.rect.center = self.pos
         if self.rect.left <= 0:
             self.kill()
-            return
 
     def player_hit(self, player) -> None:  # should be called when collided by player
         # animation

@@ -33,19 +33,20 @@ class Bomber(pygame.sprite.Sprite):
         self.dir = 0.0
         self.activated = False
 
-    def aim(self, px: float, py: float):
+    def aim(self, px: float, py: float) -> None:
         self.dir = np.arctan2(self.rect.centery - py, px - self.rect.centerx)
 
-    def shoot(self):
+    def shoot(self) -> None:
         if self.shoot_cooldown <= 0:
-            new_bullet = Bullet(self.bullet_image, self.rect.center,
-                                BOMBER_BULLET_SPEED * np.cos(self.dir),
-                                -BOMBER_BULLET_SPEED * np.sin(self.dir))
+            new_bullet = Bullet(
+                self.bullet_image, self.rect.center, BOMBER_BULLET_SPEED * np.cos(self.dir),
+                -BOMBER_BULLET_SPEED * np.sin(self.dir)
+            )
             self.bullets.add(new_bullet)
             self.player_collision_group.add(new_bullet)
             self.shoot_cooldown = BOMBER_SHOOT_COOLDOWN
 
-    def update(self, t):
+    def update(self, t: float) -> None:
         if self.activated:
             if self.x < -100:
                 self.x += 1
@@ -67,7 +68,7 @@ class Bomber(pygame.sprite.Sprite):
         self.shoot()
         self.bullets.update(t)
 
-    def draw(self, window):
+    def draw(self, window: pygame.Surface) -> None:
         window.blit(self.shadow, self.shadow_rect)
         window.blit(self.image, self.rect)
         for bullet in self.bullets:
