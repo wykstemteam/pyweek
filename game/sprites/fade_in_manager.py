@@ -22,9 +22,6 @@ class FadeInManager:
         if self.x < SCREEN_WIDTH:
             window.blit(self.gradient_strip, (self.x, 0))
             if self.x < 0:
-                window.fill(
-                    (0, 0, 0),
-                    pygame.Rect(self.x + SCREEN_WIDTH, 0, SCREEN_WIDTH - self.x, SCREEN_HEIGHT)
-                )
+                window.fill((0, 0, 0), pygame.Rect(self.x + SCREEN_WIDTH, 0, SCREEN_WIDTH - self.x, SCREEN_HEIGHT))
         else:
             self.fading_in = False
