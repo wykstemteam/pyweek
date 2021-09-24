@@ -1,4 +1,5 @@
 import pygame
+import math
 import pygame_gui
 
 from game.assets_manager import assets_manager
@@ -121,8 +122,13 @@ class Game:
                 self.bullet_time_t = ITEM_BULLET_TIME_DURATION
                 self.bullet_time = False
             else:
-                rate = (1-BULLET_TIME_RATE)* ((1 - self.bullet_time_t/ITEM_BULLET_TIME_DURATION)**2)+BULLET_TIME_RATE
-                t *= rate
+                rate = 0
+                if ITEM_BULLET_TIME_DURATION - self.bullet_time_t <= 1:
+                    rate = -math.sqrt((ITEM_BULLET_TIME_DURATION-self.bullet_time_t)*(1-BULLET_TIME_RATE)**2) + 1
+                else:
+                    rate = (1-BULLET_TIME_RATE)* ((1 - self.bullet_time_t/(ITEM_BULLET_TIME_DURATION-1))**2) + BULLET_TIME_RATE
+                t *= rate 
+                print(rate, sep=' ')
 
 
         if not self.lose and not self.pause:
