@@ -34,6 +34,9 @@ class AssetsManager:
         self.images['3buildings'] = pygame.transform.scale(
             self.images['3buildings'], (BUILDING_WIDTH, BUILDING_HEIGHT)
         )
+        self.images['beach_full'] = pygame.transform.scale(
+            self.images['beach_full'], (SCREEN_WIDTH*2, BUILDING_HEIGHT)
+        )
 
         # gui
         self.images['GameOver'] = pygame.transform.scale(

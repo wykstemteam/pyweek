@@ -79,5 +79,5 @@ SHOW_SEA_TIME = 10 # sec
 # debug
 DISABLE_BUILDINGS = False
 SHOW_FPS = False
-DIST_SPD = 1
+DIST_SPD = 10
 PLAYER_INVIN = True
