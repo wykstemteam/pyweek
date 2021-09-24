@@ -323,16 +323,17 @@ class UFO(pygame.sprite.Sprite):
         if not self.activated:
             if self.cenx < 2050:
                 self.cenx += 5
-        else:
-            if self.cenx > 1450:
-                self.cenx -= 5
+        elif self.cenx > 1450:
+            self.cenx -= 5
 
         self.rotate_deg += self.rotate_velocity
         if self.rotate_deg <= -360:
             self.rotate_deg = 0.0
         self.rotate_rad = (self.rotate_deg / 360.0) * 2 * np.pi
         self.image = pygame.transform.rotate(assets_manager.images['UFO'], self.rotate_deg)
-        self.rect = self.image.get_rect(center=self.image.get_rect(center=(self.cenx, self.ceny)).center)
+        self.rect = self.image.get_rect(
+            center=self.image.get_rect(center=(self.cenx, self.ceny)).center
+        )
 
         self.bullet_pattern = random.randint(1, 4)
         self.pattern_dur = random.uniform(10, 20)

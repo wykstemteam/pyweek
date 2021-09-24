@@ -24,7 +24,7 @@ class Game:
         self.spaceship = Spaceship(self.player_collision_group)
         self.ufo = UFO(self.player_collision_group)
         self.player = Player(
-            assets_manager.images['motorbike'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2
+            assets_manager.images['motorbike'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2, self
         )
         self.laser_manager = LaserManager(self.player_collision_group)
         self.buildings = BuildingManager()
@@ -81,6 +81,10 @@ class Game:
 
         assets_manager.play_music("8bitaggressive1")
 
+        #items
+        self.bullet_time = False
+        self.bullet_time_t = ITEM_BULLET_TIME_DURATION
+
     def event_process(self, window: pygame.Surface):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -111,10 +115,20 @@ class Game:
                 self.dimming = True
             return
 
+        if self.bullet_time:
+            self.bullet_time_t -= t
+            if self.bullet_time_t <=0:
+                self.bullet_time_t = ITEM_BULLET_TIME_DURATION
+                self.bullet_time = False
+            else:
+                rate = (1-BULLET_TIME_RATE)* ((1 - self.bullet_time_t/ITEM_BULLET_TIME_DURATION)**2)+BULLET_TIME_RATE
+                t *= rate
+
+
         if not self.lose and not self.pause:
             self.roads.update(t)
             self.buildings.update(t, self.shop)
-            self.player.update(t)
+            self.player.update(t if not self.bullet_time else t/rate)
             self.policecar.update(t, self.shop)
 
             # bomber
