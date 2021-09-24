@@ -28,5 +28,35 @@
                 "path": "assets/images/shop_confirm_images/ex_earthquake_hover.png"
             }
         }
+    },
+    "#button_4": {
+        "images": {
+            "normal_image": {
+                "path": "assets/images/shop_confirm_images/Ex_Clock.png"
+            },
+            "hovered_image": {
+                "path": "assets/images/shop_confirm_images/Ex_Clock_hover.png"
+            }
+        }
+    },
+    "#button_5": {
+        "images": {
+            "normal_image": {
+                "path": "assets/images/shop_confirm_images/Ex_Missile.png"
+            },
+            "hovered_image": {
+                "path": "assets/images/shop_confirm_images/Ex_Missile_hover.png"
+            }
+        }
+    },
+    "#button_6": {
+        "images": {
+            "normal_image": {
+                "path": "assets/images/shop_confirm_images/Ex_Shield.png"
+            },
+            "hovered_image": {
+                "path": "assets/images/shop_confirm_images/Ex_Shield_hover.png"
+            }
+        }
     }
 }
