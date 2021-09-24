@@ -2,6 +2,9 @@ import pygame
 
 pygame.init()
 
+from game.sprites.shop import Shop
+
+
 import pygame_gui
 
 from game.assets_manager import assets_manager
@@ -15,6 +18,9 @@ window = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 def gaming() -> None:
     game = Game()
     clock = pygame.time.Clock()
+
+    # shop = Shop(assets_manager.images['confirm_button'], assets_manager.images['main_menu'], assets_manager.images['darken'])
+    # shop.appear(window)
 
     running = True
     while running:

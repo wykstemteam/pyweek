@@ -211,10 +211,10 @@ class Game:
 
         window.blit(self.health_bar_image, pygame.Rect((10, 10), (400, 100)))
         if self.pause:
-            window.blit(assets_manager.images['Darken'], pygame.Rect(0, 0, 0, 0))
+            window.blit(assets_manager.images['darken'], pygame.Rect(0, 0, 0, 0))
             self.pause_screen.draw_ui(window)
         elif self.lose:
-            window.blit(assets_manager.images['Darken'], pygame.Rect(0, 0, 0, 0))
+            window.blit(assets_manager.images['darken'], pygame.Rect(0, 0, 0, 0))
             window.blit(assets_manager.images['GameOver'], pygame.Rect(0, 0, 0, 0))
             self.lose_screen.draw_ui(window)
         else:

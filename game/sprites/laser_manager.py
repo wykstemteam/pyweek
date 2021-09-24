@@ -4,8 +4,8 @@ import pygame
 
 from game.assets_manager import assets_manager
 from game.constants import *
-from game.sprites import Laser
-from game.sprites import MissileAircraft
+from game.sprites.laserbeam import Laser
+from game.sprites.missile_aircraft import MissileAircraft
 
 
 class LaserManager:

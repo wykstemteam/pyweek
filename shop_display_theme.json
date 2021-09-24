@@ -4,10 +4,10 @@
         "images":
         {   
             "normal_image": {
-                "path": "display_image/Healpotion.png"
+                "path": "assets/images/shop_display_images/healpotion.png"
             },
             "hovered_image":{
-                "path": "display_image/Healpotion_hover.png"
+                "path": "assets/images/shop_display_images/healpotion_hover.png"
             }
         }
     },
@@ -16,10 +16,10 @@
         "images":
         {   
             "normal_image": {
-                "path": "display_image/Star.png"
+                "path": "assets/images/shop_display_images/star.png"
             },
             "hovered_image":{
-                "path": "display_image/Star_hover.png"
+                "path": "assets/images/shop_display_images/star_hover.png"
             }
         }
     },
@@ -28,10 +28,10 @@
         "images":
         {   
             "normal_image": {
-                "path": "display_image/Earthquake.png"
+                "path": "assets/images/shop_display_images/earthquake.png"
             },
             "hovered_image":{
-                "path": "display_image/Earthquake_hover.png"
+                "path": "assets/images/shop_display_images/earthquake_hover.png"
             }
         }
     }

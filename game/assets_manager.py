@@ -23,6 +23,9 @@ class AssetsManager:
 
     def init_images(self) -> None:
         for fn in os.listdir(os.path.join('assets', 'images')):
+            if not os.path.isfile(os.path.join('assets', 'images', fn)):
+                continue
+
             base_fn = os.path.splitext(fn)[0]
             self.images[base_fn] = pygame.image.load(os.path.join('assets', 'images', fn))
 
