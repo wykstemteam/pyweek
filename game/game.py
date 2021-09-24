@@ -89,6 +89,8 @@ class Game:
         # items
         self.bullet_time = False
         self.bullet_time_t = ITEM_BULLET_TIME_DURATION
+        self.earthquake_time = ITEM_EARTHQUAKE_DURATION
+        self.earthquake = False
 
     def event_process(self, window: pygame.Surface):
         for event in pygame.event.get():
@@ -189,6 +191,16 @@ class Game:
         self.pause_screen.update(t)
         self.lose_screen.update(t)
 
+        if self.earthquake:
+            self.earthquake_time -= t
+            if self.earthquake_time <= 0:
+                self.earthquake = False
+                self.screen_shake_manager.shaking = False
+            else:
+                for obj in self.player_collision_group:
+                    if type(obj) not in (PoliceCar, Spaceship):
+                        obj.kill()
+
     def draw(self, window: pygame.Surface) -> None:
         window.fill((0, 0, 0))
         self.roads.draw(window)
@@ -254,3 +266,8 @@ class Game:
                     obj.player_hit(self.player)
                 elif type(obj) == Obstacle:
                     self.player.resolve_collision(obj)
+
+    def start_earthquake(self):
+        self.screen_shake_manager.shaking = True
+        self.earthquake = True
+        self.earthquake_time = ITEM_EARTHQUAKE_DURATION

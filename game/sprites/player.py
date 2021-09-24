@@ -128,7 +128,7 @@ class Player(pygame.sprite.Sprite):
                 self.vy += np.sin(self.dir) * 100
                 self.shoot_missile()
             elif self.items[self.holding] == 4:  # earthquake
-                pass
+                self.game.start_earthquake()
             elif self.items[self.holding] == 5:  # shield
                 pass
             elif self.items[self.holding] == 6:  # bullet time
@@ -216,3 +216,4 @@ class Player(pygame.sprite.Sprite):
         self.item_invincible = True
         self.item_invincible_time = ITEM_INVINCIBILITY_TIME
         self.invincible_color = 0x000000
+
