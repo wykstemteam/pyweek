@@ -124,11 +124,11 @@ class Game:
 
             # spaceship
             # TODO: Hitbox for laser
-            # if self.distance_manager.dist >= 50 and self.distance_manager.dist <= 51:
-            #    self.spaceship.activated = True
-            # if self.distance_manager.dist >= 70 and self.distance_manager.dist <= 71:
-            #    self.spaceship.is_charge = True
-            # self.spaceship.update(t)
+            if self.distance_manager.dist >= 50 and self.distance_manager.dist <= 51:
+               self.spaceship.activated = True
+            if self.distance_manager.dist >= 20 and self.distance_manager.dist <= 21:
+               self.spaceship.is_charge = True
+            self.spaceship.update(t)
 
             # UFO
 
@@ -209,6 +209,8 @@ class Game:
 
     def player_collision(self) -> None:
         for obj in self.player_collision_group:
+            if type(obj) == Spaceship:
+                obj.collision_player(self.player)
             if self.player.rect.colliderect(obj.rect):
                 if type(obj) == PoliceCar:
                     if not PLAYER_INVIN:

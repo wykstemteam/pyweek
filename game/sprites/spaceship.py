@@ -5,6 +5,7 @@ import pygame
 from game.assets_manager import assets_manager
 from game.constants import *
 from game.sprites.bullet import Bullet
+from game.sprites.player import Player
 
 
 class Spaceship(pygame.sprite.Sprite):
@@ -43,6 +44,8 @@ class Spaceship(pygame.sprite.Sprite):
         self.bullet_pattern = 0
         self.pattern_dur = 0.0
         self.shoot_cooldown = SPACESHIP_SHOOT_COOLDOWN
+
+        self.player_collision_group.add(self)
 
     def shoot(self) -> None:
         if self.shoot_cooldown <= 0:
@@ -135,3 +138,10 @@ class Spaceship(pygame.sprite.Sprite):
         window.blit(self.image, self.rect)
         for bullet in self.bullets:
             bullet.draw(window)
+
+    def collision_player(self, player: Player):
+        if self.is_shoot:
+            if player.rect.colliderect(self.laser_shoot_ani[0].get_rect().move(0, 200)):
+                player.hit()
+                
+
