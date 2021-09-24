@@ -1,10 +1,16 @@
 import numpy as np
 import pygame
 
+from game.assets_manager import assets_manager
 from game.constants import *
 from game.sprites import Obstacle
 from game.sprites.missile import Missile
+<<<<<<< Updated upstream
 
+=======
+from game.sprites.obstacle import Obstacle
+from game.sprites.shield import Shield
+>>>>>>> Stashed changes
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, image: pygame.Surface, x: int, y: int):
@@ -34,7 +40,21 @@ class Player(pygame.sprite.Sprite):
         self.items = {1: 0, 2: 0}
         self.holding = 1
 
+<<<<<<< Updated upstream
     def acc(self, dx, dy):
+=======
+        self.invincibility_after_damage = 0
+        self.blink_state = 1
+        self.blink_cooldown = PLAYER_BLINK_COOLDOWN
+
+        self.shield_activate = False
+
+        self.item_invincible = False
+        self.invincible_color = 0x000000
+        self.item_invincible_time = ITEM_INVINCIBILITY_TIME
+
+    def acc(self, dx: int, dy: int) -> None:
+>>>>>>> Stashed changes
         self.vx = min(self.vx + dx, PLAYER_MAX_HORI_SPEED)
         self.vy += dy
 
@@ -92,7 +112,8 @@ class Player(pygame.sprite.Sprite):
             elif self.items[self.holding] == 4:  # earthquake
                 pass
             elif self.items[self.holding] == 5:  # shield
-                pass
+                self.shield_activate = True
+                self.shield = Shield(assets_manager.images['shield'], self.real_x, self.real_y)
             elif self.items[self.holding] == 6:  # bullet time
                 pass
             self.items[self.holding] = 0
@@ -104,16 +125,37 @@ class Player(pygame.sprite.Sprite):
         else:
             self.vx = min(0, self.vx + FRICTION_HORI)
 
+<<<<<<< Updated upstream
         if self.vy > 0:
             self.vy = max(0, self.vy - FRICTION_VERT)
         else:
             self.vy = min(0, self.vy + FRICTION_VERT)
+=======
+        if self.shield_activate:
+            if not self.shield.turn_on:
+                self.shield.kill()
+                self.shield_activate = False
+            else:
+                self.shield.update(t, self.real_x, self.real_y)
+
+        if self.item_invincible:
+            self.item_invincible_time -= t
+            if self.item_invincible_time <= 0:
+                self.item_invincible = False
+                self.image = self.ori_image
+            else:
+                self.image = self.ori_image.copy()
+                self.image.fill(self.invincible_color, special_flags=pygame.BLEND_RGB_MULT)
+                self.invincible_color += 0xFFFFFF // (60 * ITEM_INVINCIBILITY_TIME)
+>>>>>>> Stashed changes
 
     def draw(self, window):
         for missile in self.missiles:
             missile.draw(window)
         window.blit(self.shadow, self.shadow_rect)
         window.blit(self.image, self.rect)
+        if self.shield_activate:
+            self.shield.draw(window)
 
     def in_bounds(self):
         return BUILDING_HEIGHT < self.real_y < SCREEN_HEIGHT - PLAYER_HEIGHT

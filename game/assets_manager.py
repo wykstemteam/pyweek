@@ -49,9 +49,15 @@ class AssetsManager:
         self.images['motorbike'] = pygame.transform.scale(
             self.images['motorbike'], (PLAYER_WIDTH, PLAYER_HEIGHT)
         )
+<<<<<<< Updated upstream
         self.images['arrow'] = pygame.transform.scale(self.images['arrow'], (80, 100))
         for i in range(5):
             self.images[f'HP{i}'] = pygame.transform.scale(self.images[f'HP{i}'], (400, 100))
+=======
+        self.images['shield'] = pygame.transform.scale(
+            self.images['shield'], (PLAYER_WIDTH + SHIELD_WIDTH_OFFSET, PLAYER_HEIGHT + SHIELD_HEIGHT_OFFSET)
+        )
+>>>>>>> Stashed changes
         self.images['missile'] = pygame.transform.scale(
             self.images['missile'], (MISSILE_WIDTH, MISSILE_HEIGHT)
         )
