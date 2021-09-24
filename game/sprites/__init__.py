@@ -7,7 +7,7 @@ from .distance_manager import DistanceManager
 from .explode import Explode
 from .fade_in_manager import FadeInManager
 from .laser_manager import LaserManager
-from .laserbeam import Laser
+from .laser import Laser
 from .missile import Missile
 from .missile_aircraft import MissileAircraft
 from .obstacle import Obstacle
