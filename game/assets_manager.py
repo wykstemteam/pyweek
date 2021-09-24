@@ -68,6 +68,9 @@ class AssetsManager:
         self.images['ls_shoot_none'] = pygame.transform.scale(
             self.images['ls_shoot_none'], (SCREEN_WIDTH, SCREEN_HEIGHT)
         )
+        self.images['spaceship_bullet'] = pygame.transform.scale(
+            self.images['spaceship_bullet'], (SPACESHIP_BULLET_WIDTH, SPACESHIP_BULLET_HEIGHT)
+        )
 
         for i in range(1, 4):
             self.images[f'obstacle{i}'] = pygame.transform.scale(
