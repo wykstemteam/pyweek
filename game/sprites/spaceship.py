@@ -1,4 +1,5 @@
 import numpy as np
+import random
 import pygame
 
 from game.assets_manager import assets_manager
@@ -39,7 +40,8 @@ class Spaceship(pygame.sprite.Sprite):
         self.activated = False
 
         self.bullets = pygame.sprite.Group()
-        self.bullet_pattern = 1
+        self.bullet_pattern = 0
+        self.pattern_dur = 0.0
         self.shoot_cooldown = SPACESHIP_SHOOT_COOLDOWN
 
     def shoot(self):
@@ -66,7 +68,16 @@ class Spaceship(pygame.sprite.Sprite):
                 self.player_collision_group.add(new_bullet3)
                 self.player_collision_group.add(new_bullet4)
             elif self.bullet_pattern == 2:
-                pass
+                new_bullet1 = Bullet(self.bullet_image,
+                                     pygame.Vector2(self.rect.centerx, self.rect.centery - 150),
+                                     -SPACESHIP_BULLET_SPEED, 0)
+                new_bullet2 = Bullet(self.bullet_image,
+                                     pygame.Vector2(self.rect.centerx, self.rect.centery + 150),
+                                     -SPACESHIP_BULLET_SPEED, 0)
+                self.bullets.add(new_bullet1)
+                self.bullets.add(new_bullet2)
+                self.player_collision_group.add(new_bullet1)
+                self.player_collision_group.add(new_bullet2)
 
             self.shoot_cooldown = SPACESHIP_SHOOT_COOLDOWN
 
@@ -98,7 +109,14 @@ class Spaceship(pygame.sprite.Sprite):
                 self.lc_frame = 0.0
                 self.lc_img = assets_manager.images['lc_charge_none']
 
+        if self.pattern_dur <= 0.1:
+            self.bullet_pattern += 1
+            if self.bullet_pattern > 2:
+                self.bullet_pattern = 0
+            self.pattern_dur = float(random.randint(5, 10))
+
         self.shoot_cooldown -= t
+        self.pattern_dur -= t
         self.shoot()
         self.bullets.update(t)
 
