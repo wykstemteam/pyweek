@@ -46,8 +46,8 @@ class Player(pygame.sprite.Sprite):
         self.item_invincible_time = ITEM_INVINCIBILITY_TIME
 
     def acc(self, dx: int, dy: int) -> None:
-        self.vx = min(self.vx + dx, PLAYER_MAX_HORI_SPEED)
-        self.vy += dy
+        self.vx = max(min(self.vx + dx, PLAYER_MAX_SPEED), -PLAYER_MAX_SPEED)
+        self.vy = max(min(self.vy + dy, PLAYER_MAX_SPEED), -PLAYER_MAX_SPEED)
 
     def apply_friction(self) -> None:
         if self.vx > 0:
