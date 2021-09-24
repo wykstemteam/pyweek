@@ -20,9 +20,11 @@ from .spaceship import Spaceship
 from .ufo import UFO
 from .coin_manager import CoinManager
 from .coin import Coin
+from .shield import Shield
 
 __all__ = [
     'Arrow', 'Bomber', 'Building', 'BuildingManager', 'Bullet', 'MissileAircraft',
     'DistanceManager', 'Explode', 'FadeInManager', 'LaserManager', 'Laser', 'Missile', 'Obstacle',
-    'ObstacleManager', 'Player', 'PoliceCar', 'Road', 'Shop', 'Spaceship', 'UFO', 'CoinManager', 'Coin'
+    'ObstacleManager', 'Player', 'PoliceCar', 'Road', 'Shop', 'Spaceship', 'UFO', 'CoinManager', 'Coin',
+    'Shield'
 ]

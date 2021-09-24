@@ -4,6 +4,8 @@ import pygame
 from game.constants import *
 from game.sprites.missile import Missile
 from game.sprites.obstacle import Obstacle
+from game.assets_manager import assets_manager
+from game.sprites.shield import Shield
 
 
 class Player(pygame.sprite.Sprite):
@@ -132,7 +134,9 @@ class Player(pygame.sprite.Sprite):
             elif self.items[self.holding] == 4:  # earthquake
                 self.game.start_earthquake()
             elif self.items[self.holding] == 5:  # shield
-                pass
+                self.shield_activate = True
+                self.shield = Shield(
+                    assets_manager.images['shield'], self.real_x, self.real_y)
             elif self.items[self.holding] == 6:  # bullet time
                 self.game.bullet_time = True
                 self.game.bullet_time_t = ITEM_BULLET_TIME_DURATION
@@ -149,14 +153,25 @@ class Player(pygame.sprite.Sprite):
                 self.image = self.ori_image
             else:
                 self.image = self.ori_image.copy()
-                self.image.fill(self.invincible_color, special_flags=pygame.BLEND_RGB_MULT)
-                self.invincible_color += 0xFFFFFF // (60 * ITEM_INVINCIBILITY_TIME)
+                self.image.fill(self.invincible_color,
+                                special_flags=pygame.BLEND_RGB_MULT)
+                self.invincible_color += 0xFFFFFF // (
+                    60 * ITEM_INVINCIBILITY_TIME)
+
+        if self.shield_activate:
+            if not self.shield.turn_on:
+                self.shield.kill()
+                self.shield_activate = False
+            else:
+                self.shield.update(t, self.real_x, self.real_y)
 
     def draw(self, window: pygame.Surface) -> None:
         for missile in self.missiles:
             missile.draw(window)
         window.blit(self.shadow, self.shadow_rect)
         window.blit(self.image, self.rect)
+        if self.shield_activate:
+            self.shield.draw(window)
 
     def in_bounds(self) -> bool:
         return BUILDING_HEIGHT < self.real_y < SCREEN_HEIGHT - PLAYER_HEIGHT
@@ -218,4 +233,3 @@ class Player(pygame.sprite.Sprite):
         self.item_invincible = True
         self.item_invincible_time = ITEM_INVINCIBILITY_TIME
         self.invincible_color = 0x000000
-

@@ -91,9 +91,11 @@ class AssetsManager:
             self.images[f'obstacle{i}'] = pygame.transform.scale(
                 self.images[f'obstacle{i}'], (OBSTACLE_WIDTH, OBSTACLE_HEIGHT)
             )
-
         self.images['motorbike'] = pygame.transform.scale(
             self.images['motorbike'], (PLAYER_WIDTH, PLAYER_HEIGHT)
+        )
+        self.images['shield'] = pygame.transform.scale(
+            self.images['shield'], (PLAYER_WIDTH + SHIELD_WIDTH_OFFSET, PLAYER_HEIGHT + SHIELD_HEIGHT_OFFSET)
         )
 
     def init_animations(self) -> None:

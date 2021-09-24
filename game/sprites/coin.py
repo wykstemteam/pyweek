@@ -30,5 +30,4 @@ class Coin(pygame.sprite.Sprite):
         self.kill()
 
     def draw(self, window: pygame.Surface) -> None:
-        pygame.draw.rect(window, (0,0,0), self.rect)
         window.blit(self.image, self.rect)
