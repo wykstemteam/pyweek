@@ -17,5 +17,3 @@ class ScreenShakeManager:
             window_copy = window.copy()
             window.fill((0, 0, 0))
             window.blit(window_copy, ScreenShakeManager.get_shake())
-
-    
