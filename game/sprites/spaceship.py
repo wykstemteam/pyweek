@@ -1,6 +1,5 @@
 import random
 
-import numpy as np
 import pygame
 
 from game.assets_manager import assets_manager
