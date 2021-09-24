@@ -49,6 +49,17 @@ class Player(pygame.sprite.Sprite):
         self.vx = min(self.vx + dx, PLAYER_MAX_HORI_SPEED)
         self.vy += dy
 
+    def apply_friction(self) -> None:
+        if self.vx > 0:
+            self.vx = max(0, self.vx - FRICTION_HORI)
+        else:
+            self.vx = min(0, self.vx + FRICTION_HORI)
+
+        if self.vy > 0:
+            self.vy = max(0, self.vy - FRICTION_VERT)
+        else:
+            self.vy = min(0, self.vy + FRICTION_VERT)
+
     def update(self, t: float) -> None:
         self.real_x += (self.vx + BACKGROUND_VELOCITY) * t
         self.real_y += self.vy * t
@@ -97,8 +108,8 @@ class Player(pygame.sprite.Sprite):
 
         if FREE_ITEMS:
             for i in range(6):
-                if keys[pygame.K_KP_1+i]:
-                    self.items[self.holding] = i+1
+                if keys[pygame.K_KP_1 + i]:
+                    self.items[self.holding] = i + 1
 
         if keys[pygame.K_1]:
             self.holding = 1
@@ -127,15 +138,7 @@ class Player(pygame.sprite.Sprite):
 
         self.missiles.update(t)
 
-        if self.vx > 0:
-            self.vx = max(0, self.vx - FRICTION_HORI)
-        else:
-            self.vx = min(0, self.vx + FRICTION_HORI)
-
-        if self.vy > 0:
-            self.vy = max(0, self.vy - FRICTION_VERT)
-        else:
-            self.vy = min(0, self.vy + FRICTION_VERT)
+        self.apply_friction()
 
         if self.item_invincible:
             self.item_invincible_time -= t
@@ -145,7 +148,7 @@ class Player(pygame.sprite.Sprite):
             else:
                 self.image = self.ori_image.copy()
                 self.image.fill(self.invincible_color, special_flags=pygame.BLEND_RGB_MULT)
-                self.invincible_color += 0xFFFFFF // (60*ITEM_INVINCIBILITY_TIME)
+                self.invincible_color += 0xFFFFFF // (60 * ITEM_INVINCIBILITY_TIME)
 
     def draw(self, window: pygame.Surface) -> None:
         for missile in self.missiles:
@@ -199,6 +202,7 @@ class Player(pygame.sprite.Sprite):
     def hit(self) -> bool:
         if self.is_invincible():
             return False
+
         self.invincibility_after_damage = INVINCIBILITY_AFTER_DAMAGE
         self.hp -= 1
         self.blink_cooldown = PLAYER_BLINK_COOLDOWN

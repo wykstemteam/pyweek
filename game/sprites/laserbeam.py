@@ -25,7 +25,7 @@ class Laser(pygame.sprite.Sprite):
                 self.image.set_alpha(127)
             else:
                 self.image.set_alpha(0)
-                self.laser_blink_cooldown -= dt / 6
+                self.laser_blink_cooldown -= dt / 5
         else:
             self.image.set_alpha(0)
 
