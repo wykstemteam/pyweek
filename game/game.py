@@ -126,7 +126,7 @@ class Game:
             # TODO: Hitbox for laser
             if self.distance_manager.dist >= 50 and self.distance_manager.dist <= 51:
                self.spaceship.activated = True
-            if self.distance_manager.dist >= 20 and self.distance_manager.dist <= 21:
+            if self.distance_manager.dist >= 70 and self.distance_manager.dist <= 71:
                self.spaceship.is_charge = True
             self.spaceship.update(t)
 
