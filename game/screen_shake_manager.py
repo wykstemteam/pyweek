@@ -1,4 +1,5 @@
 import random
+from typing import Tuple
 
 import pygame
 
@@ -8,7 +9,7 @@ class ScreenShakeManager:
         self.shaking = False
 
     @staticmethod
-    def get_shake() -> None:
+    def get_shake() -> Tuple[int, int]:
         return (random.randint(-20, 20), random.randint(-20, 20))
 
     def shake(self, window: pygame.Surface) -> None:
