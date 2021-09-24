@@ -1,0 +1,39 @@
+{
+    "#button_1":
+    {   
+        "images":
+        {   
+            "normal_image": {
+                "path": "display_image/Healpotion.png"
+            },
+            "hovered_image":{
+                "path": "display_image/Healpotion_hover.png"
+            }
+        }
+    },
+    "#button_2":
+    {   
+        "images":
+        {   
+            "normal_image": {
+                "path": "display_image/Star.png"
+            },
+            "hovered_image":{
+                "path": "display_image/Star_hover.png"
+            }
+        }
+    },
+    "#button_3":
+    {   
+        "images":
+        {   
+            "normal_image": {
+                "path": "display_image/Earthquake.png"
+            },
+            "hovered_image":{
+                "path": "display_image/Earthquake_hover.png"
+            }
+        }
+    }
+    
+}
