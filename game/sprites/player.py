@@ -10,7 +10,8 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, image: pygame.Surface, x: int, y: int) -> None:
         super().__init__()
 
-        self.image = image
+        self.ori_image = image.copy()
+        self.image = image.copy()
         self.shadow = self.image.copy()
         alpha = 128
         self.shadow.fill((0, 0, 0, alpha), None, pygame.BLEND_RGBA_MULT)
@@ -37,6 +38,10 @@ class Player(pygame.sprite.Sprite):
         self.invincibility_after_damage = 0
         self.blink_state = 1
         self.blink_cooldown = PLAYER_BLINK_COOLDOWN
+
+        self.item_invincible = False
+        self.invincible_color = 0x000000
+        self.item_invincible_time = ITEM_INVINCIBILITY_TIME
 
     def acc(self, dx: int, dy: int) -> None:
         self.vx = min(self.vx + dx, PLAYER_MAX_HORI_SPEED)
@@ -88,6 +93,11 @@ class Player(pygame.sprite.Sprite):
             self.real_y = SCREEN_HEIGHT - PLAYER_HEIGHT
             self.vy = 0
 
+        if FREE_ITEMS:
+            for i in range(6):
+                if keys[pygame.K_KP_1+i]:
+                    self.items[self.holding] = i+1
+
         if keys[pygame.K_1]:
             self.holding = 1
         elif keys[pygame.K_2]:
@@ -98,7 +108,7 @@ class Player(pygame.sprite.Sprite):
                 # FIXME: play some sound effect maybe
                 self.hp += 1
             elif self.items[self.holding] == 2:  # invincible
-                pass
+                self.become_item_invincible()
             elif self.items[self.holding] == 3:
                 self.vx -= np.cos(self.dir) * 100
                 self.vy += np.sin(self.dir) * 100
@@ -122,6 +132,16 @@ class Player(pygame.sprite.Sprite):
             self.vy = max(0, self.vy - FRICTION_VERT)
         else:
             self.vy = min(0, self.vy + FRICTION_VERT)
+
+        if self.item_invincible:
+            self.item_invincible_time -= t
+            if self.item_invincible_time <= 0:
+                self.item_invincible = False
+                self.image = self.ori_image
+            else:
+                self.image = self.ori_image.copy()
+                self.image.fill(self.invincible_color, special_flags=pygame.BLEND_RGB_MULT)
+                self.invincible_color += 0xFFFFFF // (60*ITEM_INVINCIBILITY_TIME)
 
     def draw(self, window: pygame.Surface) -> None:
         for missile in self.missiles:
@@ -181,4 +201,9 @@ class Player(pygame.sprite.Sprite):
         return True
 
     def is_invincible(self) -> bool:
-        return self.invincibility_after_damage > 0
+        return self.item_invincible or self.invincibility_after_damage > 0
+
+    def become_item_invincible(self):
+        self.item_invincible = True
+        self.item_invincible_time = ITEM_INVINCIBILITY_TIME
+        self.invincible_color = 0x000000
