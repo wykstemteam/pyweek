@@ -36,6 +36,15 @@ class Game:
         # Health_bar
         self.health_bar_image = assets_manager.images['HP4']
 
+        #shop
+        self.beach_image = assets_manager.images['beach_full']
+        self.shop = False
+        self.show_sea_time = SHOW_SEA_TIME
+        self.show_shop_animation = False
+        self.dimming = False
+        self.darken_alpha = 0
+        self.beach_rect = pygame.Rect(0, 0, 0, 0)
+
         # game_screen
         self.game_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.pause_button = pygame_gui.elements.UIButton(
@@ -68,11 +77,6 @@ class Game:
             manager=self.lose_screen
         )
         self.lose = False
-        self.shop = False
-        self.show_sea_time = SHOW_SEA_TIME
-        self.show_shop_animation = False
-        self.dimming = False
-        self.darken_alpha = 0
 
         assets_manager.play_music("8bitaggressive1")
 
@@ -120,17 +124,19 @@ class Game:
 
             # spaceship
             # TODO: Hitbox for laser
-            # if self.distance_manager.dist >= 50 and self.distance_manager.dist <= 51:
-            #    self.spaceship.activated = True
-            # if self.distance_manager.dist >= 70 and self.distance_manager.dist <= 71:
-            #    self.spaceship.is_charge = True
-            # self.spaceship.update(t)
+            if self.distance_manager.dist >= 50 and self.distance_manager.dist <= 51:
+               self.spaceship.activated = True
+            if self.distance_manager.dist >= 20 and self.distance_manager.dist <= 21:
+               self.spaceship.is_charge = True
+            self.spaceship.update(t)
 
             # UFO
 
             self.obstacle_manager.update(t, self.shop)
             self.arrow.update(self.player)
             self.laser_manager.update(t, self.shop)
+            if self.shop:
+                self.beach_rect.move_ip(BACKGROUND_VELOCITY//100, 0)
             if not self.shop:
                 self.distance_manager.update(t)
                 self.player_collision()
@@ -154,6 +160,8 @@ class Game:
     def draw(self, window: pygame.Surface) -> None:
         window.fill((0, 0, 0))
         self.roads.draw(window)
+        if self.shop:
+            window.blit(self.beach_image, self.beach_rect)
         self.buildings.draw(window)
         self.policecar.draw(window)
         self.laser_manager.draw(window)
@@ -201,6 +209,8 @@ class Game:
 
     def player_collision(self) -> None:
         for obj in self.player_collision_group:
+            if type(obj) == Spaceship:
+                obj.collision_player(self.player)
             if self.player.rect.colliderect(obj.rect):
                 if type(obj) == PoliceCar:
                     if not PLAYER_INVIN:
