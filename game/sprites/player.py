@@ -7,8 +7,10 @@ from game.sprites.obstacle import Obstacle
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, image: pygame.Surface, x: int, y: int) -> None:
+    def __init__(self, image: pygame.Surface, x: int, y: int, game) -> None:
         super().__init__()
+
+        self.game = game
 
         self.ori_image = image.copy()
         self.image = image.copy()
@@ -106,7 +108,8 @@ class Player(pygame.sprite.Sprite):
         if left_button_pressed:
             if self.items[self.holding] == 1:
                 # FIXME: play some sound effect maybe
-                self.hp += 1
+                if self.hp < 4:
+                    self.hp += 1
             elif self.items[self.holding] == 2:  # invincible
                 self.become_item_invincible()
             elif self.items[self.holding] == 3:
@@ -118,7 +121,8 @@ class Player(pygame.sprite.Sprite):
             elif self.items[self.holding] == 5:  # shield
                 pass
             elif self.items[self.holding] == 6:  # bullet time
-                pass
+                self.game.bullet_time = True
+                self.game.bullet_time_t = ITEM_BULLET_TIME_DURATION
             self.items[self.holding] = 0
 
         self.missiles.update(t)
