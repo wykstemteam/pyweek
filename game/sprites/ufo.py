@@ -13,7 +13,7 @@ class UFO(pygame.sprite.Sprite):
         super().__init__()
 
         self.image = assets_manager.images['UFO']
- #       self.bullet_image = assets_manager.images['UFO_bullet']
+        #       self.bullet_image = assets_manager.images['UFO_bullet']
 
         self.cenx = 2050
         self.ceny = (SCREEN_HEIGHT / 2)
@@ -87,16 +87,16 @@ class UFO(pygame.sprite.Sprite):
         if not self.activated:
             if self.cenx < 2050:
                 self.cenx += 5
-        else:
-            if self.cenx > 1450:
-                self.cenx -= 5
+        elif self.cenx > 1450:
+            self.cenx -= 5
 
         self.rotate_deg += self.rotate_velocity
         if self.rotate_deg <= -360:
             self.rotate_deg = 0.0
         self.image = pygame.transform.rotate(assets_manager.images['UFO'], self.rotate_deg)
-        self.rect = self.image.get_rect(center=self.image.get_rect(center=(self.cenx, self.ceny)).center)
+        self.rect = self.image.get_rect(
+            center=self.image.get_rect(center=(self.cenx, self.ceny)).center
+        )
 
     def draw(self, window: pygame.Surface) -> None:
         window.blit(self.image, self.rect)
-
