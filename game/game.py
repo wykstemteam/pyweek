@@ -217,12 +217,12 @@ class Game:
 
     def trigger_lose(self) -> None:
         if not self.lose and not self.pause:
-            assets_manager.play_music("greensleeves")
+            assets_manager.play_music("ensolarado")
             self.lose = True
 
     def trigger_shop(self) -> None:
         if not self.shop and not self.pause:
-            # assets_manager.play_music("greensleeves") FIXME jono music pls
+            assets_manager.play_music("mid_afternoon_mood")
             self.shop = True
             self.bomber.activated = False
             self.spaceship.activated = False
@@ -233,12 +233,9 @@ class Game:
             if type(obj) == Spaceship:
                 obj.collision_player(self.player)
             if self.player.rect.colliderect(obj.rect):
-                if type(obj) == PoliceCar:
-                    if not PLAYER_INVIN:
-                        self.trigger_lose()
-                elif type(obj) == Bullet:
-                    obj.player_hit(self.player)
-                elif type(obj) == MissileAircraft:
+                if type(obj) == PoliceCar and not PLAYER_INVIN:
+                    self.trigger_lose()
+                elif type(obj) in (Bullet, MissileAircraft):
                     obj.player_hit(self.player)
                 elif type(obj) == Obstacle:
                     self.player.resolve_collision(obj)

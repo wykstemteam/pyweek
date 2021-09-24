@@ -45,7 +45,7 @@ def main() -> None:
         manager=title_screen
     )
 
-    assets_manager.play_music("tanukichis_adventure")
+    assets_manager.play_music("boys_summer_vacation")
     running = True
     cock = pygame.time.Clock()
     while running:
@@ -57,7 +57,7 @@ def main() -> None:
             if event.type == pygame.USEREVENT and event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == start_button:
                     gaming()
-                    assets_manager.play_music("tanukichis_adventure")
+                    assets_manager.play_music("boys_summer_vacation")
                 elif event.ui_element == settings_button:
                     settings(window)
 

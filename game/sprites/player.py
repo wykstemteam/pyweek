@@ -172,12 +172,13 @@ class Player(pygame.sprite.Sprite):
         self_right = self.real_x + PLAYER_WIDTH
         self_top = self.real_y
         self_bottom = self.real_y + PLAYER_HEIGHT
+
         distances = [
             (self_right - obstacle_left, 0), (obstacle_right - self_left, 1),
             (self_bottom - obstacle_top, 2), (obstacle_bottom - self_top, 3)
         ]
-        # TODO: Replace with list comprehension
-        distances = sorted(filter(lambda x: x[0] >= 0, distances))
+        distances = [x for x in distances if x[0] >= 0]
+        distances.sort()
 
         if distances[0][1] == 0:  # right
             self.real_x = obstacle_left - PLAYER_WIDTH
