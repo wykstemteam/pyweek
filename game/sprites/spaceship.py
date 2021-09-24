@@ -15,6 +15,7 @@ class Spaceship(pygame.sprite.Sprite):
         self.image = assets_manager.images['space_ship']
         self.bullet_image = assets_manager.images['spaceship_bullet']
 
+        # lc = laser charge
         self.laser_charge_ani = assets_manager.animations['laser_charge']
         self.lc_img = assets_manager.images['lc_charge_none']
         self.lc_rect = self.lc_img.get_rect()
@@ -22,6 +23,7 @@ class Spaceship(pygame.sprite.Sprite):
         self.lc_frame = 0.0
         self.is_charge = False
 
+        # ls = laser shoot
         self.laser_shoot_ani = assets_manager.animations['laser_shoot']
         self.ls_img = assets_manager.images['ls_shoot_none']
         self.ls_rect = self.ls_img.get_rect()
@@ -141,7 +143,8 @@ class Spaceship(pygame.sprite.Sprite):
 
     def collision_player(self, player: Player):
         if self.is_shoot:
-            if player.rect.colliderect(self.laser_shoot_ani[0].get_rect().move(0, 200)):
-                player.hit()
+            if self.ls_frame >= 2 and self.ls_frame <= 18:
+                if player.rect.colliderect(pygame.Rect(0, 220, 1500, 200)):
+                    player.hit()
                 
 
