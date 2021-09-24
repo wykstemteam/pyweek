@@ -1,4 +1,5 @@
 import pygame
+import math
 import pygame_gui
 
 from game.assets_manager import assets_manager
@@ -22,8 +23,9 @@ class Game:
         )
         self.bomber = Bomber(self.player_collision_group)
         self.spaceship = Spaceship(self.player_collision_group)
+        self.ufo = UFO(self.player_collision_group)
         self.player = Player(
-            assets_manager.images['motorbike'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2
+            assets_manager.images['motorbike'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2, self
         )
         self.laser_manager = LaserManager(self.player_collision_group)
         self.buildings = BuildingManager()
@@ -80,6 +82,10 @@ class Game:
 
         assets_manager.play_music("8bitaggressive1")
 
+        #items
+        self.bullet_time = False
+        self.bullet_time_t = ITEM_BULLET_TIME_DURATION
+
     def event_process(self, window: pygame.Surface):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -110,10 +116,25 @@ class Game:
                 self.dimming = True
             return
 
+        if self.bullet_time:
+            self.bullet_time_t -= t
+            if self.bullet_time_t <=0:
+                self.bullet_time_t = ITEM_BULLET_TIME_DURATION
+                self.bullet_time = False
+            else:
+                rate = 0
+                if ITEM_BULLET_TIME_DURATION - self.bullet_time_t <= 1:
+                    rate = -math.sqrt((ITEM_BULLET_TIME_DURATION-self.bullet_time_t)*(1-BULLET_TIME_RATE)**2) + 1
+                else:
+                    rate = (1-BULLET_TIME_RATE)* ((1 - self.bullet_time_t/(ITEM_BULLET_TIME_DURATION-1))**2) + BULLET_TIME_RATE
+                t *= rate 
+                print(rate, sep=' ')
+
+
         if not self.lose and not self.pause:
             self.roads.update(t)
             self.buildings.update(t, self.shop)
-            self.player.update(t)
+            self.player.update(t if not self.bullet_time else t/rate)
             self.policecar.update(t, self.shop)
 
             # bomber
@@ -124,13 +145,16 @@ class Game:
 
             # spaceship
             # TODO: Hitbox for laser
-            if self.distance_manager.dist >= 50 and self.distance_manager.dist <= 51:
-               self.spaceship.activated = True
-            if self.distance_manager.dist >= 20 and self.distance_manager.dist <= 21:
-               self.spaceship.is_charge = True
-            self.spaceship.update(t)
+            # if self.distance_manager.dist >= 50 and self.distance_manager.dist <= 51:
+            #    self.spaceship.activated = True
+            # if self.distance_manager.dist >= 70 and self.distance_manager.dist <= 71:
+            #    self.spaceship.is_charge = True
+            # self.spaceship.update(t)
 
             # UFO
+            if self.distance_manager.dist >= 50 and self.distance_manager.dist <= 51:
+               self.ufo.activated = True
+            self.ufo.update(t)
 
             self.obstacle_manager.update(t, self.shop)
             self.arrow.update(self.player)
@@ -167,12 +191,14 @@ class Game:
         self.laser_manager.draw(window)
         self.obstacle_manager.draw(window)
         self.player.draw(window)
-        self.distance_manager.draw(window)
         self.arrow.draw(window)
 
         # objects that fly
         self.bomber.draw(window)
         self.spaceship.draw(window)
+        self.ufo.draw(window)
+
+        self.distance_manager.draw(window)
 
         window.blit(self.health_bar_image, pygame.Rect((10, 10), (400, 100)))
         if self.pause:
@@ -197,27 +223,25 @@ class Game:
 
     def trigger_lose(self) -> None:
         if not self.lose and not self.pause:
-            assets_manager.play_music("greensleeves")
+            assets_manager.play_music("ensolarado")
             self.lose = True
 
     def trigger_shop(self) -> None:
         if not self.shop and not self.pause:
-            # assets_manager.play_music("greensleeves") FIXME jono music pls
+            assets_manager.play_music("mid_afternoon_mood")
             self.shop = True
             self.bomber.activated = False
             self.spaceship.activated = False
+            self.ufo.activated = False
 
     def player_collision(self) -> None:
         for obj in self.player_collision_group:
             if type(obj) == Spaceship:
                 obj.collision_player(self.player)
             if self.player.rect.colliderect(obj.rect):
-                if type(obj) == PoliceCar:
-                    if not PLAYER_INVIN:
-                        self.trigger_lose()
-                elif type(obj) == Bullet:
-                    obj.player_hit(self.player)
-                elif type(obj) == MissileAircraft:
+                if type(obj) == PoliceCar and not PLAYER_INVIN:
+                    self.trigger_lose()
+                elif type(obj) in (Bullet, MissileAircraft):
                     obj.player_hit(self.player)
                 elif type(obj) == Obstacle:
                     self.player.resolve_collision(obj)

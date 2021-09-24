@@ -1,4 +1,5 @@
 import random
+from typing import List
 
 import pygame
 
@@ -13,8 +14,8 @@ class Spaceship(pygame.sprite.Sprite):
         super().__init__()
 
         self.image = assets_manager.images['space_ship']
-        self.bullet_image = assets_manager.images['spaceship_bullet']
 
+        # lc = laser charge
         self.laser_charge_ani = assets_manager.animations['laser_charge']
         self.lc_img = assets_manager.images['lc_charge_none']
         self.lc_rect = self.lc_img.get_rect()
@@ -22,6 +23,7 @@ class Spaceship(pygame.sprite.Sprite):
         self.lc_frame = 0.0
         self.is_charge = False
 
+        # ls = laser shoot
         self.laser_shoot_ani = assets_manager.animations['laser_shoot']
         self.ls_img = assets_manager.images['ls_shoot_none']
         self.ls_rect = self.ls_img.get_rect()
@@ -29,7 +31,7 @@ class Spaceship(pygame.sprite.Sprite):
         self.ls_frame = 0.0
         self.is_shoot = False
 
-        self.x = 1500
+        self.x = 1600
         self.y = (SCREEN_HEIGHT / 2) - (self.image.get_height() / 2)
 
         self.rect = self.image.get_rect()
@@ -47,47 +49,41 @@ class Spaceship(pygame.sprite.Sprite):
 
         self.player_collision_group.add(self)
 
+    def get_bullet_pattern(self) -> List[Bullet]:
+        if self.bullet_pattern == 0:
+            return [
+                Bullet(
+                    self.bullet_image, pygame.Vector2(self.rect.centerx, self.rect.centery - 200),
+                    -SPACESHIP_BULLET_SPEED, 0
+                ),
+                Bullet(
+                    self.bullet_image, pygame.Vector2(self.rect.centerx, self.rect.centery - 100),
+                    -SPACESHIP_BULLET_SPEED, 0
+                ),
+                Bullet(
+                    self.bullet_image, pygame.Vector2(self.rect.centerx, self.rect.centery + 100),
+                    -SPACESHIP_BULLET_SPEED, 0
+                ),
+                Bullet(
+                    self.bullet_image, pygame.Vector2(self.rect.centerx, self.rect.centery + 200),
+                    -SPACESHIP_BULLET_SPEED, 0
+                )
+            ]
+        elif self.bullet_pattern == 1:
+            return [
+                Bullet(
+                    self.bullet_image, pygame.Vector2(self.rect.centerx, self.rect.centery - 150),
+                    -SPACESHIP_BULLET_SPEED, 0
+                ),
+                Bullet(
+                    self.bullet_image, pygame.Vector2(self.rect.centerx, self.rect.centery + 150),
+                    -SPACESHIP_BULLET_SPEED, 0
+                )
+            ]
+
     def shoot(self) -> None:
         if self.shoot_cooldown <= 0:
-            new_bullets = []
-            if self.bullet_pattern == 1:
-                new_bullets = [
-                    Bullet(
-                        self.bullet_image,
-                        pygame.Vector2(self.rect.centerx,
-                                       self.rect.centery - 200), -SPACESHIP_BULLET_SPEED, 0
-                    ),
-                    Bullet(
-                        self.bullet_image,
-                        pygame.Vector2(self.rect.centerx,
-                                       self.rect.centery - 100), -SPACESHIP_BULLET_SPEED, 0
-                    ),
-                    Bullet(
-                        self.bullet_image,
-                        pygame.Vector2(self.rect.centerx,
-                                       self.rect.centery + 100), -SPACESHIP_BULLET_SPEED, 0
-                    ),
-                    Bullet(
-                        self.bullet_image,
-                        pygame.Vector2(self.rect.centerx,
-                                       self.rect.centery + 200), -SPACESHIP_BULLET_SPEED, 0
-                    )
-                ]
-            elif self.bullet_pattern == 2:
-                new_bullets = [
-                    Bullet(
-                        self.bullet_image,
-                        pygame.Vector2(self.rect.centerx,
-                                       self.rect.centery - 150), -SPACESHIP_BULLET_SPEED, 0
-                    ),
-                    Bullet(
-                        self.bullet_image,
-                        pygame.Vector2(self.rect.centerx,
-                                       self.rect.centery + 150), -SPACESHIP_BULLET_SPEED, 0
-                    )
-                ]
-
-            for bullet in new_bullets:
+            for bullet in self.get_bullet_pattern():
                 self.bullets.add(bullet)
                 self.player_collision_group.add(bullet)
 
@@ -122,10 +118,8 @@ class Spaceship(pygame.sprite.Sprite):
                 self.lc_img = assets_manager.images['lc_charge_none']
 
         if self.pattern_dur <= 0.1:
-            self.bullet_pattern += 1
-            if self.bullet_pattern > 2:
-                self.bullet_pattern = 0
-            self.pattern_dur = float(random.randint(5, 10))
+            self.bullet_pattern = (self.bullet_pattern + 1) % 2
+            self.pattern_dur = float(random.randint(2, 5))
 
         self.shoot_cooldown -= t
         self.pattern_dur -= t
@@ -140,8 +134,8 @@ class Spaceship(pygame.sprite.Sprite):
             bullet.draw(window)
 
     def collision_player(self, player: Player):
-        if self.is_shoot:
-            if player.rect.colliderect(self.laser_shoot_ani[0].get_rect().move(0, 200)):
-                player.hit()
-                
-
+        if (
+            self.is_shoot and self.ls_frame >= 2 and self.ls_frame <= 18
+            and player.rect.colliderect(pygame.Rect(0, 220, 1500, 200))
+        ):
+            player.hit()

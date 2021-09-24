@@ -14,8 +14,8 @@ class PoliceCar(pygame.sprite.Sprite):
         UP_TO_BOTTOM = 2
 
     def __init__(
-            self, image: pygame.Surface, pos: pygame.Vector2, bullet_image: pygame.Surface,
-            player_collision_group: pygame.sprite.Group
+        self, image: pygame.Surface, pos: pygame.Vector2, bullet_image: pygame.Surface,
+        player_collision_group: pygame.sprite.Group
     ) -> None:
         super().__init__()
 
@@ -66,7 +66,6 @@ class PoliceCar(pygame.sprite.Sprite):
             self.shadow_rect.topleft = self.shadow_rect.topleft + pygame.Vector2(-5, 5)
             self.bullets.update(t)
             return
-        # FIXME: @Jutsin/Eason please use an enum instead of raw integers for state
         if self.state == PoliceCar.State.RANDOM:
             if len(self.objectives) == 0:
                 self.objectives.append(random.randint(120, 600 - POLICECAR_HEIGHT))

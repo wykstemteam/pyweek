@@ -7,10 +7,13 @@ from game.sprites.obstacle import Obstacle
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, image: pygame.Surface, x: int, y: int) -> None:
+    def __init__(self, image: pygame.Surface, x: int, y: int, game) -> None:
         super().__init__()
 
-        self.image = image
+        self.game = game
+
+        self.ori_image = image.copy()
+        self.image = image.copy()
         self.shadow = self.image.copy()
         alpha = 128
         self.shadow.fill((0, 0, 0, alpha), None, pygame.BLEND_RGBA_MULT)
@@ -38,9 +41,24 @@ class Player(pygame.sprite.Sprite):
         self.blink_state = 1
         self.blink_cooldown = PLAYER_BLINK_COOLDOWN
 
+        self.item_invincible = False
+        self.invincible_color = 0x000000
+        self.item_invincible_time = ITEM_INVINCIBILITY_TIME
+
     def acc(self, dx: int, dy: int) -> None:
         self.vx = min(self.vx + dx, PLAYER_MAX_HORI_SPEED)
         self.vy += dy
+
+    def apply_friction(self) -> None:
+        if self.vx > 0:
+            self.vx = max(0, self.vx - FRICTION_HORI)
+        else:
+            self.vx = min(0, self.vx + FRICTION_HORI)
+
+        if self.vy > 0:
+            self.vy = max(0, self.vy - FRICTION_VERT)
+        else:
+            self.vy = min(0, self.vy + FRICTION_VERT)
 
     def update(self, t: float) -> None:
         self.real_x += (self.vx + BACKGROUND_VELOCITY) * t
@@ -88,6 +106,11 @@ class Player(pygame.sprite.Sprite):
             self.real_y = SCREEN_HEIGHT - PLAYER_HEIGHT
             self.vy = 0
 
+        if FREE_ITEMS:
+            for i in range(6):
+                if keys[pygame.K_KP_1 + i]:
+                    self.items[self.holding] = i + 1
+
         if keys[pygame.K_1]:
             self.holding = 1
         elif keys[pygame.K_2]:
@@ -96,9 +119,10 @@ class Player(pygame.sprite.Sprite):
         if left_button_pressed:
             if self.items[self.holding] == 1:
                 # FIXME: play some sound effect maybe
-                self.hp += 1
+                if self.hp < 4:
+                    self.hp += 1
             elif self.items[self.holding] == 2:  # invincible
-                pass
+                self.become_item_invincible()
             elif self.items[self.holding] == 3:
                 self.vx -= np.cos(self.dir) * 100
                 self.vy += np.sin(self.dir) * 100
@@ -108,20 +132,23 @@ class Player(pygame.sprite.Sprite):
             elif self.items[self.holding] == 5:  # shield
                 pass
             elif self.items[self.holding] == 6:  # bullet time
-                pass
+                self.game.bullet_time = True
+                self.game.bullet_time_t = ITEM_BULLET_TIME_DURATION
             self.items[self.holding] = 0
 
         self.missiles.update(t)
 
-        if self.vx > 0:
-            self.vx = max(0, self.vx - FRICTION_HORI)
-        else:
-            self.vx = min(0, self.vx + FRICTION_HORI)
+        self.apply_friction()
 
-        if self.vy > 0:
-            self.vy = max(0, self.vy - FRICTION_VERT)
-        else:
-            self.vy = min(0, self.vy + FRICTION_VERT)
+        if self.item_invincible:
+            self.item_invincible_time -= t
+            if self.item_invincible_time <= 0:
+                self.item_invincible = False
+                self.image = self.ori_image
+            else:
+                self.image = self.ori_image.copy()
+                self.image.fill(self.invincible_color, special_flags=pygame.BLEND_RGB_MULT)
+                self.invincible_color += 0xFFFFFF // (60 * ITEM_INVINCIBILITY_TIME)
 
     def draw(self, window: pygame.Surface) -> None:
         for missile in self.missiles:
@@ -145,12 +172,13 @@ class Player(pygame.sprite.Sprite):
         self_right = self.real_x + PLAYER_WIDTH
         self_top = self.real_y
         self_bottom = self.real_y + PLAYER_HEIGHT
+
         distances = [
             (self_right - obstacle_left, 0), (obstacle_right - self_left, 1),
             (self_bottom - obstacle_top, 2), (obstacle_bottom - self_top, 3)
         ]
-        # TODO: Replace with list comprehension
-        distances = sorted(filter(lambda x: x[0] >= 0, distances))
+        distances = [x for x in distances if x[0] >= 0]
+        distances.sort()
 
         if distances[0][1] == 0:  # right
             self.real_x = obstacle_left - PLAYER_WIDTH
@@ -175,10 +203,16 @@ class Player(pygame.sprite.Sprite):
     def hit(self) -> bool:
         if self.is_invincible():
             return False
+
         self.invincibility_after_damage = INVINCIBILITY_AFTER_DAMAGE
         self.hp -= 1
         self.blink_cooldown = PLAYER_BLINK_COOLDOWN
         return True
 
     def is_invincible(self) -> bool:
-        return self.invincibility_after_damage > 0
+        return self.item_invincible or self.invincibility_after_damage > 0
+
+    def become_item_invincible(self):
+        self.item_invincible = True
+        self.item_invincible_time = ITEM_INVINCIBILITY_TIME
+        self.invincible_color = 0x000000
