@@ -121,15 +121,14 @@ class Game:
                 self.bullet_time_t = ITEM_BULLET_TIME_DURATION
                 self.bullet_time = False
             else:
-                if self.bullet_time_t <= 1:
-                    t *= BULLET_TIME_RATE * (-(1/BULLET_TIME_RATE - 1)*self.bullet_time_t + 1/BULLET_TIME_RATE)
-                else:
-                    t *= BULLET_TIME_RATE #FIXME JONO slow down music while bullet time
+                rate = (1-BULLET_TIME_RATE)* ((1 - self.bullet_time_t/ITEM_BULLET_TIME_DURATION)**2)+BULLET_TIME_RATE
+                t *= rate
+
 
         if not self.lose and not self.pause:
             self.roads.update(t)
             self.buildings.update(t, self.shop)
-            self.player.update(t if not self.bullet_time else t/BULLET_TIME_RATE)
+            self.player.update(t if not self.bullet_time else t/rate)
             self.policecar.update(t, self.shop)
 
             # bomber
