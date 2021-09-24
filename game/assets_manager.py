@@ -35,7 +35,10 @@ class AssetsManager:
             self.images['3buildings'], (BUILDING_WIDTH, BUILDING_HEIGHT)
         )
         self.images['beach_full'] = pygame.transform.scale(
-            self.images['beach_full'], (SCREEN_WIDTH*2, BUILDING_HEIGHT)
+            self.images['beach_full'], (SCREEN_WIDTH * 2, BUILDING_HEIGHT)
+        )
+        self.images['gradient_line'] = pygame.transform.scale(
+            self.images['gradient_line'], (SCREEN_WIDTH, SCREEN_HEIGHT)
         )
 
         # gui
@@ -81,7 +84,6 @@ class AssetsManager:
             self.images['UFO_bullet'], (UFO_BULLET_WIDTH, UFO_BULLET_HEIGHT)
         )
 
-
         for i in range(1, 4):
             self.images[f'obstacle{i}'] = pygame.transform.scale(
                 self.images[f'obstacle{i}'], (OBSTACLE_WIDTH, OBSTACLE_HEIGHT)
@@ -118,7 +120,6 @@ class AssetsManager:
             self.animations['laser_shoot'][i] = pygame.transform.scale(
                 self.animations['laser_shoot'][i], (SCREEN_WIDTH, SCREEN_HEIGHT)
             )
-
 
     def init_sounds(self) -> None:
         for fn in os.listdir(os.path.join('assets', 'sounds')):

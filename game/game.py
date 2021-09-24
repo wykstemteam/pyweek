@@ -1,13 +1,14 @@
-import pygame
 import math
+
+import pygame
 import pygame_gui
 
 from game.assets_manager import assets_manager
 from game.constants import *
 from game.screen_shake_manager import ScreenShakeManager
 from game.sprites import *
-
 # TODO: Replace self.pause and self.lose with self.state which is GAMING, PAUSE or LOSE
+from game.sprites.fade_in_manager import FadeInManager
 
 
 class Game:
@@ -35,10 +36,13 @@ class Game:
         self.screen_shake_manager = ScreenShakeManager()
         # self.screen_shake_manager.shaking = True
 
+        self.fade_in_manager = FadeInManager(assets_manager.images['gradient_line'])
+        self.fade_in_manager.start_fade_in()
+
         # Health_bar
         self.health_bar_image = assets_manager.images['HP4']
 
-        #shop
+        # shop
         self.beach_image = assets_manager.images['beach_full']
         self.shop = False
         self.show_sea_time = SHOW_SEA_TIME
@@ -82,7 +86,7 @@ class Game:
 
         assets_manager.play_music("8bitaggressive1")
 
-        #items
+        # items
         self.bullet_time = False
         self.bullet_time_t = ITEM_BULLET_TIME_DURATION
 
@@ -118,23 +122,25 @@ class Game:
 
         if self.bullet_time:
             self.bullet_time_t -= t
-            if self.bullet_time_t <=0:
+            if self.bullet_time_t <= 0:
                 self.bullet_time_t = ITEM_BULLET_TIME_DURATION
                 self.bullet_time = False
             else:
                 rate = 0
                 if ITEM_BULLET_TIME_DURATION - self.bullet_time_t <= 1:
-                    rate = -math.sqrt((ITEM_BULLET_TIME_DURATION-self.bullet_time_t)*(1-BULLET_TIME_RATE)**2) + 1
+                    rate = -math.sqrt(
+                        (ITEM_BULLET_TIME_DURATION - self.bullet_time_t) * (1 - BULLET_TIME_RATE) ** 2) + 1
                 else:
-                    rate = (1-BULLET_TIME_RATE)* ((1 - self.bullet_time_t/(ITEM_BULLET_TIME_DURATION-1))**2) + BULLET_TIME_RATE
-                t *= rate 
+                    rate = (1 - BULLET_TIME_RATE) * (
+                                (1 - self.bullet_time_t / (ITEM_BULLET_TIME_DURATION - 1)) ** 2) + BULLET_TIME_RATE
+                t *= rate
                 print(rate, sep=' ')
 
-
         if not self.lose and not self.pause:
+            self.fade_in_manager.update(t)
             self.roads.update(t)
             self.buildings.update(t, self.shop)
-            self.player.update(t if not self.bullet_time else t/rate)
+            self.player.update(t if not self.bullet_time else t / rate)
             self.policecar.update(t, self.shop)
 
             # bomber
@@ -152,15 +158,15 @@ class Game:
             # self.spaceship.update(t)
 
             # UFO
-            if self.distance_manager.dist >= 50 and self.distance_manager.dist <= 51:
-               self.ufo.activated = True
+            if 50 <= self.distance_manager.dist <= 51:
+                self.ufo.activated = True
             self.ufo.update(t)
 
             self.obstacle_manager.update(t, self.shop)
             self.arrow.update(self.player)
             self.laser_manager.update(t, self.shop)
             if self.shop:
-                self.beach_rect.move_ip(BACKGROUND_VELOCITY//100, 0)
+                self.beach_rect.move_ip(BACKGROUND_VELOCITY // 100, 0)
             if not self.shop:
                 self.distance_manager.update(t)
                 self.player_collision()
@@ -197,6 +203,7 @@ class Game:
         self.bomber.draw(window)
         self.spaceship.draw(window)
         self.ufo.draw(window)
+        self.fade_in_manager.draw(window)
 
         self.distance_manager.draw(window)
 
