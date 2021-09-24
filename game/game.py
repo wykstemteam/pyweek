@@ -7,8 +7,8 @@ from game.assets_manager import assets_manager
 from game.constants import *
 from game.screen_shake_manager import ScreenShakeManager
 from game.sprites import *
+
 # TODO: Replace self.pause and self.lose with self.state which is GAMING, PAUSE or LOSE
-from game.sprites.fade_in_manager import FadeInManager
 
 
 class Game:
@@ -129,10 +129,12 @@ class Game:
                 rate = 0
                 if ITEM_BULLET_TIME_DURATION - self.bullet_time_t <= 1:
                     rate = -math.sqrt(
-                        (ITEM_BULLET_TIME_DURATION - self.bullet_time_t) * (1 - BULLET_TIME_RATE) ** 2) + 1
+                        (ITEM_BULLET_TIME_DURATION - self.bullet_time_t) * (1 - BULLET_TIME_RATE)**2
+                    ) + 1
                 else:
                     rate = (1 - BULLET_TIME_RATE) * (
-                                (1 - self.bullet_time_t / (ITEM_BULLET_TIME_DURATION - 1)) ** 2) + BULLET_TIME_RATE
+                        (1 - self.bullet_time_t / (ITEM_BULLET_TIME_DURATION - 1))**2
+                    ) + BULLET_TIME_RATE
                 t *= rate
                 print(rate, sep=' ')
 
