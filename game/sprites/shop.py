@@ -130,7 +130,7 @@ class Shop:
                                 assets_manager.play_sound("select2")
                             self._hide()
                             confirmation = False
-                        else:
+                        elif button in self.buttons:
                             assets_manager.play_sound("select1")
                             button_number = self.buttons.index(button)
                             self.display_buttons[button_number].show()
