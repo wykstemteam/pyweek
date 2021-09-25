@@ -32,6 +32,7 @@ class Bomber(pygame.sprite.Sprite):
 
         self.dir = 0.0
         self.activated = False
+        self.activated_dur = 0.0
 
     def aim(self, px: float, py: float) -> None:
         self.dir = np.arctan2(self.rect.centery - py, px - self.rect.centerx)
@@ -47,6 +48,9 @@ class Bomber(pygame.sprite.Sprite):
             self.shoot_cooldown = BOMBER_SHOOT_COOLDOWN
 
     def update(self, t: float) -> None:
+        if self.activated_dur <= 0.0:
+            self.activated = False
+
         if self.activated:
             if self.x < -100:
                 self.x += 1
