@@ -280,6 +280,8 @@ class Game:
                 self.obstacle_manager.reached_checkpoint = True
                 self.policecar.activated = False
                 self.bomber.activated = False
+                self.ufo.activated = False
+                self.spaceship.activated = False
                 self.beach_rect.move_ip(BACKGROUND_VELOCITY / 2 * t, 0)
                 self.stage1_countdown -= t
 
@@ -326,10 +328,11 @@ class Game:
         # objects in scene.SPACE:
         if self.cur_scene == Scenes.SPACE:
             if not self.lose and not self.pause:
-                if not self.spaceship.activated:
-                    self.ufo.random_activate()
-                if not self.ufo.activated:
-                    self.spaceship.random_activate()
+                if self.distance_manager.dist_to_next_country > 0:
+                    if not self.spaceship.activated:
+                        self.ufo.random_activate()
+                    if not self.ufo.activated:
+                        self.spaceship.random_activate()
                 self.spaceship.update(t)
                 self.ufo.update(t)
 

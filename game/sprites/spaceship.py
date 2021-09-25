@@ -42,6 +42,7 @@ class Spaceship(pygame.sprite.Sprite):
 
         self.dir = 0.0
         self.activated = False
+        self.activated_dur = 0.0
 
         self.bullets = pygame.sprite.Group()
         self.bullet_pattern = 0
@@ -103,11 +104,16 @@ class Spaceship(pygame.sprite.Sprite):
             return
         if random.randint(0, 1000) <= 1:
             self.activated = True
+            self.activated_dur = random.uniform(10.0, 20.0)
 
     def update(self, t: float) -> None:
         if not self.activated:
             self.x = min(1600, self.x + 5)
+            self.activated_dur = 0.0
         else:
+            self.activated_dur -= t
+            if self.activated_dur <= 0:
+                self.activated = False
             self.x = max(1000, self.x - 5)
 
         self.rect.topleft = (self.x, self.y)
