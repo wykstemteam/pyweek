@@ -11,7 +11,7 @@ class Shield(pygame.sprite.Sprite):
         self.pos = pygame.Vector2(pos)
         self.image = assets_manager.images['shield3']
         self.rect = self.image.get_rect()
-        self.rect.topleft = pos
+        self.rect.center = pos
         self.shield_time = SHIELD_REMAIN_TIME
         self.activate = False
 
@@ -29,14 +29,17 @@ class Shield(pygame.sprite.Sprite):
         self.activate = True
         self.shield_time = SHIELD_REMAIN_TIME
         self.shield_hp = 3
+        self.image = assets_manager.images[f'shield{self.shield_hp}']
 
     def draw(self, window: pygame.Surface) -> None:
         window.blit(self.image, self.rect)
 
     def hit(self):
         self.shield_hp -= 1
+        assets_manager.play_sound("explosion")
         if self.shield_hp == 0:
             self.activate = False
+            self.shield_hp = 3
             return
         self.image = assets_manager.images[f'shield{self.shield_hp}']
         
