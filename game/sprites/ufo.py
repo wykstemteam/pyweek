@@ -29,6 +29,7 @@ class UFO(pygame.sprite.Sprite):
         self.rotate_rad = 0.0
         self.rotate_velocity = -1.0
         self.activated = False
+        self.activated_dur = 0.0
 
         self.bullets = pygame.sprite.Group()
         self.bullet_pattern = 0
@@ -120,12 +121,18 @@ class UFO(pygame.sprite.Sprite):
             return
         if random.randint(0, 1000) <= 1:
             self.activated = True
+            self.activated_dur = random.uniform(10.0, 20.0)
 
     def update(self, t: float) -> None:
         if not self.activated:
             self.cenx = min(2050, self.cenx + 5)
+            self.activated_dur = 0.0
         else:
+            self.activated_dur -= t
+            if self.activated_dur <= 0:
+                self.activated = False
             self.cenx = max(1450, self.cenx - 5)
+
 
         self.rotate_deg += self.rotate_velocity
         if self.rotate_deg <= -360:
