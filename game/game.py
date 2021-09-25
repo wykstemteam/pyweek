@@ -49,8 +49,7 @@ class Game:
         self.screen_shake_manager = ScreenShakeManager()
 
         # self.screen_shake_manager.shaking = True
-        self.fade_in_manager = FadeInManager(
-            assets_manager.images['gradient_line'])
+        self.fade_in_manager = FadeInManager(assets_manager.images['gradient_line'])
         self.fade_in_manager.start_fade_in()
 
         # Health_bar
@@ -62,19 +61,17 @@ class Game:
         self.coin_gui = CoinGUI((1200, 36), self)
 
         # game_screen
-        self.game_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
+        self.game_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
         self.pause_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(
-                (SCREEN_WIDTH - 100 - 10, 10), (100, 50)),
+            relative_rect=pygame.Rect((SCREEN_WIDTH - 100 - 10, 10), (100, 50)),
             text='Pause',
             manager=self.game_screen
         )
 
         # pause_screen
-        self.pause_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
+        self.pause_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
         self.return_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(
-                (SCREEN_WIDTH - 100 - 10, 10), (100, 50)),
+            relative_rect=pygame.Rect((SCREEN_WIDTH - 100 - 10, 10), (100, 50)),
             text='Return',
             manager=self.pause_screen
         )
@@ -113,12 +110,12 @@ class Game:
             relative_rect=pygame.Rect(
                 (SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT // 2 + 100), (100, 50)
             ),
-            text='Restart',
+            text='Menu',
             manager=self.pause_screen
         )
 
         # lose_screen
-        self.lose_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
+        self.lose_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
         self.restart_button = pygame_gui.elements.UIButton(
             relative_rect=pygame.Rect(
                 (SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT // 2 + 100), (100, 50)
@@ -127,8 +124,7 @@ class Game:
             manager=self.lose_screen
         )
         self.return_title_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(
-                (SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT // 2), (100, 50)),
+            relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT // 2), (100, 50)),
             text='Return',
             manager=self.lose_screen
         )
@@ -147,10 +143,7 @@ class Game:
         self.dimming = False
         self.darken_alpha = 0
 
-        self.shop_scene = Shop(
-            assets_manager.images['confirm_button'], assets_manager.images['main_menu'],
-            assets_manager.images['darken'], self
-        )
+        self.shop_scene = Shop(self)
 
         # objects in scene.CITY
         # ================================================================================================
@@ -251,8 +244,7 @@ class Game:
                         ) + 1
                     else:
                         self.rate = (1 - BULLET_TIME_RATE) * (
-                            (1 - self.bullet_time_t /
-                             (ITEM_BULLET_TIME_DURATION - 1))**2
+                            (1 - self.bullet_time_t / (ITEM_BULLET_TIME_DURATION - 1))**2
                         ) + BULLET_TIME_RATE
                     t *= self.rate
 
@@ -324,8 +316,7 @@ class Game:
                 if self.distance_manager.dist_to_next_country > 0:
                     if self.distance_manager.dist_to_next_country > 150:
                         self.bomber.random_activate()
-                self.bomber.aim(self.player.rect.centerx,
-                                self.player.rect.centery)
+                self.bomber.aim(self.player.rect.centerx, self.player.rect.centery)
                 self.bomber.update(t)
                 self.obstacle_manager.update(t)
 
@@ -359,8 +350,7 @@ class Game:
         if self.cur_scene == Scenes.CITY:
             self.roads.draw(window)
         if self.cur_scene == Scenes.SPACE:
-            window.blit(
-                assets_manager.images['space_background1'], pygame.Rect(0, -200, 0, 0))
+            window.blit(assets_manager.images['space_background1'], pygame.Rect(0, -200, 0, 0))
 
         # objects on the ground:
         self.coin_manager.draw(window)
@@ -387,14 +377,11 @@ class Game:
         # gui
         window.blit(self.health_bar_image, pygame.Rect((10, 10), (400, 100)))
         if self.pause:
-            window.blit(
-                assets_manager.images['darken'], pygame.Rect(0, 0, 0, 0))
+            window.blit(assets_manager.images['darken'], pygame.Rect(0, 0, 0, 0))
             self.pause_screen.draw_ui(window)
         elif self.lose:
-            window.blit(
-                assets_manager.images['darken'], pygame.Rect(0, 0, 0, 0))
-            window.blit(
-                assets_manager.images['GameOver'], pygame.Rect(0, 0, 0, 0))
+            window.blit(assets_manager.images['darken'], pygame.Rect(0, 0, 0, 0))
+            window.blit(assets_manager.images['GameOver'], pygame.Rect(0, 0, 0, 0))
             self.lose_screen.draw_ui(window)
         else:
             self.game_screen.draw_ui(window)

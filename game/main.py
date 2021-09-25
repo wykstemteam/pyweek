@@ -11,6 +11,7 @@ from game.settings import settings
 from game.sprites import Shop
 
 window = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+pygame.display.set_caption("Rock: The Criminal")
 
 
 def gaming() -> None:
@@ -18,7 +19,7 @@ def gaming() -> None:
     game.run(window)
     
 def main() -> None:
-    title_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
+    title_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
     settings_button = pygame_gui.elements.UIButton(
         relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2 + 100), (200, 50)),
         text='Settings',
