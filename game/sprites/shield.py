@@ -28,6 +28,7 @@ class Shield(pygame.sprite.Sprite):
     def turn_on(self) -> None:
         self.activate = True
         self.shield_time = SHIELD_REMAIN_TIME
+        self.shield_hp = 3
 
     def draw(self, window: pygame.Surface) -> None:
         window.blit(self.image, self.rect)
