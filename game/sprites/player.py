@@ -51,6 +51,8 @@ class Player(pygame.sprite.Sprite):
         self.invincible_color = 0x000000
         self.item_invincible_time = ITEM_INVINCIBILITY_TIME
 
+        self.inputtable = True
+
     def acc(self, dx: int, dy: int) -> None:
         self.vx = max(min(self.vx + dx, PLAYER_MAX_SPEED), -PLAYER_MAX_SPEED)
         self.vy = max(min(self.vy + dy, PLAYER_MAX_SPEED), -PLAYER_MAX_SPEED)
@@ -93,17 +95,19 @@ class Player(pygame.sprite.Sprite):
             self.real_x = 0
             self.vx = -BACKGROUND_VELOCITY
         if self.real_x < SCREEN_WIDTH - PLAYER_WIDTH // 2:
-            if keys[pygame.K_w]:
-                self.acc(0, -PLAYER_ACC)
-            if keys[pygame.K_s]:
-                self.acc(0, PLAYER_ACC)
-            if keys[pygame.K_d]:
-                self.acc(PLAYER_ACC, 0)
-            if keys[pygame.K_a]:
-                self.acc(-PLAYER_ACC, 0)
+            if self.inputtable:
+                if keys[pygame.K_w]:
+                    self.acc(0, -PLAYER_ACC)
+                if keys[pygame.K_s]:
+                    self.acc(0, PLAYER_ACC)
+                if keys[pygame.K_d]:
+                    self.acc(PLAYER_ACC, 0)
+                if keys[pygame.K_a]:
+                    self.acc(-PLAYER_ACC, 0)
         else:  # touches right border
-            self.rect.left = SCREEN_WIDTH - PLAYER_WIDTH // 2
-            self.vx = -BACKGROUND_VELOCITY
+            if self.inputtable:
+                self.rect.left = SCREEN_WIDTH
+                self.vx = -BACKGROUND_VELOCITY
 
         if self.real_y < BUILDING_HEIGHT:
             self.real_y = BUILDING_HEIGHT
@@ -205,12 +209,8 @@ class Player(pygame.sprite.Sprite):
             self.vy = 0
         self.rect.left = self.real_x
         self.rect.top = self.real_y
-
-    def go_right(self, t: float) -> bool:
-        self.rect.left += -BACKGROUND_VELOCITY * t
-        self.shadow_rect.left = self.rect.left - 5
-        self.shield.rect.left += -BACKGROUND_VELOCITY * t
-        return self.rect.left > SCREEN_WIDTH
+        self.shadow_rect.left = self.real_x - 5
+        self.shadow_rect.top = self.real_y + 5
 
     def hit(self) -> bool:
         if self.is_invincible():

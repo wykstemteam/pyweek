@@ -28,6 +28,7 @@ class Coin(pygame.sprite.Sprite):
     def player_hit(self, player: Player) -> None:  # should be called when collided by player
         player.coins += 1
         self.kill()
+        assets_manager.play_sound("coin")
 
     def draw(self, window: pygame.Surface) -> None:
         window.blit(self.image, self.rect)
