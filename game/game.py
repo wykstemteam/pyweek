@@ -30,14 +30,16 @@ class Game:
         self.player_collision_group = pygame.sprite.Group()
         self.laser_manager = LaserManager(self.player_collision_group)
         self.arrow = Arrow(assets_manager.images['arrow'], self.player)
-        self.inventory = Inventory([
-            assets_manager.images['item_healpotion'],
-            assets_manager.images['item_shield'],
-            assets_manager.images['item_star'],
-            assets_manager.images['item_clock'],
-            assets_manager.images['item_missile'],
-            assets_manager.images['item_earthquake'],
-        ])
+        self.inventory = Inventory(
+            [
+                assets_manager.images['item_healpotion'],
+                assets_manager.images['item_shield'],
+                assets_manager.images['item_star'],
+                assets_manager.images['item_clock'],
+                assets_manager.images['item_missile'],
+                assets_manager.images['item_earthquake'],
+            ]
+        )
         self.inventory.add(0)
         self.inventory.add(3)
 
@@ -73,23 +75,31 @@ class Game:
         )
         self.pause = False
         self.music_label = pygame_gui.elements.UILabel(
-            relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 - 25), (400, 10)),
+            relative_rect=pygame.Rect(
+                (SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 - 25), (400, 10)
+            ),
             text='Music Volume',
             manager=self.pause_screen
         )
         self.music_slider = pygame_gui.elements.UIHorizontalSlider(
-            relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 - 15), (400, 30)),
+            relative_rect=pygame.Rect(
+                (SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 - 15), (400, 30)
+            ),
             start_value=assets_manager.music_volume,
             value_range=(0.0, 1),
             manager=self.pause_screen
         )
         self.sound_label = pygame_gui.elements.UILabel(
-            relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 + 20), (400, 10)),
+            relative_rect=pygame.Rect(
+                (SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 + 20), (400, 10)
+            ),
             text='Sound Volume',
             manager=self.pause_screen
         )
         self.sound_slider = pygame_gui.elements.UIHorizontalSlider(
-            relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 + 30), (400, 30)),
+            relative_rect=pygame.Rect(
+                (SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 + 30), (400, 30)
+            ),
             start_value=assets_manager.sound_volume,
             value_range=(0.0, 1),
             manager=self.pause_screen
@@ -167,17 +177,14 @@ class Game:
         if self.cur_scene == Scenes.CITY:
             self.policecar.activated = True
 
-
-
-
     def event_process(self, window: pygame.Surface):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 exit()
 
             if (
-                    event.type == pygame.USEREVENT and self.pause
-                    and event.user_type == pygame_gui.UI_HORIZONTAL_SLIDER_MOVED
+                event.type == pygame.USEREVENT and self.pause
+                and event.user_type == pygame_gui.UI_HORIZONTAL_SLIDER_MOVED
             ):
                 if event.ui_element == self.music_slider:
                     assets_manager.set_music_volume(event.value)
@@ -215,11 +222,11 @@ class Game:
                     if ITEM_BULLET_TIME_DURATION - self.bullet_time_t <= 1:
                         self.rate = -math.sqrt(
                             (ITEM_BULLET_TIME_DURATION - self.bullet_time_t) *
-                            (1 - BULLET_TIME_RATE) ** 2
+                            (1 - BULLET_TIME_RATE)**2
                         ) + 1
                     else:
                         self.rate = (1 - BULLET_TIME_RATE) * (
-                                (1 - self.bullet_time_t / (ITEM_BULLET_TIME_DURATION - 1)) ** 2
+                            (1 - self.bullet_time_t / (ITEM_BULLET_TIME_DURATION - 1))**2
                         ) + BULLET_TIME_RATE
                     t *= self.rate
 
@@ -378,8 +385,12 @@ class Game:
             self.lose = True
 
     def player_collision(self) -> None:
+        print(self.distance_manager.dist_to_next_country)
         for obj in self.player_collision_group:
-            if self.distance_manager.dist_to_next_country <= 0 and type(obj) not in (Coin, Obstacle):
+            if (
+                self.distance_manager.dist_to_next_country == 0
+                and type(obj) not in (Coin, Obstacle)
+            ):
                 continue
             if type(obj) == Spaceship:
                 obj.collision_player(self.player)
