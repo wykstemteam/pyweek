@@ -153,7 +153,6 @@ class Game:
                         (1 - self.bullet_time_t / (ITEM_BULLET_TIME_DURATION - 1))**2
                     ) + BULLET_TIME_RATE
                 t *= rate
-                print(rate, sep=' ')
 
         if not self.lose and not self.pause:
             self.fade_in_manager.update(t)
