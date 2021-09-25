@@ -147,7 +147,6 @@ class Game:
             assets_manager.images['bullet'], self.player_collision_group
         )
         self.bomber = Bomber(self.player_collision_group)
-        self.bomber.activated = True
         self.buildings = BuildingManager()
         self.obstacle_manager = ObstacleManager(self.player_collision_group)
         self.beach_image = assets_manager.images['beach_full']
@@ -165,7 +164,11 @@ class Game:
         assets_manager.play_music("8bitaggressive1")
 
     def reset(self):
-        pass
+        if self.cur_scene == Scenes.CITY:
+            self.policecar.activated = True
+
+
+
 
     def event_process(self, window: pygame.Surface):
         for event in pygame.event.get():
@@ -294,6 +297,8 @@ class Game:
                 self.roads.update(t)
                 self.buildings.update(t)
                 self.policecar.update(t)
+                if self.distance_manager.dist_to_next_country > 0:
+                    self.bomber.random_activate()
                 self.bomber.aim(self.player.rect.centerx, self.player.rect.centery)
                 self.bomber.update(t)
                 self.obstacle_manager.update(t)
