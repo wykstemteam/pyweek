@@ -168,7 +168,7 @@ class Game:
                 self.player.inputtable = False
                 for road in self.roads:
                     road.stop_moving = True
-                self.player.go_right(t)
+                self.player.vx = -BACKGROUND_VELOCITY * 2.5
                 if self.player.rect.left >= SCREEN_WIDTH:
                     self.dimming = True
             elif self.distance_manager.dist_to_next_country <= 0:

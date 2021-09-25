@@ -212,9 +212,6 @@ class Player(pygame.sprite.Sprite):
         self.shadow_rect.left = self.real_x - 5
         self.shadow_rect.top = self.real_y + 5
 
-    def go_right(self, t: float):
-        self.vx = -BACKGROUND_VELOCITY * 2
-
     def hit(self) -> bool:
         if self.is_invincible():
             return False
