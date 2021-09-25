@@ -307,8 +307,6 @@ class Game:
         # objects in scene.SPACE:
         if self.cur_scene == Scenes.SPACE:
             if not self.lose and not self.pause:
-                if 50 <= self.distance_manager.dist <= 51:
-                    self.spaceship.is_charge = True
                 self.spaceship.update(t)
                 self.ufo.update(t)
 
@@ -381,7 +379,7 @@ class Game:
 
     def player_collision(self) -> None:
         for obj in self.player_collision_group:
-            if self.distance_manager.dist >= 100 and type(obj) not in (Coin, Obstacle):
+            if self.distance_manager.dist_to_next_country <= 0 and type(obj) not in (Coin, Obstacle):
                 continue
             if type(obj) == Spaceship:
                 obj.collision_player(self.player)
