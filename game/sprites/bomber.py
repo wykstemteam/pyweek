@@ -64,8 +64,9 @@ class Bomber(pygame.sprite.Sprite):
         self.shadow_rect.topleft = self.shadow_rect.topleft + pygame.Vector2(-15, 15)
         self.frame += 1
 
-        self.shoot_cooldown -= t
-        self.shoot()
+        if self.activated:
+            self.shoot_cooldown -= t
+            self.shoot()
         self.bullets.update(t)
 
     def draw(self, window: pygame.Surface) -> None:
