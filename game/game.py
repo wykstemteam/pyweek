@@ -72,6 +72,35 @@ class Game:
             manager=self.pause_screen
         )
         self.pause = False
+        self.music_label = pygame_gui.elements.UILabel(
+            relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 - 25), (400, 10)),
+            text='Music Volume',
+            manager=self.pause_screen
+        )
+        self.music_slider = pygame_gui.elements.UIHorizontalSlider(
+            relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 - 15), (400, 30)),
+            start_value=assets_manager.music_volume,
+            value_range=(0.0, 1),
+            manager=self.pause_screen
+        )
+        self.sound_label = pygame_gui.elements.UILabel(
+            relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 + 20), (400, 10)),
+            text='Sound Volume',
+            manager=self.pause_screen
+        )
+        self.sound_slider = pygame_gui.elements.UIHorizontalSlider(
+            relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 + 30), (400, 30)),
+            start_value=assets_manager.sound_volume,
+            value_range=(0.0, 1),
+            manager=self.pause_screen
+        )
+        self.restart_button2 = pygame_gui.elements.UIButton(
+            relative_rect=pygame.Rect(
+                (SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT // 2 + 100), (100, 50)
+            ),
+            text='Restart',
+            manager=self.pause_screen
+        )
 
         # lose_screen
         self.lose_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -143,12 +172,23 @@ class Game:
             if event.type == pygame.QUIT:
                 exit()
 
+            if (
+                    event.type == pygame.USEREVENT and self.pause
+                    and event.user_type == pygame_gui.UI_HORIZONTAL_SLIDER_MOVED
+            ):
+                if event.ui_element == self.music_slider:
+                    assets_manager.set_music_volume(event.value)
+                elif event.ui_element == self.sound_slider:
+                    assets_manager.set_sound_volume(event.value)
+
             if event.type == pygame.USEREVENT and event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                 if not self.pause and not self.lose and event.ui_element == self.pause_button:
                     self.pause = True
                     break  # Otherwise will click both pause and return buttons
                 elif self.pause and event.ui_element == self.return_button:
                     self.pause = False
+                elif self.pause and event.ui_element == self.restart_button2:
+                    return True
                 elif self.lose:
                     if event.ui_element == self.restart_button:
                         self.__init__()  # Reinitialize
