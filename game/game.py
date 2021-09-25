@@ -109,7 +109,7 @@ class Game:
         # ================================================================================================
         self.spaceship = Spaceship(self.player_collision_group)
         self.ufo = UFO(self.player_collision_group)
-        self.ufo.activated = True
+        self.spaceship.activated = True
 
         assets_manager.play_music("8bitaggressive1")
 
@@ -151,7 +151,6 @@ class Game:
             self.player_collision()
             self.coin_manager.update(t, self.shop)
             self.arrow.update(self.player)
-            self.laser_manager.update(t, self.shop)
             if self.shop:
                 self.beach_rect.move_ip(BACKGROUND_VELOCITY // 200, 0)
                 self.show_sea_time -= t
@@ -202,6 +201,7 @@ class Game:
         # objects in scene.CITY:
         if self.cur_scene == Scenes.CITY:
             if not self.lose and not self.pause:
+                self.laser_manager.update(t, self.shop)
                 self.roads.update(t)
                 self.buildings.update(t, self.shop)
                 self.policecar.update(t, self.shop)
@@ -212,6 +212,8 @@ class Game:
         # objects in scene.SPACE:
         if self.cur_scene == Scenes.SPACE:
             if not self.lose and not self.pause:
+                if self.distance_manager.dist >= 50 and self.distance_manager.dist <= 51:
+                    self.spaceship.is_charge = True
                 self.spaceship.update(t)
                 self.ufo.update(t)
 
@@ -227,14 +229,16 @@ class Game:
         # objects in the ground:
         if self.cur_scene == Scenes.CITY:
             self.roads.draw(window)
+        if self.cur_scene == Scenes.SPACE:
+            window.blit(assets_manager.images['space_background1'], pygame.Rect(0, -200, 0, 0))
 
 
         # objects on the ground:
-        self.laser_manager.draw(window)
         self.coin_manager.draw(window)
         self.player.draw(window)
 
         if self.cur_scene == Scenes.CITY:
+            self.laser_manager.draw(window)
             if self.shop:
                 window.blit(self.beach_image, self.beach_rect)
             self.buildings.draw(window)
