@@ -1,18 +1,21 @@
+from typing import TYPE_CHECKING
+
 import pygame
 import pygame_gui
 
 from game.assets_manager import assets_manager
 from game.constants import *
 
+if TYPE_CHECKING:
+    from game.game import Game
+
 
 class Shop:
-    def __init__(
-        self, confirm_button: pygame.Surface, main_menu: pygame.Surface, darken: pygame.Surface,
-        game: "Game"
-    ) -> None:
-        self.confirm_button = confirm_button
-        self.main_menu = main_menu
-        self.darken = darken
+    confirm_button = assets_manager.images['confirm_button']
+    main_menu = assets_manager.images['main_menu']
+    darken = assets_manager.images['darken']
+
+    def __init__(self, game: "Game") -> None:
         self.shop_screen = pygame_gui.UIManager(
             (SCREEN_WIDTH, SCREEN_HEIGHT), 'shop_display_theme.json'
         )
