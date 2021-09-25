@@ -20,8 +20,8 @@ class Game:
         cur_scene = scenes.CITY
 
         # objects in all scenes
-        self.laser_manager = LaserManager(self.player_collision_group)
         self.player_collision_group = pygame.sprite.Group()
+        self.laser_manager = LaserManager(self.player_collision_group)
         self.arrow = Arrow(assets_manager.images['arrow'], self.player)
 
         # objects in scene.city
