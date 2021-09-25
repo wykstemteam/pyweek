@@ -115,12 +115,17 @@ class UFO(pygame.sprite.Sprite):
             self.bullets.add(bullet)
             self.player_collision_group.add(bullet)
 
+    def random_activate(self):
+        if self.activated:
+            return
+        if random.randint(0, 1000) <= 1:
+            self.activated = True
+
     def update(self, t: float) -> None:
         if not self.activated:
-            if self.cenx < 2050:
-                self.cenx += 5
-        elif self.cenx > 1450:
-            self.cenx -= 5
+            self.cenx = min(2050, self.cenx + 5)
+        else:
+            self.cenx = max(1450, self.cenx - 5)
 
         self.rotate_deg += self.rotate_velocity
         if self.rotate_deg <= -360:

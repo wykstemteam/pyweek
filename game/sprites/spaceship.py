@@ -98,13 +98,17 @@ class Spaceship(pygame.sprite.Sprite):
 
             self.shoot_cooldown = SPACESHIP_SHOOT_COOLDOWN
 
+    def random_activate(self):
+        if self.activated:
+            return
+        if random.randint(0, 1000) <= 1:
+            self.activated = True
+
     def update(self, t: float) -> None:
         if not self.activated:
-            if self.x < 1600:
-                self.x += 5
+            self.x = min(1600, self.x + 5)
         else:
-            if self.x > 1000:
-                self.x -= 5
+            self.x = max(1000, self.x - 5)
 
         self.rect.topleft = (self.x, self.y)
 

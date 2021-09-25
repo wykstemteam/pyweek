@@ -20,7 +20,7 @@ class Scenes(Enum):
 
 class Game:
     def __init__(self) -> None:
-        self.cur_scene = Scenes.CITY
+        self.cur_scene = Scenes.SPACE
 
         # objects in all scenes
         # ================================================================================================
@@ -326,6 +326,10 @@ class Game:
         # objects in scene.SPACE:
         if self.cur_scene == Scenes.SPACE:
             if not self.lose and not self.pause:
+                if not self.spaceship.activated:
+                    self.ufo.random_activate()
+                if not self.ufo.activated:
+                    self.spaceship.random_activate()
                 self.spaceship.update(t)
                 self.ufo.update(t)
 
