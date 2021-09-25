@@ -28,7 +28,6 @@ class DistanceManager(pygame.sprite.Sprite):
         )
 
     def draw(self, window: pygame.Surface) -> None:
-
         window.blit(self.outline_image, self.rect.move(-3, 3))
         window.blit(self.outline_image, self.rect.move(-3, -3))
         window.blit(self.outline_image, self.rect.move(3, -3))
