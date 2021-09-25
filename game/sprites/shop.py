@@ -130,7 +130,7 @@ class Shop:
                                 assets_manager.play_sound("select2")
                             self._hide()
                             confirmation = False
-                        else:
+                        elif not confirmation:
                             assets_manager.play_sound("select1")
                             button_number = self.buttons.index(button)
                             self.display_buttons[button_number].show()
@@ -139,8 +139,10 @@ class Shop:
                 self.shop_screen.process_events(event)
                 self.confirm_screen.process_events(event)
 
-            self.shop_screen.update(t / 1000)
-            self.confirm_screen.update(t / 1000)
+            if confirmation:
+                self.confirm_screen.update(t / 1000)
+            else:
+                self.shop_screen.update(t / 1000)
 
             window.blit(self.main_menu, (0, 0))  # draws background
             self.shop_screen.draw_ui(window)
