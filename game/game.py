@@ -415,7 +415,6 @@ class Game:
             self.lose = True
 
     def player_collision(self) -> None:
-        print(self.distance_manager.dist_to_next_country)
         for obj in self.player_collision_group:
             if (
                 self.distance_manager.dist_to_next_country == 0
@@ -434,7 +433,7 @@ class Game:
                 elif type(obj) == Coin:
                     obj.player_hit(self.player)
 
-    def start_earthquake(self):
+    def start_earthquake(self) -> None:
         self.screen_shake_manager.shaking = True
         self.earthquake = True
         self.earthquake_time = ITEM_EARTHQUAKE_DURATION

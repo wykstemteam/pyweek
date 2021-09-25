@@ -7,10 +7,7 @@ from game.constants import *
 
 class Shop:
     def __init__(
-        self,
-        confirm_button: pygame.Surface,
-        main_menu: pygame.Surface,
-        darken: pygame.Surface,
+        self, confirm_button: pygame.Surface, main_menu: pygame.Surface, darken: pygame.Surface,
         game: "Game"
     ) -> None:
         self.confirm_button = confirm_button
@@ -44,14 +41,7 @@ class Shop:
             pygame.Rect((670, 520), (160, 47)),
             pygame.Rect((1149, 520), (160, 47)),
         ]
-        self.price = [
-            "$10",
-            "$15",
-            "$20",
-            "$25",
-            "$30",
-            "$35"
-        ]
+        self.price = ["$10", "$15", "$20", "$25", "$30", "$35"]
         self.button_text = [
             "Heal Potion",
             'Shield',
@@ -61,27 +51,27 @@ class Shop:
             'Gravitation',
         ]
         self.button_text_effect = [
-            '   +1 life',
-            '   +3 shield (30s)',
-            '   5s invincible',
-            '   5s bullet time',
-            '   attack the boss?',
-            '   destroy everything',
+            '+1 life',
+            '+3 shield (30s)',
+            '5s invinciblility',
+            '5s bullet time',  # TODO: Put more clear description
+            'Attack the boss?',
+            'Annihilation',
         ]
+        self.button_text_effect = [" " * 3 + t for t in self.button_text_effect]
         self.buttons = [
             pygame_gui.elements.UIButton(
                 relative_rect=self.button_positions[i],
                 text='',
                 object_id=f'#button_{i + 1}',
                 tool_tip_text="<font face=fira_code color=normal_text size=5>"
-                ""
                 f" <b><u>{self.button_text[i]}</u></b>"
                 "<br><br>"
                 f"<i>{self.button_text_effect[i]}</i>",
                 manager=self.shop_screen,
             ) for i in range(6)
         ]
-        self.price_tag_button= [
+        self.price_tag_button = [
             pygame_gui.elements.UIButton(
                 relative_rect=self.price_tag_position[i],
                 text=self.price[i],
@@ -159,13 +149,13 @@ class Shop:
                             if button == self.button_confirm:
                                 assets_manager.play_sound("select2")
                             self._hide()
-                            for i in range(0,6):
+                            for i in range(6):
                                 self.price_tag_button[i].enable()
                             confirmation = False
                         elif button in self.price_tag_button:
                             assets_manager.play_sound("select1")
                             button_number = self.price_tag_button.index(button)
-                            for i in range(0,6):
+                            for i in range(6):
                                 self.price_tag_button[i].disable()
                             self.display_buttons[button_number].show()
                             confirmation = True
