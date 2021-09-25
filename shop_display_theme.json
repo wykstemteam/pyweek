@@ -8,78 +8,60 @@
         "images": {
             "normal_image": {
                 "path": "assets/images/item_healpotion.png"
-            },
-            "hovered_image": {
-                "path": "assets/images/item_healpotion_hover.png"
             }
         },
         "misc": {
-            "tool_tip_delay": "0.5"
+            "tool_tip_delay": "0"
         }
     },
     "#button_2": {
         "images": {
             "normal_image": {
                 "path": "assets/images/item_shield.png"
-            },
-            "hovered_image": {
-                "path": "assets/images/item_shield_hover.png"
             }
         },
         "misc": {
-            "tool_tip_delay": "0.5"
+            "tool_tip_delay": "0"
         }
     },
     "#button_3": {
         "images": {
             "normal_image": {
                 "path": "assets/images/item_star.png"
-            },
-            "hovered_image": {
-                "path": "assets/images/item_star_hover.png"
             }
         },
         "misc": {
-            "tool_tip_delay": "0.5"
+            "tool_tip_delay": "0"
         }
     },
     "#button_4": {
         "images": {
             "normal_image": {
                 "path": "assets/images/item_clock.png"
-            },
-            "hovered_image": {
-                "path": "assets/images/item_clock_hover.png"
             }
         },
         "misc": {
-            "tool_tip_delay": "0.5"
+            "tool_tip_delay": "0"
         }
     },
     "#button_5": {
         "images": {
             "normal_image": {
                 "path": "assets/images/item_missile.png"
-            },
-            "hovered_image": {
-                "path": "assets/images/item_missile_hover.png"
             }
         },
         "misc": {
-            "tool_tip_delay": "0.5"
+            "tool_tip_delay": "0"
         }
     },
     "#button_6": {
         "images": {
             "normal_image": {
                 "path": "assets/images/item_earthquake.png"
-            },
-            "hovered_image": {
-                "path": "assets/images/item_earthquake_hover.png"
             }
         },
         "misc": {
-            "tool_tip_delay": "0.5"
+            "tool_tip_delay": "0"
         }
     },
     "price_tag": {

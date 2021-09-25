@@ -159,10 +159,14 @@ class Shop:
                             if button == self.button_confirm:
                                 assets_manager.play_sound("select2")
                             self._hide()
+                            for i in range(0,6):
+                                self.price_tag_button[i].enable()
                             confirmation = False
                         elif button in self.price_tag_button:
                             assets_manager.play_sound("select1")
                             button_number = self.price_tag_button.index(button)
+                            for i in range(0,6):
+                                self.price_tag_button[i].disable()
                             self.display_buttons[button_number].show()
                             confirmation = True
 
