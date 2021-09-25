@@ -237,9 +237,9 @@ class UFO(pygame.sprite.Sprite):
             center=self.image.get_rect(center=(self.cenx, self.ceny)).center
         )
 
-        self.bullet_pattern = random.randint(0, 3)
         if self.pattern_dur <= 0.0:
-            self.pattern_dur = random.uniform(10, 20)
+            self.bullet_pattern = random.randint(0, 3)
+            self.pattern_dur = random.uniform(5, 10)
 
         self.shoot_cooldown -= t
         self.pattern_dur -= t
