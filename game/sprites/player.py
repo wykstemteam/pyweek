@@ -105,8 +105,9 @@ class Player(pygame.sprite.Sprite):
                 if keys[pygame.K_a]:
                     self.acc(-PLAYER_ACC, 0)
         else:  # touches right border
-            self.rect.left = SCREEN_WIDTH
-            self.vx = -BACKGROUND_VELOCITY
+            if self.inputtable:
+                self.rect.left = SCREEN_WIDTH
+                self.vx = -BACKGROUND_VELOCITY
 
         if self.real_y < BUILDING_HEIGHT:
             self.real_y = BUILDING_HEIGHT
