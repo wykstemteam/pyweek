@@ -174,6 +174,7 @@ class Game:
                 self.player.vx = -BACKGROUND_VELOCITY * 2.5
                 if self.player.rect.left >= SCREEN_WIDTH:
                     self.dimming = True
+                    pygame.mixer.music.fadeout(3000)
             elif self.distance_manager.dist_to_next_country <= 0:
                 self.coin_manager.reached_checkpoint = True
                 self.laser_manager.reached_checkpoint = True
@@ -260,12 +261,10 @@ class Game:
 
         if self.cur_scene == Scenes.CITY:
             self.bomber.draw(window)
-
-        if self.cur_scene == Scenes.SPACE:
+        elif self.cur_scene == Scenes.SPACE:
             self.spaceship.draw(window)
             self.ufo.draw(window)
-
-        if self.cur_scene == Scenes.SHOP:
+        elif self.cur_scene == Scenes.SHOP:
             self.shop_scene.appear(window)
 
         # gui
