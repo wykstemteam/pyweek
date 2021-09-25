@@ -3,12 +3,13 @@ from game.constants import *
 
 from game.assets_manager import assets_manager
 
+
 class Shield(pygame.sprite.Sprite):
     def __init__(self, pos: pygame.Vector2) -> None:
         super().__init__()
 
         self.pos = pygame.Vector2(pos)
-        self.image = assets_manager.images['shield']
+        self.image = assets_manager.images['shield3']
         self.rect = self.image.get_rect()
         self.rect.topleft = pos
         self.shield_time = SHIELD_REMAIN_TIME
@@ -27,6 +28,7 @@ class Shield(pygame.sprite.Sprite):
     def turn_on(self) -> None:
         self.activate = True
         self.shield_time = SHIELD_REMAIN_TIME
+        self.shield_hp = 3
 
     def draw(self, window: pygame.Surface) -> None:
         window.blit(self.image, self.rect)
@@ -35,6 +37,7 @@ class Shield(pygame.sprite.Sprite):
         self.shield_hp -= 1
         if self.shield_hp == 0:
             self.activate = False
-        self.image = assets_manager.images['shield']
+            return
+        self.image = assets_manager.images[f'shield{self.shield_hp}']
         
 
