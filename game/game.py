@@ -190,7 +190,7 @@ class Game:
                 self.show_sea_time -= t
                 if self.show_sea_time <= 0:
                     self.show_shop_animation = True
-            else: 
+            else:
                 self.distance_manager.update(t)
 
         if self.player.hp <= 0 and not self.shop and not self.lose:
