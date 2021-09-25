@@ -7,60 +7,60 @@
     "#button_1": {
         "images": {
             "normal_image": {
-                "path": "assets/images/shop_display_images/healpotion.png"
+                "path": "assets/images/item_healpotion.png"
             },
             "hovered_image": {
-                "path": "assets/images/shop_display_images/healpotion_hover.png"
+                "path": "assets/images/item_healpotion_hover.png"
             }
         }
     },
     "#button_2": {
         "images": {
             "normal_image": {
-                "path": "assets/images/shop_display_images/Shield.png"
+                "path": "assets/images/item_shield.png"
             },
             "hovered_image": {
-                "path": "assets/images/shop_display_images/Shield_hover.png"
+                "path": "assets/images/item_shield_hover.png"
             }
         }
     },
     "#button_3": {
         "images": {
             "normal_image": {
-                "path": "assets/images/shop_display_images/star.png"
+                "path": "assets/images/item_star.png"
             },
             "hovered_image": {
-                "path": "assets/images/shop_display_images/star_hover.png"
+                "path": "assets/images/item_star_hover.png"
             }
         }
     },
     "#button_4": {
         "images": {
             "normal_image": {
-                "path": "assets/images/shop_display_images/Clock.png"
+                "path": "assets/images/item_clock.png"
             },
             "hovered_image": {
-                "path": "assets/images/shop_display_images/Clock_hover.png"
+                "path": "assets/images/item_clock_hover.png"
             }
         }
     },
     "#button_5": {
         "images": {
             "normal_image": {
-                "path": "assets/images/shop_display_images/Missile.png"
+                "path": "assets/images/item_missile.png"
             },
             "hovered_image": {
-                "path": "assets/images/shop_display_images/Missile_hover.png"
+                "path": "assets/images/item_missile_hover.png"
             }
         }
     },
     "#button_6": {
         "images": {
             "normal_image": {
-                "path": "assets/images/shop_display_images/earthquake.png"
+                "path": "assets/images/item_earthquake.png"
             },
             "hovered_image": {
-                "path": "assets/images/shop_display_images/earthquake_hover.png"
+                "path": "assets/images/item_earthquake_hover.png"
             }
         }
     },

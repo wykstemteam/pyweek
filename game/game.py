@@ -1,4 +1,3 @@
-from game.sprites.coin_gui import CoinGUI
 import math
 from enum import Enum
 
@@ -9,6 +8,8 @@ from game.assets_manager import assets_manager
 from game.constants import *
 from game.screen_shake_manager import ScreenShakeManager
 from game.sprites import *
+from game.sprites.coin_gui import CoinGUI
+from game.sprites.inventory import Inventory
 
 
 class Scenes(Enum):
@@ -29,13 +30,27 @@ class Game:
         self.player_collision_group = pygame.sprite.Group()
         self.laser_manager = LaserManager(self.player_collision_group)
         self.arrow = Arrow(assets_manager.images['arrow'], self.player)
+        self.inventory = Inventory([
+            assets_manager.images['item_healpotion'],
+            assets_manager.images['item_shield'],
+            assets_manager.images['item_star'],
+            assets_manager.images['item_clock'],
+            assets_manager.images['item_missile'],
+            assets_manager.images['item_earthquake'],
+        ])
+        self.inventory.add(0)
+        self.inventory.add(3)
+
         self.distance_manager = DistanceManager()
         self.screen_shake_manager = ScreenShakeManager()
+
         # self.screen_shake_manager.shaking = True
         self.fade_in_manager = FadeInManager(assets_manager.images['gradient_line'])
         self.fade_in_manager.start_fade_in()
+
         # Health_bar
         self.health_bar_image = assets_manager.images['HP4']
+
         # coins
         self.coin_manager = CoinManager(self.player_collision_group)
         self.coins = 0
@@ -82,8 +97,8 @@ class Game:
         self.earthquake = False
 
         # entering shop
-        self.stage1_countdown = 7 # deactivate everything for .. seconds
-        self.stage2 = False # player at right?
+        self.stage1_countdown = 7  # deactivate everything for .. seconds
+        self.stage2 = False  # player at right?
         self.dimming = False
         self.darken_alpha = 0
 
@@ -154,11 +169,11 @@ class Game:
                     if ITEM_BULLET_TIME_DURATION - self.bullet_time_t <= 1:
                         self.rate = -math.sqrt(
                             (ITEM_BULLET_TIME_DURATION - self.bullet_time_t) *
-                            (1 - BULLET_TIME_RATE)**2
+                            (1 - BULLET_TIME_RATE) ** 2
                         ) + 1
                     else:
                         self.rate = (1 - BULLET_TIME_RATE) * (
-                            (1 - self.bullet_time_t / (ITEM_BULLET_TIME_DURATION - 1))**2
+                                (1 - self.bullet_time_t / (ITEM_BULLET_TIME_DURATION - 1)) ** 2
                         ) + BULLET_TIME_RATE
                     t *= self.rate
 
@@ -204,7 +219,7 @@ class Game:
                 self.obstacle_manager.reached_checkpoint = True
                 self.policecar.activated = False
                 self.bomber.activated = False
-                self.beach_rect.move_ip(BACKGROUND_VELOCITY/2*t, 0)
+                self.beach_rect.move_ip(BACKGROUND_VELOCITY / 2 * t, 0)
                 self.stage1_countdown -= t
 
             self.player.hp = max(self.player.hp, 0)
@@ -300,6 +315,7 @@ class Game:
             self.game_screen.draw_ui(window)
         self.distance_manager.draw(window)
         self.coin_gui.draw(window)
+        self.inventory.draw(window)
 
         if self.dimming:
             darken_image = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
