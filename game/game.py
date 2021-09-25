@@ -9,6 +9,7 @@ from game.constants import *
 from game.screen_shake_manager import ScreenShakeManager
 from game.sprites import *
 
+
 # TODO: Replace self.pause and self.lose with self.state which is GAMING, PAUSE or LOSE
 
 class Scenes(Enum):
@@ -16,9 +17,10 @@ class Scenes(Enum):
     SHOP = 2
     SPACE = 3
 
+
 class Game:
     def __init__(self) -> None:
-        self.cur_scene = Scenes.SPACE
+        self.cur_scene = Scenes.CITY
 
         # objects in all scenes
         # ================================================================================================
@@ -79,11 +81,14 @@ class Game:
         self.earthquake = False
 
         # entering shop
-        self.shop = False
+        self.reached_checkpoint = False
         self.show_shop_animation = False
         self.dimming = False
         self.darken_alpha = 0
         self.show_sea_time = SHOW_SEA_TIME
+
+        self.shop_scene = Shop(assets_manager.images['confirm_button'], assets_manager.images['main_menu'],
+                               assets_manager.images['darken'])
 
         # objects in scene.CITY
         # ================================================================================================
@@ -103,7 +108,6 @@ class Game:
 
         # objects in scene.SHOP
         # ================================================================================================
-
 
         # objects in scene.SPACE
         # ================================================================================================
@@ -135,7 +139,6 @@ class Game:
             self.lose_screen.process_events(event)
 
     def update(self, t: float) -> None:
-
         # objects in all scenes:
         if not self.lose and not self.pause:
             if self.bullet_time:
@@ -147,11 +150,11 @@ class Game:
                     self.rate = 0
                     if ITEM_BULLET_TIME_DURATION - self.bullet_time_t <= 1:
                         self.rate = -math.sqrt(
-                            (ITEM_BULLET_TIME_DURATION - self.bullet_time_t) * (1 - BULLET_TIME_RATE)**2
+                            (ITEM_BULLET_TIME_DURATION - self.bullet_time_t) * (1 - BULLET_TIME_RATE) ** 2
                         ) + 1
                     else:
                         self.rate = (1 - BULLET_TIME_RATE) * (
-                            (1 - self.bullet_time_t / (ITEM_BULLET_TIME_DURATION - 1))**2
+                                (1 - self.bullet_time_t / (ITEM_BULLET_TIME_DURATION - 1)) ** 2
                         ) + BULLET_TIME_RATE
                     t *= self.rate
 
@@ -166,9 +169,9 @@ class Game:
             self.fade_in_manager.update(t)
             self.player.update(t if not self.bullet_time else t / self.rate)
             self.player_collision()
-            self.coin_manager.update(t, self.shop)
+            self.coin_manager.update(t, self.reached_checkpoint)
             self.arrow.update(self.player)
-            if self.shop:
+            if self.reached_checkpoint:
                 self.beach_rect.move_ip(BACKGROUND_VELOCITY // 200, 0)
                 self.show_sea_time -= t
                 if self.show_sea_time <= 0:
@@ -179,7 +182,6 @@ class Game:
                 self.distance_manager.update(t)
 
             if self.player.hp <= 0:
-                print(self.player.hp)
                 if not PLAYER_INVIN:
                     self.trigger_lose()
 
@@ -193,26 +195,23 @@ class Game:
                         if type(obj) not in (PoliceCar, Bomber, Spaceship, UFO, Coin):
                             obj.kill()
 
-
         # objects in scene.SHOP:
-        if self.cur_scene == Scenes.SHOP:
-            pass
 
         # objects in scene.CITY:
         if self.cur_scene == Scenes.CITY:
             if not self.lose and not self.pause:
-                self.laser_manager.update(t, self.shop)
+                self.laser_manager.update(t, self.reached_checkpoint)
                 self.roads.update(t)
-                self.buildings.update(t, self.shop)
-                self.policecar.update(t, self.shop)
+                self.buildings.update(t, self.reached_checkpoint)
+                self.policecar.update(t, self.reached_checkpoint)
                 self.bomber.aim(self.player.rect.centerx, self.player.rect.centery)
                 self.bomber.update(t)
-                self.obstacle_manager.update(t, self.shop)
+                self.obstacle_manager.update(t, self.reached_checkpoint)
 
         # objects in scene.SPACE:
         if self.cur_scene == Scenes.SPACE:
             if not self.lose and not self.pause:
-                if self.distance_manager.dist >= 50 and self.distance_manager.dist <= 51:
+                if 50 <= self.distance_manager.dist <= 51:
                     self.spaceship.is_charge = True
                 self.spaceship.update(t)
                 self.ufo.update(t)
@@ -221,7 +220,6 @@ class Game:
         self.game_screen.update(t)
         self.pause_screen.update(t)
         self.lose_screen.update(t)
-
 
     def draw(self, window: pygame.Surface) -> None:
         window.fill((0, 0, 0))
@@ -232,19 +230,17 @@ class Game:
         if self.cur_scene == Scenes.SPACE:
             window.blit(assets_manager.images['space_background1'], pygame.Rect(0, -200, 0, 0))
 
-
         # objects on the ground:
         self.coin_manager.draw(window)
         self.player.draw(window)
 
         if self.cur_scene == Scenes.CITY:
             self.laser_manager.draw(window)
-            if self.shop:
+            if self.reached_checkpoint:
                 window.blit(self.beach_image, self.beach_rect)
             self.buildings.draw(window)
             self.policecar.draw(window)
             self.obstacle_manager.draw(window)
-
 
         # objects that fly in the sky:
         self.arrow.draw(window)
@@ -258,6 +254,8 @@ class Game:
             self.spaceship.draw(window)
             self.ufo.draw(window)
 
+        if self.cur_scene == Scenes.SHOP:
+            self.shop_scene.appear(window)
 
         window.blit(self.health_bar_image, pygame.Rect((10, 10), (400, 100)))
         if self.pause:
@@ -276,7 +274,8 @@ class Game:
             darken_image.set_alpha(self.darken_alpha)
             window.blit(darken_image, pygame.Rect(0, 0, 0, 0))
             self.darken_alpha = min(self.darken_alpha + 2, 255)
-            return
+            if self.darken_alpha == 255:
+                self.shop_scene.appear(window)
 
         self.screen_shake_manager.shake(window)
 
@@ -286,16 +285,16 @@ class Game:
             self.lose = True
 
     def trigger_shop(self) -> None:
-        if not self.shop and not self.pause:
+        if not self.reached_checkpoint and not self.pause:
             assets_manager.play_music("mid_afternoon_mood")
-            self.shop = True
+            self.reached_checkpoint = True
             self.bomber.activated = False
             self.spaceship.activated = False
             self.ufo.activated = False
 
     def player_collision(self) -> None:
         for obj in self.player_collision_group:
-            if self.shop and type(obj) not in (Coin, Obstacle):
+            if self.reached_checkpoint and type(obj) not in (Coin, Obstacle):
                 continue
             if type(obj) == Spaceship:
                 obj.collision_player(self.player)
