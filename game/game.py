@@ -18,7 +18,7 @@ class Scenes(Enum):
 
 class Game:
     def __init__(self) -> None:
-        self.cur_scene = Scenes.CITY
+        self.cur_scene = Scenes.SPACE
 
         # objects in all scenes
         # ================================================================================================
@@ -109,6 +109,7 @@ class Game:
         # ================================================================================================
         self.spaceship = Spaceship(self.player_collision_group)
         self.ufo = UFO(self.player_collision_group)
+        self.ufo.activated = True
 
         assets_manager.play_music("8bitaggressive1")
 

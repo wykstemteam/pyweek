@@ -14,6 +14,7 @@ class Spaceship(pygame.sprite.Sprite):
         super().__init__()
 
         self.image = assets_manager.images['space_ship']
+        self.bullet_image = assets_manager.images['spaceship_bullet']
 
         # lc = laser charge
         self.laser_charge_ani = assets_manager.animations['laser_charge']
