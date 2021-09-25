@@ -22,11 +22,21 @@ class Shop:  # FIXME: Move outside of sprites if it is not a sprite
             pygame.Rect((698, 391), (104, 110)),
             pygame.Rect((1178, 391), (104, 110)),
         ]
+        self.button_text = [
+            "Heal Potion"
+        ]
+        self.button_text_effect = [
+            " +1 life"
+        ]
         self.buttons = [
             pygame_gui.elements.UIButton(
                 relative_rect=self.button_positions[i],
                 text='',
                 object_id=f'#button_{i+1}',
+                tool_tip_text= "<font face=fira_code color=normal_text size=5>"
+            "<b><u>"+self.button_text[i]+"/u></b>"
+            "<br><br>"
+            "<i>"+self.button_text_effect[i]+"<i>",
                 manager=self.shop_screen
             ) for i in range(6)
         ]
