@@ -51,7 +51,12 @@ class Shop:
                 manager=self.shop_screen,
             ) for i in range(6)
         ]
-
+        self.price_tag_button = pygame_gui.elements.UIButton(
+                relative_rect=pygame.Rect((191, 252), (160, 47)),
+                text='$50',
+                object_id="price_tag",
+                manager=self.shop_screen,
+            )
         self.confirm_screen = pygame_gui.UIManager(
             (SCREEN_WIDTH, SCREEN_HEIGHT), 'shop_display_theme.json'
         )
