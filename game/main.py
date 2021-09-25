@@ -15,24 +15,8 @@ window = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 def gaming() -> None:
     game = Game()
-    clock = pygame.time.Clock()
-
-    running = True
-    while running:
-        t = clock.get_time()
-
-        if game.event_process(window):  # Returns True if stop gaming
-            running = False
-
-        game.update(t / 1000, window)
-        game.draw(window)
-        pygame.display.flip()
-        clock.tick(60)
-
-        if SHOW_FPS:
-            print(f'fps = {0 if t == 0 else 1000 / t}')
-
-
+    game.run(window)
+    
 def main() -> None:
     title_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
     settings_button = pygame_gui.elements.UIButton(

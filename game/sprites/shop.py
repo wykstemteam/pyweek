@@ -125,13 +125,14 @@ class Shop:
         )
         self.game = game
         self.coins = self.game.coins
+        self.running = False
 
     def appear(self, window: pygame.Surface) -> None:
         clock = pygame.time.Clock()
-        running = True
+        self.running = True
         confirmation = False
 
-        while running:
+        while self.running:
             t = clock.get_time()
 
             for event in pygame.event.get():
@@ -141,7 +142,7 @@ class Shop:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_p:
                         print("Shop closed")
-                        running = False
+                        self.running = False
                 elif event.type == pygame.USEREVENT:
                     if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                         button = event.ui_element

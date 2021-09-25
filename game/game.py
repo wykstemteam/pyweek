@@ -20,6 +20,8 @@ class Scenes(Enum):
 
 class Game:
     def __init__(self) -> None:
+        self.clock = pygame.time.Clock()
+
         self.cur_scene = Scenes.CITY
 
         # objects in all scenes
@@ -196,7 +198,7 @@ class Game:
             self.laser_manager.reached_checkpoint = False
             self.buildings.__init__()
             self.obstacle_manager.reached_checkpoint = False
-            self.bomber.activated = True
+            self.bomber.__init__()
             self.beach_rect.topleft = (0, 0)
 
     def event_process(self, window: pygame.Surface):
@@ -232,6 +234,7 @@ class Game:
             self.lose_screen.process_events(event)
 
     def update(self, t: float, window: pygame.Surface) -> None:
+        print(t)
         # objects in all scenes:
         if not self.lose and not self.pause:
             if self.bullet_time:
@@ -259,6 +262,7 @@ class Game:
                 self.shop_scene.appear(window)
                 assets_manager.play_music('8bitaggressive1')
                 # leaving shop
+                self.clock.tick(60)
                 # resetting things
                 self.cur_scene = random.choice(list(Scenes))
                 # self.cur_scene = Scenes.CITY
@@ -437,3 +441,18 @@ class Game:
         self.screen_shake_manager.shaking = True
         self.earthquake = True
         self.earthquake_time = ITEM_EARTHQUAKE_DURATION
+
+    def run(self, window) -> None:
+        while True:
+            t = self.clock.get_time()
+
+            if self.event_process(window):  # Returns True if stop gaming
+                return
+
+            self.update(t / 1000, window)
+            self.draw(window)
+            pygame.display.flip()
+            self.clock.tick(60)
+
+            if SHOW_FPS:
+                print(f'fps = {0 if t == 0 else 1000 / t}')
