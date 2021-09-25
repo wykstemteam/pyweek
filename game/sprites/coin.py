@@ -18,7 +18,8 @@ class Coin(pygame.sprite.Sprite):
 
     def update(self, t: float) -> None:
         self.image = self.animation[int(self.frame)]
-        self.rect.move_ip(BACKGROUND_VELOCITY * t, 0)
+        self.pos.x += BACKGROUND_VELOCITY * t
+        self.rect.center = self.pos
         self.frame += 0.5
         if self.frame > len(self.animation) - 1:
             self.frame -= len(self.animation)
