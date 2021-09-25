@@ -64,32 +64,46 @@ class UFO(pygame.sprite.Sprite):
             ]
         elif self.bullet_pattern == 1:  # spiral
             for i in range(1, 16, 2):
-                new_bullet.append(self.bullet(UFO_BULLET_SPEED * np.cos(self.rotate_rad + (i * 2 * np.pi / 16)),
-                                              UFO_BULLET_SPEED * np.sin(self.rotate_rad + (i * 2 * np.pi / 16))
-                                              )
-                                  )
+                new_bullet.append(
+                    self.bullet(
+                        UFO_BULLET_SPEED * np.cos(self.rotate_rad + (i * 2 * np.pi / 16)),
+                        UFO_BULLET_SPEED * np.sin(self.rotate_rad + (i * 2 * np.pi / 16))
+                    )
+                )
         elif self.bullet_pattern == 2:  # double spiral
             for i in range(1, 16, 2):
-                new_bullet.append(self.bullet(UFO_BULLET_SPEED * np.cos(self.rotate_rad + (i * 2 * np.pi / 16)),
-                                              UFO_BULLET_SPEED * np.sin(self.rotate_rad + (i * 2 * np.pi / 16))
-                                              )
-                                  )
+                new_bullet.append(
+                    self.bullet(
+                        UFO_BULLET_SPEED * np.cos(self.rotate_rad + (i * 2 * np.pi / 16)),
+                        UFO_BULLET_SPEED * np.sin(self.rotate_rad + (i * 2 * np.pi / 16))
+                    )
+                )
             for i in range(1, 16, 2):
-                new_bullet.append(self.bullet(UFO_BULLET_SPEED * np.cos(np.pi - (self.rotate_rad + (i * 2 * np.pi / 16))),
-                                              UFO_BULLET_SPEED * np.sin(np.pi - (self.rotate_rad + (i * 2 * np.pi / 16)))
-                                              )
-                                  )
+                new_bullet.append(
+                    self.bullet(
+                        UFO_BULLET_SPEED * np.cos(np.pi - (self.rotate_rad + (i * 2 * np.pi / 16))),
+                        UFO_BULLET_SPEED * np.sin(np.pi - (self.rotate_rad + (i * 2 * np.pi / 16)))
+                    )
+                )
         elif self.bullet_pattern == 3:  # sun
             if self.circle_flag:
                 self.circle_flag = False
                 for i in range(1, 32, 2):
-                    new_bullet.append(self.bullet(UFO_BULLET_SPEED * np.cos(i * 2 * np.pi / 32),
-                                                  UFO_BULLET_SPEED * np.sin(i * 2 * np.pi / 32)))
+                    new_bullet.append(
+                        self.bullet(
+                            UFO_BULLET_SPEED * np.cos(i * 2 * np.pi / 32),
+                            UFO_BULLET_SPEED * np.sin(i * 2 * np.pi / 32)
+                        )
+                    )
             else:
                 self.circle_flag = True
                 for i in range(0, 32, 2):
-                    new_bullet.append(self.bullet(UFO_BULLET_SPEED * np.cos(i * 2 * np.pi / 32),
-                                                  UFO_BULLET_SPEED * np.sin(i * 2 * np.pi / 32)))
+                    new_bullet.append(
+                        self.bullet(
+                            UFO_BULLET_SPEED * np.cos(i * 2 * np.pi / 32),
+                            UFO_BULLET_SPEED * np.sin(i * 2 * np.pi / 32)
+                        )
+                    )
         return new_bullet
 
     def shoot(self) -> None:

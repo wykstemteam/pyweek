@@ -25,6 +25,6 @@ from .ufo import UFO
 __all__ = [
     'Arrow', 'Bomber', 'Building', 'BuildingManager', 'Bullet', 'MissileAircraft', 'Coin',
     'CoinManager', 'DistanceManager', 'Explode', 'FadeInManager', 'LaserManager', 'Laser',
-    'Missile', 'Obstacle', 'ObstacleManager', 'Player', 'PoliceCar', 'Road', 'Shop', 'Spaceship',
-    'UFO', 'Shield'
+    'Missile', 'Obstacle', 'ObstacleManager', 'Player', 'PoliceCar', 'Road', 'Shield', 'Shop',
+    'Spaceship', 'UFO'
 ]

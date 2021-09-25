@@ -30,7 +30,7 @@ class AssetsManager:
             self.images[base_fn] = pygame.image.load(os.path.join('assets', 'images', fn))
 
     def scale_images(self) -> None:
-        # background:
+        # background
         self.images['road'] = pygame.transform.scale(
             self.images['road'], (SCREEN_WIDTH, SCREEN_HEIGHT - BUILDING_HEIGHT)
         )
