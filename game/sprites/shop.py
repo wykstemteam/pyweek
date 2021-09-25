@@ -1,12 +1,17 @@
 import pygame
 import pygame_gui
 
+from game.assets_manager import assets_manager
 from game.constants import *
 
 
 class Shop:
     def __init__(
-            self, confirm_button: pygame.Surface, main_menu: pygame.Surface, darken: pygame.Surface, game  # game: Game
+        self,
+        confirm_button: pygame.Surface,
+        main_menu: pygame.Surface,
+        darken: pygame.Surface,
+        game  # game: Game
     ) -> None:
         self.confirm_button = confirm_button
         self.main_menu = main_menu
@@ -44,19 +49,19 @@ class Shop:
                 text='',
                 object_id=f'#button_{i + 1}',
                 tool_tip_text="<font face=fira_code color=normal_text size=5>"
-                              ""
-                              f" <b><u>{self.button_text[i]}</u></b>"
-                              "<br><br>"
-                              f"<i>{self.button_text_effect[i]}</i>",
+                ""
+                f" <b><u>{self.button_text[i]}</u></b>"
+                "<br><br>"
+                f"<i>{self.button_text_effect[i]}</i>",
                 manager=self.shop_screen,
             ) for i in range(6)
         ]
         self.price_tag_button = pygame_gui.elements.UIButton(
-                relative_rect=pygame.Rect((191, 252), (160, 47)),
-                text='$50',
-                object_id="price_tag",
-                manager=self.shop_screen,
-            )
+            relative_rect=pygame.Rect((191, 252), (160, 47)),
+            text='$50',
+            object_id="price_tag",
+            manager=self.shop_screen,
+        )
         self.confirm_screen = pygame_gui.UIManager(
             (SCREEN_WIDTH, SCREEN_HEIGHT), 'shop_display_theme.json'
         )
@@ -65,18 +70,20 @@ class Shop:
                 relative_rect=pygame.Rect((678, 120), (145, 150)),
                 text='',
                 tool_tip_text="<font face=fira_code color=normal_text size=5>"
-                              f"<b><u>{self.button_text[i]}</u></b>"
-                              "<br><br>"
-                              f"<i>{self.button_text_effect[i]}</i>",
+                f"<b><u>{self.button_text[i]}</u></b>"
+                "<br><br>"
+                f"<i>{self.button_text_effect[i]}</i>",
                 object_id=f'#button_{i + 1}',
                 manager=self.confirm_screen
             ) for i in range(6)
         ]
         for i in range(6):
-            self.display_buttons[i].normal_image = \
-                pygame.transform.scale(self.display_buttons[i].normal_image, (145, 150))
-            self.display_buttons[i].hovered_image = \
-                pygame.transform.scale(self.display_buttons[i].hovered_image, (145, 150))
+            self.display_buttons[i].normal_image = pygame.transform.scale(
+                self.display_buttons[i].normal_image, (145, 150)
+            )
+            self.display_buttons[i].hovered_image = pygame.transform.scale(
+                self.display_buttons[i].hovered_image, (145, 150)
+            )
             self.display_buttons[i].rebuild()
         self._hide()
 
@@ -113,9 +120,12 @@ class Shop:
                     if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                         button = event.ui_element
                         if button in (self.button_cancel, self.button_confirm):
+                            if button == self.button_confirm:
+                                assets_manager.play_sound("select2")
                             self._hide()
                             confirmation = False
                         else:
+                            assets_manager.play_sound("select1")
                             button_number = self.buttons.index(button)
                             self.display_buttons[button_number].show()
                             confirmation = True
