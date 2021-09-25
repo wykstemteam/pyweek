@@ -138,6 +138,23 @@ class Game:
 
         # objects in all scenes:
         if not self.lose and not self.pause:
+            if self.bullet_time:
+                self.bullet_time_t -= t
+                if self.bullet_time_t <= 0:
+                    self.bullet_time_t = ITEM_BULLET_TIME_DURATION
+                    self.bullet_time = False
+                else:
+                    self.rate = 0
+                    if ITEM_BULLET_TIME_DURATION - self.bullet_time_t <= 1:
+                        self.rate = -math.sqrt(
+                            (ITEM_BULLET_TIME_DURATION - self.bullet_time_t) * (1 - BULLET_TIME_RATE)**2
+                        ) + 1
+                    else:
+                        self.rate = (1 - BULLET_TIME_RATE) * (
+                            (1 - self.bullet_time_t / (ITEM_BULLET_TIME_DURATION - 1))**2
+                        ) + BULLET_TIME_RATE
+                    t *= self.rate
+
             self.player.hp = max(self.player.hp, 0)
             self.health_bar_image = assets_manager.images[f"HP{self.player.hp}"]
             if self.show_shop_animation:
@@ -176,23 +193,6 @@ class Game:
                         if type(obj) not in (PoliceCar, Bomber, Spaceship, UFO, Coin):
                             obj.kill()
 
-            if self.bullet_time:
-                self.bullet_time_t -= t
-                if self.bullet_time_t <= 0:
-                    self.bullet_time_t = ITEM_BULLET_TIME_DURATION
-                    self.bullet_time = False
-                else:
-                    self.rate = 0
-                    if ITEM_BULLET_TIME_DURATION - self.bullet_time_t <= 1:
-                        self.rate = -math.sqrt(
-                            (ITEM_BULLET_TIME_DURATION - self.bullet_time_t) * (1 - BULLET_TIME_RATE)**2
-                        ) + 1
-                    else:
-                        self.rate = (1 - BULLET_TIME_RATE) * (
-                            (1 - self.bullet_time_t / (ITEM_BULLET_TIME_DURATION - 1))**2
-                        ) + BULLET_TIME_RATE
-                    t *= self.rate
-                    print(self.rate, sep=' ')
 
         # objects in scene.SHOP:
         if self.cur_scene == Scenes.SHOP:
