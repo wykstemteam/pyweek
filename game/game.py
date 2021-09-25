@@ -141,7 +141,7 @@ class Game:
             self.pause_screen.process_events(event)
             self.lose_screen.process_events(event)
 
-    def update(self, t: float) -> None:
+    def update(self, t: float, window: pygame.Surface) -> None:
         # objects in all scenes:
         if not self.lose and not self.pause:
             if self.bullet_time:
@@ -164,9 +164,31 @@ class Game:
 
             # shop
             if self.stage2:
-                self.dimming = True
                 assets_manager.play_music("mid_afternoon_mood")
-                self.cur_scene = Scenes.SHOP
+                self.shop_scene.appear(window)
+                assets_manager.play_music('8bitaggressive1')
+                # leaving shop
+                # resetting things
+                self.distance_manager.dist_to_next_country = 100
+                self.stage1_countdown = 7
+                self.stage2 = False
+                self.dimming = False
+                self.darken_alpha = 0
+                self.coin_manager.reached_checkpoint = False
+                self.laser_manager.reached_checkpoint = False
+                self.buildings.reached_checkpoint = False
+                self.obstacle_manager.reached_checkpoint = False
+                self.policecar.activated = True
+                self.bomber.activated = True
+                self.player.inputtable = True
+                self.player.vx = -BACKGROUND_VELOCITY
+                self.player.vy = 0.0
+                self.player.real_x = SCREEN_WIDTH / 2
+                self.player.real_y = SCREEN_HEIGHT / 2
+                for road in self.roads:
+                    road.stop_moving = False
+
+                # ==========================================
             elif self.stage1_countdown <= 0:
                 self.player.inputtable = False
                 for road in self.roads:
@@ -264,8 +286,6 @@ class Game:
         elif self.cur_scene == Scenes.SPACE:
             self.spaceship.draw(window)
             self.ufo.draw(window)
-        elif self.cur_scene == Scenes.SHOP:
-            self.shop_scene.appear(window)
 
         # gui
         window.blit(self.health_bar_image, pygame.Rect((10, 10), (400, 100)))

@@ -17,9 +17,6 @@ def gaming() -> None:
     game = Game()
     clock = pygame.time.Clock()
 
-    shop = Shop(assets_manager.images['confirm_button'], assets_manager.images['main_menu'], assets_manager.images['darken'], game)
-    shop.appear(window)
-
     running = True
     while running:
         t = clock.get_time()
@@ -27,7 +24,7 @@ def gaming() -> None:
         if game.event_process(window):  # Returns True if stop gaming
             running = False
 
-        game.update(t / 1000)
+        game.update(t / 1000, window)
         game.draw(window)
         pygame.display.flip()
         clock.tick(60)
