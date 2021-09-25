@@ -132,6 +132,7 @@ class Game:
         self.health_bar_image = assets_manager.images[f"HP{self.player.hp}"]
 
         if self.show_shop_animation:
+            self.arrow.rect.left += -BACKGROUND_VELOCITY * t
             if self.player.go_right(t) and not self.dimming:
                 self.dimming = True
             return
@@ -181,18 +182,17 @@ class Game:
             self.ufo.update(t)
 
             self.obstacle_manager.update(t, self.shop)
-            self.coin_manager.update(t)
+            self.coin_manager.update(t, self.shop)
             self.arrow.update(self.player)
             self.laser_manager.update(t, self.shop)
+            self.player_collision()
             if self.shop:
                 self.beach_rect.move_ip(BACKGROUND_VELOCITY // 100, 0)
-            if not self.shop:
-                self.distance_manager.update(t)
-                self.player_collision()
-            else:
                 self.show_sea_time -= t
                 if self.show_sea_time <= 0:
                     self.show_shop_animation = True
+            else: 
+                self.distance_manager.update(t)
 
         if self.player.hp <= 0 and not self.shop and not self.lose:
             print(self.player.hp)
@@ -213,7 +213,7 @@ class Game:
                 self.screen_shake_manager.shaking = False
             else:
                 for obj in self.player_collision_group:
-                    if type(obj) not in (PoliceCar, Spaceship):
+                    if type(obj) not in (PoliceCar, Spaceship, Coin):
                         obj.kill()
 
     def draw(self, window: pygame.Surface) -> None:
@@ -253,7 +253,7 @@ class Game:
             darken_image.fill((0, 0, 0))
             darken_image.set_alpha(self.darken_alpha)
             window.blit(darken_image, pygame.Rect(0, 0, 0, 0))
-            self.darken_alpha = min(self.darken_alpha + 1, 255)
+            self.darken_alpha = min(self.darken_alpha + 2, 255)
             return
 
         self.screen_shake_manager.shake(window)
@@ -273,6 +273,8 @@ class Game:
 
     def player_collision(self) -> None:
         for obj in self.player_collision_group:
+            if self.shop and type(obj) not in (Coin, Obstacle):
+                continue
             if type(obj) == Spaceship:
                 obj.collision_player(self.player)
             if self.player.rect.colliderect(obj.rect):
