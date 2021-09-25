@@ -45,8 +45,7 @@ class Player(pygame.sprite.Sprite):
         self.blink_state = 1
         self.blink_cooldown = PLAYER_BLINK_COOLDOWN
 
-        self.shield_activate = False
-        self.shield = None
+        self.shield = Shield((self.real_x, self.real_y))
 
         self.item_invincible = False
         self.invincible_color = 0x000000
@@ -137,8 +136,7 @@ class Player(pygame.sprite.Sprite):
             elif self.items[self.holding] == 4:  # earthquake
                 self.game.start_earthquake()
             elif self.items[self.holding] == 5:  # shield
-                self.shield_activate = True
-                self.shield = Shield(assets_manager.images['shield'], self.real_x, self.real_y)
+                self.shield.turn_on()
             elif self.items[self.holding] == 6:  # bullet time
                 self.game.bullet_time = True
                 self.game.bullet_time_t = ITEM_BULLET_TIME_DURATION
@@ -158,19 +156,15 @@ class Player(pygame.sprite.Sprite):
                 self.image.fill(self.invincible_color, special_flags=pygame.BLEND_RGB_MULT)
                 self.invincible_color += 0xFFFFFF // (60 * ITEM_INVINCIBILITY_TIME)
 
-        if self.shield_activate:
-            if not self.shield.turn_on:
-                self.shield.kill()
-                self.shield_activate = False
-            else:
-                self.shield.update(t, self.real_x, self.real_y)
+        if self.shield.activate:
+            self.shield.update(t, self.rect.center)
 
     def draw(self, window: pygame.Surface) -> None:
         for missile in self.missiles:
             missile.draw(window)
         window.blit(self.shadow, self.shadow_rect)
         window.blit(self.image, self.rect)
-        if self.shield_activate:
+        if self.shield.activate:
             self.shield.draw(window)
 
     def in_bounds(self) -> bool:
@@ -215,11 +209,16 @@ class Player(pygame.sprite.Sprite):
     def go_right(self, t: float) -> bool:
         self.rect.left += -BACKGROUND_VELOCITY * t
         self.shadow_rect.left = self.rect.left - 5
+        self.shield.rect.left += -BACKGROUND_VELOCITY * t
         return self.rect.left > SCREEN_WIDTH
 
     def hit(self) -> bool:
         if self.is_invincible():
             return False
+
+        if self.shield.activate:
+            self.shield.hit()
+            return True
 
         self.invincibility_after_damage = INVINCIBILITY_AFTER_DAMAGE
         self.hp -= 1

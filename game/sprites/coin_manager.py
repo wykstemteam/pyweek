@@ -15,9 +15,9 @@ class CoinManager(pygame.sprite.Sprite):
 
         self.player_collision_group = player_collision_group
 
-    def update(self, t: float) -> None:
+    def update(self, t: float, shop) -> None:
         self.coin_t -= t
-        if self.coin_t <= 0:
+        if self.coin_t <= 0 and not shop:
             new_coin = Coin(
                 (
                     SCREEN_WIDTH + COIN_WIDTH,
