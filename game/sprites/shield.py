@@ -3,6 +3,7 @@ from game.constants import *
 
 from game.assets_manager import assets_manager
 
+
 class Shield(pygame.sprite.Sprite):
     def __init__(self, pos: pygame.Vector2) -> None:
         super().__init__()
@@ -35,6 +36,7 @@ class Shield(pygame.sprite.Sprite):
         self.shield_hp -= 1
         if self.shield_hp == 0:
             self.activate = False
+            self.shield_hp = 3
         self.image = assets_manager.images['shield']
         
 
