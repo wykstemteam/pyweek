@@ -7,11 +7,11 @@ from game.constants import *
 
 class Shop:
     def __init__(
-        self,
-        confirm_button: pygame.Surface,
-        main_menu: pygame.Surface,
-        darken: pygame.Surface,
-        game  # game: Game
+            self,
+            confirm_button: pygame.Surface,
+            main_menu: pygame.Surface,
+            darken: pygame.Surface,
+            game  # game: Game
     ) -> None:
         self.confirm_button = confirm_button
         self.main_menu = main_menu
@@ -19,6 +19,9 @@ class Shop:
         self.shop_screen = pygame_gui.UIManager(
             (SCREEN_WIDTH, SCREEN_HEIGHT), 'shop_display_theme.json'
         )
+        self.shop_screen.preload_fonts([
+            {'name': 'fira_code', 'point_size': 18, 'style': style} for style in ('regular', 'bold', 'italic')
+        ])
         self.button_positions = [
             pygame.Rect((218, 125), (104, 110)),
             pygame.Rect((697, 125), (104, 110)),
@@ -49,10 +52,10 @@ class Shop:
                 text='',
                 object_id=f'#button_{i + 1}',
                 tool_tip_text="<font face=fira_code color=normal_text size=5>"
-                ""
-                f" <b><u>{self.button_text[i]}</u></b>"
-                "<br><br>"
-                f"<i>{self.button_text_effect[i]}</i>",
+                              ""
+                              f" <b><u>{self.button_text[i]}</u></b>"
+                              "<br><br>"
+                              f"<i>{self.button_text_effect[i]}</i>",
                 manager=self.shop_screen,
             ) for i in range(6)
         ]
@@ -65,14 +68,17 @@ class Shop:
         self.confirm_screen = pygame_gui.UIManager(
             (SCREEN_WIDTH, SCREEN_HEIGHT), 'shop_display_theme.json'
         )
+        self.confirm_screen.preload_fonts([
+            {'name': 'fira_code', 'point_size': 18, 'style': style} for style in ('regular', 'bold', 'italic')
+        ])
         self.display_buttons = [
             pygame_gui.elements.UIButton(
                 relative_rect=pygame.Rect((678, 120), (145, 150)),
                 text='',
                 tool_tip_text="<font face=fira_code color=normal_text size=5>"
-                f"<b><u>{self.button_text[i]}</u></b>"
-                "<br><br>"
-                f"<i>{self.button_text_effect[i]}</i>",
+                              f"<b><u>{self.button_text[i]}</u></b>"
+                              "<br><br>"
+                              f"<i>{self.button_text_effect[i]}</i>",
                 object_id=f'#button_{i + 1}',
                 manager=self.confirm_screen
             ) for i in range(6)
