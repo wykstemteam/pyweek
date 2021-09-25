@@ -10,8 +10,6 @@ from game.screen_shake_manager import ScreenShakeManager
 from game.sprites import *
 
 
-# TODO: Replace self.pause and self.lose with self.state which is GAMING, PAUSE or LOSE
-
 class Scenes(Enum):
     CITY = 1
     SHOP = 2
@@ -87,8 +85,10 @@ class Game:
         self.darken_alpha = 0
         self.show_sea_time = SHOW_SEA_TIME
 
-        self.shop_scene = Shop(assets_manager.images['confirm_button'], assets_manager.images['main_menu'],
-                               assets_manager.images['darken'])
+        self.shop_scene = Shop(
+            assets_manager.images['confirm_button'], assets_manager.images['main_menu'],
+            assets_manager.images['darken']
+        )
 
         # objects in scene.CITY
         # ================================================================================================
@@ -150,11 +150,12 @@ class Game:
                     self.rate = 0
                     if ITEM_BULLET_TIME_DURATION - self.bullet_time_t <= 1:
                         self.rate = -math.sqrt(
-                            (ITEM_BULLET_TIME_DURATION - self.bullet_time_t) * (1 - BULLET_TIME_RATE) ** 2
+                            (ITEM_BULLET_TIME_DURATION - self.bullet_time_t) *
+                            (1 - BULLET_TIME_RATE)**2
                         ) + 1
                     else:
                         self.rate = (1 - BULLET_TIME_RATE) * (
-                                (1 - self.bullet_time_t / (ITEM_BULLET_TIME_DURATION - 1)) ** 2
+                            (1 - self.bullet_time_t / (ITEM_BULLET_TIME_DURATION - 1))**2
                         ) + BULLET_TIME_RATE
                     t *= self.rate
 
@@ -169,7 +170,7 @@ class Game:
             self.fade_in_manager.update(t)
             self.player.update(t if not self.bullet_time else t / self.rate)
             self.player_collision()
-            self.coin_manager.update(t, self.reached_checkpoint)
+            self.coin_manager.update(t)
             self.arrow.update(self.player)
             if self.reached_checkpoint:
                 self.beach_rect.move_ip(BACKGROUND_VELOCITY // 200, 0)
@@ -200,13 +201,13 @@ class Game:
         # objects in scene.CITY:
         if self.cur_scene == Scenes.CITY:
             if not self.lose and not self.pause:
-                self.laser_manager.update(t, self.reached_checkpoint)
+                self.laser_manager.update(t)
                 self.roads.update(t)
-                self.buildings.update(t, self.reached_checkpoint)
-                self.policecar.update(t, self.reached_checkpoint)
+                self.buildings.update(t)
+                self.policecar.update(t)
                 self.bomber.aim(self.player.rect.centerx, self.player.rect.centery)
                 self.bomber.update(t)
-                self.obstacle_manager.update(t, self.reached_checkpoint)
+                self.obstacle_manager.update(t)
 
         # objects in scene.SPACE:
         if self.cur_scene == Scenes.SPACE:
@@ -291,6 +292,11 @@ class Game:
             self.bomber.activated = False
             self.spaceship.activated = False
             self.ufo.activated = False
+            self.laser_manager.reached_checkpoint = True
+            self.obstacle_manager.reached_checkpoint = True
+            self.policecar.reached_checkpoint = True
+            self.buildings.reached_checkpoint = True
+            self.coin_manager.reached_checkpoint = True
 
     def player_collision(self) -> None:
         for obj in self.player_collision_group:

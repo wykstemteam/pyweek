@@ -16,6 +16,7 @@ class LaserManager:
         self.last_laser_shoot = 0
         self.t = 0
         self.amounts = 0
+        self.reached_checkpoint = False
 
     def add(self) -> None:
         pos = random.randint(BUILDING_HEIGHT, SCREEN_HEIGHT - LASER_HEIGHT)
@@ -25,8 +26,8 @@ class LaserManager:
         self.missiles.add(new_missiles)
         self.player_collision_group.add(new_missiles)
 
-    def update(self, t: float, shop: bool) -> None:
-        if not shop:
+    def update(self, t: float) -> None:
+        if not self.reached_checkpoint:
             self.t += t
         if self.t < LASER_COOLDOWN:
             pass

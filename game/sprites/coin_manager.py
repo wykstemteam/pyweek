@@ -14,10 +14,11 @@ class CoinManager(pygame.sprite.Sprite):
         self.coin_t = COIN_APPEAR_INTERVAL / 2
 
         self.player_collision_group = player_collision_group
+        self.reached_checkpoint = False
 
-    def update(self, t: float, shop) -> None:
+    def update(self, t: float) -> None:
         self.coin_t -= t
-        if self.coin_t <= 0 and not shop:
+        if self.coin_t <= 0 and not self.reached_checkpoint:
             new_coin = Coin(
                 (
                     SCREEN_WIDTH + COIN_WIDTH,

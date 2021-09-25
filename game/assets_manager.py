@@ -19,7 +19,7 @@ class AssetsManager:
         self.scale_images()
         self.init_animations()
         self.scale_animations()
-        # self.init_sounds()
+        self.init_sounds()
 
     def init_images(self) -> None:
         for fn in os.listdir(os.path.join('assets', 'images')):
