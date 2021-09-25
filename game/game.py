@@ -169,7 +169,7 @@ class Game:
             self.fade_in_manager.update(t)
             self.player.update(t if not self.bullet_time else t / self.rate)
             self.player_collision()
-            self.coin_manager.update(t, self.reached_checkpoint)
+            self.coin_manager.update(t)
             self.arrow.update(self.player)
             if self.reached_checkpoint:
                 self.beach_rect.move_ip(BACKGROUND_VELOCITY // 200, 0)
@@ -200,13 +200,13 @@ class Game:
         # objects in scene.CITY:
         if self.cur_scene == Scenes.CITY:
             if not self.lose and not self.pause:
-                self.laser_manager.update(t, self.reached_checkpoint)
+                self.laser_manager.update(t)
                 self.roads.update(t)
-                self.buildings.update(t, self.reached_checkpoint)
-                self.policecar.update(t, self.reached_checkpoint)
+                self.buildings.update(t)
+                self.policecar.update(t)
                 self.bomber.aim(self.player.rect.centerx, self.player.rect.centery)
                 self.bomber.update(t)
-                self.obstacle_manager.update(t, self.reached_checkpoint)
+                self.obstacle_manager.update(t)
 
         # objects in scene.SPACE:
         if self.cur_scene == Scenes.SPACE:
@@ -291,6 +291,11 @@ class Game:
             self.bomber.activated = False
             self.spaceship.activated = False
             self.ufo.activated = False
+            self.laser_manager.reached_checkpoint = True
+            self.obstacle_manager.reached_checkpoint = True
+            self.policecar.reached_checkpoint = True
+            self.buildings.reached_checkpoint = True
+            self.coin_manager.reached_checkpoint = True
 
     def player_collision(self) -> None:
         for obj in self.player_collision_group:

@@ -12,6 +12,7 @@ class ObstacleManager:
         self.obstacles = pygame.sprite.Group()
         self.cooldown = OBSTACLE_COOLDOWN
         self.player_collision_group = player_collision_group
+        self.reached_checkpoint = False
 
     def add(self) -> None:
         obstacle_num = random.randint(1, 3)
@@ -27,9 +28,9 @@ class ObstacleManager:
         self.obstacles.add(new_obstacle)
         self.player_collision_group.add(new_obstacle)
 
-    def update(self, t: float, shop: bool) -> None:
+    def update(self, t: float) -> None:
         self.obstacles.update(t)
-        if shop:
+        if self.reached_checkpoint:
             return
         if self.cooldown <= 0:
             self.add()

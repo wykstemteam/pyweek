@@ -24,8 +24,9 @@ class BuildingManager:
             self.buildings.append(Building(assets_manager.images['3buildings'], self.xs[-1]))
         self.xs.append(self.xs[-1] + BUILDING_WIDTH)
         self.buildings.append(Building(assets_manager.images['3buildings'], self.xs[-1]))
+        self.reached_checkpoint = False
 
-    def update(self, t: float, shop: bool = False) -> None:
+    def update(self, t: float) -> None:
         if DISABLE_BUILDINGS:
             return
 
@@ -38,7 +39,7 @@ class BuildingManager:
             return
         if self.xs[0] + self.buildings[0].sx + BUILDING_WIDTH < 0:
             self.xs.popleft()
-            if not shop:
+            if not self.reached_checkpoint:
                 self.xs.append(self.xs[-1] + BUILDING_WIDTH)
 
     def draw(self, window: pygame.Surface) -> None:
