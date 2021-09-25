@@ -297,10 +297,8 @@ class Game:
                 self.roads.update(t)
                 self.buildings.update(t)
                 self.policecar.update(t)
-                if not self.bomber.activated and self.distance_manager.dist_to_next_country > 0:
-                    if random.randint(0, 1000) <= 1:
-                        self.bomber.activated = True
-                        self.bomber.activated_dur = random.uniform(10.0, 20.0)
+                if self.distance_manager.dist_to_next_country > 0:
+                    self.bomber.random_activate()
                 self.bomber.aim(self.player.rect.centerx, self.player.rect.centery)
                 self.bomber.update(t)
                 self.obstacle_manager.update(t)

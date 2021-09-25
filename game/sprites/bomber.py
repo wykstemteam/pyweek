@@ -1,3 +1,5 @@
+import random
+
 import numpy as np
 import pygame
 
@@ -46,6 +48,13 @@ class Bomber(pygame.sprite.Sprite):
             self.bullets.add(new_bullet)
             self.player_collision_group.add(new_bullet)
             self.shoot_cooldown = BOMBER_SHOOT_COOLDOWN
+
+    def random_activate(self):
+        if self.activated:
+            return
+        if random.randint(0, 1000) <= 1:
+            self.activated = True
+            self.activated_dur = random.uniform(10.0, 20.0)
 
     def update(self, t: float) -> None:
         if self.activated_dur <= 0.0:
