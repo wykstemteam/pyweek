@@ -81,11 +81,10 @@ class Game:
         self.earthquake = False
 
         # entering shop
-        self.reached_checkpoint = False
-        self.show_shop_animation = False
+        self.stage1_countdown = 5
+        self.stage2_countdown = 5
         self.dimming = False
         self.darken_alpha = 0
-        self.show_sea_time = SHOW_SEA_TIME
 
         self.shop_scene = Shop(assets_manager.images['confirm_button'], assets_manager.images['main_menu'],
                                assets_manager.images['darken'])
@@ -101,6 +100,7 @@ class Game:
             assets_manager.images['bullet'], self.player_collision_group
         )
         self.bomber = Bomber(self.player_collision_group)
+        self.bomber.activated = True
         self.buildings = BuildingManager()
         self.obstacle_manager = ObstacleManager(self.player_collision_group)
         self.beach_image = assets_manager.images['beach_full']
@@ -158,28 +158,33 @@ class Game:
                         ) + BULLET_TIME_RATE
                     t *= self.rate
 
+            # shop
+            if self.stage2_countdown <= 0:
+                assets_manager.play_music("mid_afternoon_mood")
+                self.cur_scene = Scenes.SHOP
+            elif self.stage1_countdown <= 0:
+                self.buildings.reached_checkpoint = True
+                self.player.inputtable = False
+                self.player.go_right(t)
+                self.dimming = True
+                self.stage2_countdown -= t
+            elif self.distance_manager.dist >= 10:
+                self.coin_manager.reached_checkpoint = True
+                self.laser_manager.reached_checkpoint = True
+                self.obstacle_manager.reached_checkpoint = True
+                self.policecar.activated = False
+                self.bomber.activated = False
+                self.stage1_countdown -= t
+
             self.player.hp = max(self.player.hp, 0)
             self.health_bar_image = assets_manager.images[f"HP{self.player.hp}"]
-            if self.show_shop_animation:
-                self.arrow.rect.left += -BACKGROUND_VELOCITY * t
-                if self.player.go_right(t) and not self.dimming:
-                    self.dimming = True
-                return
 
             self.fade_in_manager.update(t)
             self.player.update(t if not self.bullet_time else t / self.rate)
             self.player_collision()
             self.coin_manager.update(t)
             self.arrow.update(self.player)
-            if self.reached_checkpoint:
-                self.beach_rect.move_ip(BACKGROUND_VELOCITY // 200, 0)
-                self.show_sea_time -= t
-                if self.show_sea_time <= 0:
-                    self.show_shop_animation = True
-            else:
-                if self.distance_manager.dist_to_next_country <= 0:
-                    self.trigger_shop()
-                self.distance_manager.update(t)
+            self.distance_manager.update(t)
 
             if self.player.hp <= 0:
                 if not PLAYER_INVIN:
@@ -194,8 +199,6 @@ class Game:
                     for obj in self.player_collision_group:
                         if type(obj) not in (PoliceCar, Bomber, Spaceship, UFO, Coin):
                             obj.kill()
-
-        # objects in scene.SHOP:
 
         # objects in scene.CITY:
         if self.cur_scene == Scenes.CITY:
@@ -236,9 +239,9 @@ class Game:
 
         if self.cur_scene == Scenes.CITY:
             self.laser_manager.draw(window)
-            if self.reached_checkpoint:
-                window.blit(self.beach_image, self.beach_rect)
             self.buildings.draw(window)
+            if self.distance_manager.dist >= 100:
+                window.blit(self.beach_image, self.beach_rect)
             self.policecar.draw(window)
             self.obstacle_manager.draw(window)
 
@@ -273,9 +276,7 @@ class Game:
             darken_image.fill((0, 0, 0))
             darken_image.set_alpha(self.darken_alpha)
             window.blit(darken_image, pygame.Rect(0, 0, 0, 0))
-            self.darken_alpha = min(self.darken_alpha + 2, 255)
-            if self.darken_alpha == 255:
-                self.shop_scene.appear(window)
+            self.darken_alpha = min(self.darken_alpha + 1, 255)
 
         self.screen_shake_manager.shake(window)
 
@@ -284,22 +285,9 @@ class Game:
             assets_manager.play_music("ensolarado")
             self.lose = True
 
-    def trigger_shop(self) -> None:
-        if not self.reached_checkpoint and not self.pause:
-            assets_manager.play_music("mid_afternoon_mood")
-            self.reached_checkpoint = True
-            self.bomber.activated = False
-            self.spaceship.activated = False
-            self.ufo.activated = False
-            self.laser_manager.reached_checkpoint = True
-            self.obstacle_manager.reached_checkpoint = True
-            self.policecar.reached_checkpoint = True
-            self.buildings.reached_checkpoint = True
-            self.coin_manager.reached_checkpoint = True
-
     def player_collision(self) -> None:
         for obj in self.player_collision_group:
-            if self.reached_checkpoint and type(obj) not in (Coin, Obstacle):
+            if self.distance_manager.dist >= 100 and type(obj) not in (Coin, Obstacle):
                 continue
             if type(obj) == Spaceship:
                 obj.collision_player(self.player)
