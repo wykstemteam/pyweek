@@ -10,8 +10,6 @@ from game.screen_shake_manager import ScreenShakeManager
 from game.sprites import *
 
 
-# TODO: Replace self.pause and self.lose with self.state which is GAMING, PAUSE or LOSE
-
 class Scenes(Enum):
     CITY = 1
     SHOP = 2
@@ -87,8 +85,10 @@ class Game:
         self.darken_alpha = 0
         self.show_sea_time = SHOW_SEA_TIME
 
-        self.shop_scene = Shop(assets_manager.images['confirm_button'], assets_manager.images['main_menu'],
-                               assets_manager.images['darken'])
+        self.shop_scene = Shop(
+            assets_manager.images['confirm_button'], assets_manager.images['main_menu'],
+            assets_manager.images['darken']
+        )
 
         # objects in scene.CITY
         # ================================================================================================
@@ -150,11 +150,12 @@ class Game:
                     self.rate = 0
                     if ITEM_BULLET_TIME_DURATION - self.bullet_time_t <= 1:
                         self.rate = -math.sqrt(
-                            (ITEM_BULLET_TIME_DURATION - self.bullet_time_t) * (1 - BULLET_TIME_RATE) ** 2
+                            (ITEM_BULLET_TIME_DURATION - self.bullet_time_t) *
+                            (1 - BULLET_TIME_RATE)**2
                         ) + 1
                     else:
                         self.rate = (1 - BULLET_TIME_RATE) * (
-                                (1 - self.bullet_time_t / (ITEM_BULLET_TIME_DURATION - 1)) ** 2
+                            (1 - self.bullet_time_t / (ITEM_BULLET_TIME_DURATION - 1))**2
                         ) + BULLET_TIME_RATE
                     t *= self.rate
 
