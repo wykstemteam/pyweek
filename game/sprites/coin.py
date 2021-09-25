@@ -4,6 +4,7 @@ from game.constants import *
 from game.assets_manager import assets_manager
 from game.sprites.player import Player
 
+
 class Coin(pygame.sprite.Sprite):
     def __init__(self, pos: pygame.Vector2) -> None:
         super().__init__()
@@ -17,13 +18,12 @@ class Coin(pygame.sprite.Sprite):
 
     def update(self, t: float) -> None:
         self.image = self.animation[int(self.frame)]
-        self.rect.move_ip(BACKGROUND_VELOCITY*t, 0)
+        self.rect.move_ip(BACKGROUND_VELOCITY * t, 0)
         self.frame += 0.5
-        if self.frame > len(self.animation)-1:
+        if self.frame > len(self.animation) - 1:
             self.frame -= len(self.animation)
         if self.rect.right <= 0:
             self.kill()
-
 
     def player_hit(self, player: Player) -> None:  # should be called when collided by player
         player.coins += 1

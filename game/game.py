@@ -51,7 +51,7 @@ class Game:
         self.darken_alpha = 0
         self.beach_rect = pygame.Rect(0, 0, 0, 0)
 
-        #coins
+        # coins
         self.coin_manager = CoinManager(self.player_collision_group)
 
         # game_screen

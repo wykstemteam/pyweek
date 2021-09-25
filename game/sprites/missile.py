@@ -5,7 +5,7 @@ from game.assets_manager import assets_manager
 from game.constants import *
 
 
-class Missile(pygame.sprite.Sprite):
+class Missile(pygame.sprite.Sprite):  # TODO: Maybe rename dir
     def __init__(self, pos: pygame.Vector2, dir: float) -> None:
         super().__init__()
 

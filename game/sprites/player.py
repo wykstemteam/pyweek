@@ -46,6 +46,7 @@ class Player(pygame.sprite.Sprite):
         self.blink_cooldown = PLAYER_BLINK_COOLDOWN
 
         self.shield_activate = False
+        self.shield = None
 
         self.item_invincible = False
         self.invincible_color = 0x000000
@@ -137,8 +138,7 @@ class Player(pygame.sprite.Sprite):
                 self.game.start_earthquake()
             elif self.items[self.holding] == 5:  # shield
                 self.shield_activate = True
-                self.shield = Shield(
-                    assets_manager.images['shield'], self.real_x, self.real_y)
+                self.shield = Shield(assets_manager.images['shield'], self.real_x, self.real_y)
             elif self.items[self.holding] == 6:  # bullet time
                 self.game.bullet_time = True
                 self.game.bullet_time_t = ITEM_BULLET_TIME_DURATION
@@ -155,10 +155,8 @@ class Player(pygame.sprite.Sprite):
                 self.image = self.ori_image
             else:
                 self.image = self.ori_image.copy()
-                self.image.fill(self.invincible_color,
-                                special_flags=pygame.BLEND_RGB_MULT)
-                self.invincible_color += 0xFFFFFF // (
-                    60 * ITEM_INVINCIBILITY_TIME)
+                self.image.fill(self.invincible_color, special_flags=pygame.BLEND_RGB_MULT)
+                self.invincible_color += 0xFFFFFF // (60 * ITEM_INVINCIBILITY_TIME)
 
         if self.shield_activate:
             if not self.shield.turn_on:

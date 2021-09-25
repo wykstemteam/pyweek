@@ -80,9 +80,7 @@ class AssetsManager:
         self.images['spaceship_bullet'] = pygame.transform.scale(
             self.images['spaceship_bullet'], (SPACESHIP_BULLET_WIDTH, SPACESHIP_BULLET_HEIGHT)
         )
-        self.images['UFO'] = pygame.transform.scale(
-            self.images['UFO'], (450, 450)
-        )
+        self.images['UFO'] = pygame.transform.scale(self.images['UFO'], (450, 450))
         self.images['UFO_bullet'] = pygame.transform.scale(
             self.images['UFO_bullet'], (UFO_BULLET_WIDTH, UFO_BULLET_HEIGHT)
         )
@@ -95,7 +93,8 @@ class AssetsManager:
             self.images['motorbike'], (PLAYER_WIDTH, PLAYER_HEIGHT)
         )
         self.images['shield'] = pygame.transform.scale(
-            self.images['shield'], (PLAYER_WIDTH + SHIELD_WIDTH_OFFSET, PLAYER_HEIGHT + SHIELD_HEIGHT_OFFSET)
+            self.images['shield'],
+            (PLAYER_WIDTH + SHIELD_WIDTH_OFFSET, PLAYER_HEIGHT + SHIELD_HEIGHT_OFFSET)
         )
 
     def init_animations(self) -> None:

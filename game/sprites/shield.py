@@ -4,7 +4,7 @@ from game.constants import *
 
 
 class Shield(pygame.sprite.Sprite):
-    def __init__(self, image: pygame.Surface, x: float, y: float):
+    def __init__(self, image: pygame.Surface, x: float, y: float) -> None:
         super().__init__()
 
         self.image = image
@@ -13,15 +13,15 @@ class Shield(pygame.sprite.Sprite):
         self.shield_time = SHIELD_REMAIN_TIME
         self.activate = True
 
-    def update(self, t: float, x: float, y: float):
+    def update(self, t: float, x: float, y: float) -> None:
         if self.shield_time > 0:
             self.shield_time -= t
             self.topleft = (x, y)
         else:
             self.activate = False
 
-    def turn_on(self):
+    def turn_on(self) -> bool:
         return self.activate
 
-    def draw(self, window):
+    def draw(self, window: pygame.Surface) -> None:
         window.image(self.image, self.rect)
