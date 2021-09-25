@@ -152,7 +152,7 @@ class Game:
             self.arrow.update(self.player)
             self.laser_manager.update(t, self.shop)
             if self.shop:
-                self.beach_rect.move_ip(BACKGROUND_VELOCITY // 100, 0)
+                self.beach_rect.move_ip(BACKGROUND_VELOCITY // 200, 0)
                 self.show_sea_time -= t
                 if self.show_sea_time <= 0:
                     self.show_shop_animation = True
