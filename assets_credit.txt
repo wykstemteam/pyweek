@@ -7,4 +7,4 @@ all music: dova syndrome
 
 sound effects
 explosion: mixkit
-coin, shield_hit: zapsplat
+coin, shield_hit, select1, select2: zapsplat
