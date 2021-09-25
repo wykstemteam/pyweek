@@ -233,3 +233,6 @@ class Player(pygame.sprite.Sprite):
         self.item_invincible = True
         self.item_invincible_time = ITEM_INVINCIBILITY_TIME
         self.invincible_color = 0x000000
+
+    def add_coin(self):
+        self.game.coins += 1

@@ -6,7 +6,7 @@ from game.constants import *
 
 class Shop:
     def __init__(
-            self, confirm_button: pygame.Surface, main_menu: pygame.Surface, darken: pygame.Surface
+            self, confirm_button: pygame.Surface, main_menu: pygame.Surface, darken: pygame.Surface, coins: int
     ) -> None:
         self.confirm_button = confirm_button
         self.main_menu = main_menu
@@ -78,6 +78,7 @@ class Shop:
             text='Cancel',
             manager=self.confirm_screen
         )
+        self.coins = coins
 
     def appear(self, window: pygame.Surface) -> None:
         clock = pygame.time.Clock()

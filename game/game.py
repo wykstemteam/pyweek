@@ -1,3 +1,4 @@
+from game.sprites.coin_gui import CoinGUI
 import math
 from enum import Enum
 
@@ -37,6 +38,8 @@ class Game:
         self.health_bar_image = assets_manager.images['HP4']
         # coins
         self.coin_manager = CoinManager(self.player_collision_group)
+        self.coins = 0
+        self.coin_gui = CoinGUI((1200, 36), self)
 
         # game_screen
         self.game_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -86,7 +89,7 @@ class Game:
 
         self.shop_scene = Shop(
             assets_manager.images['confirm_button'], assets_manager.images['main_menu'],
-            assets_manager.images['darken']
+            assets_manager.images['darken'], self.coins
         )
 
         # objects in scene.CITY
@@ -190,6 +193,7 @@ class Game:
             self.coin_manager.update(t)
             self.arrow.update(self.player)
             self.distance_manager.update(t)
+            self.coin_gui.update(t)
 
             if self.player.hp <= 0:
                 if not PLAYER_INVIN:
@@ -253,7 +257,6 @@ class Game:
         # objects that fly in the sky:
         self.arrow.draw(window)
         self.fade_in_manager.draw(window)
-        self.distance_manager.draw(window)
 
         if self.cur_scene == Scenes.CITY:
             self.bomber.draw(window)
@@ -265,6 +268,7 @@ class Game:
         if self.cur_scene == Scenes.SHOP:
             self.shop_scene.appear(window)
 
+        # gui
         window.blit(self.health_bar_image, pygame.Rect((10, 10), (400, 100)))
         if self.pause:
             window.blit(assets_manager.images['darken'], pygame.Rect(0, 0, 0, 0))
@@ -275,6 +279,8 @@ class Game:
             self.lose_screen.draw_ui(window)
         else:
             self.game_screen.draw_ui(window)
+        self.distance_manager.draw(window)
+        self.coin_gui.draw(window)
 
         if self.dimming:
             darken_image = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
