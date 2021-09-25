@@ -119,7 +119,7 @@ class Spaceship(pygame.sprite.Sprite):
 
         if self.pattern_dur <= 0.1:
             self.bullet_pattern = (self.bullet_pattern + 1) % 2
-            self.pattern_dur = float(random.randint(2, 5))
+            self.pattern_dur = random.uniform(2, 5)
 
         self.shoot_cooldown -= t
         self.pattern_dur -= t

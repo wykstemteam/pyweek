@@ -1,4 +1,5 @@
 import random
+from typing import List
 
 import numpy as np
 import pygame
@@ -37,287 +38,188 @@ class UFO(pygame.sprite.Sprite):
         self.circle_flag = False
         self.player_collision_group.add(self)
 
+    def bullet(self, *args, **kwargs):
+        return Bullet(self.bullet_image, self.rect.center, *args, **kwargs)
+
+    def get_bullet_pattern(self) -> List[Bullet]:
+        if self.bullet_pattern == 0:  # weird
+            return [
+                self.bullet(
+                    UFO_BULLET_SPEED * np.cos(self.rotate_rad),
+                    UFO_BULLET_SPEED * np.sin(self.rotate_rad)
+                ),
+                self.bullet(
+                    UFO_BULLET_SPEED * np.cos(self.rotate_rad),
+                    -UFO_BULLET_SPEED * np.sin(self.rotate_rad)
+                ),
+                self.bullet(
+                    -UFO_BULLET_SPEED * np.cos(self.rotate_rad),
+                    UFO_BULLET_SPEED * np.sin(self.rotate_rad)
+                ),
+                self.bullet(
+                    -UFO_BULLET_SPEED * np.cos(self.rotate_rad),
+                    -UFO_BULLET_SPEED * np.sin(self.rotate_rad)
+                )
+            ]
+        elif self.bullet_pattern == 1:  # spiral
+            return [
+                self.bullet(
+                    UFO_BULLET_SPEED * np.cos(self.rotate_rad + (np.pi / 8)),
+                    UFO_BULLET_SPEED * np.sin(self.rotate_rad + (np.pi / 8))
+                ),
+                self.bullet(
+                    UFO_BULLET_SPEED * np.cos(self.rotate_rad - (np.pi / 8)),
+                    UFO_BULLET_SPEED * np.sin(self.rotate_rad - (np.pi / 8))
+                ),
+                self.bullet(
+                    UFO_BULLET_SPEED * np.cos(self.rotate_rad + (3 * np.pi / 8)),
+                    UFO_BULLET_SPEED * np.sin(self.rotate_rad + (3 * np.pi / 8))
+                ),
+                self.bullet(
+                    UFO_BULLET_SPEED * np.cos(self.rotate_rad - (3 * np.pi / 8)),
+                    UFO_BULLET_SPEED * np.sin(self.rotate_rad - (3 * np.pi / 8))
+                ),
+                self.bullet(
+                    UFO_BULLET_SPEED * np.cos(self.rotate_rad + (5 * np.pi / 8)),
+                    UFO_BULLET_SPEED * np.sin(self.rotate_rad + (5 * np.pi / 8))
+                ),
+                self.bullet(
+                    UFO_BULLET_SPEED * np.cos(self.rotate_rad - (5 * np.pi / 8)),
+                    UFO_BULLET_SPEED * np.sin(self.rotate_rad - (5 * np.pi / 8))
+                ),
+                self.bullet(
+                    UFO_BULLET_SPEED * np.cos(self.rotate_rad + (7 * np.pi / 8)),
+                    UFO_BULLET_SPEED * np.sin(self.rotate_rad + (7 * np.pi / 8))
+                ),
+                self.bullet(
+                    UFO_BULLET_SPEED * np.cos(self.rotate_rad - (7 * np.pi / 8)),
+                    UFO_BULLET_SPEED * np.sin(self.rotate_rad - (7 * np.pi / 8))
+                )
+            ]
+        elif self.bullet_pattern == 2:  # double spiral
+            return [
+                self.bullet(
+                    UFO_BULLET_SPEED * np.cos(self.rotate_rad + (np.pi / 8)),
+                    UFO_BULLET_SPEED * np.sin(self.rotate_rad + (np.pi / 8))
+                ),
+                self.bullet(
+                    UFO_BULLET_SPEED * np.cos(self.rotate_rad - (np.pi / 8)),
+                    UFO_BULLET_SPEED * np.sin(self.rotate_rad - (np.pi / 8))
+                ),
+                self.bullet(
+                    UFO_BULLET_SPEED * np.cos(self.rotate_rad + (3 * np.pi / 8)),
+                    UFO_BULLET_SPEED * np.sin(self.rotate_rad + (3 * np.pi / 8))
+                ),
+                self.bullet(
+                    UFO_BULLET_SPEED * np.cos(self.rotate_rad - (3 * np.pi / 8)),
+                    UFO_BULLET_SPEED * np.sin(self.rotate_rad - (3 * np.pi / 8))
+                ),
+                self.bullet(
+                    UFO_BULLET_SPEED * np.cos(self.rotate_rad + (5 * np.pi / 8)),
+                    UFO_BULLET_SPEED * np.sin(self.rotate_rad + (5 * np.pi / 8))
+                ),
+                self.bullet(
+                    UFO_BULLET_SPEED * np.cos(self.rotate_rad - (5 * np.pi / 8)),
+                    UFO_BULLET_SPEED * np.sin(self.rotate_rad - (5 * np.pi / 8))
+                ),
+                self.bullet(
+                    UFO_BULLET_SPEED * np.cos(self.rotate_rad + (7 * np.pi / 8)),
+                    UFO_BULLET_SPEED * np.sin(self.rotate_rad + (7 * np.pi / 8))
+                ),
+                self.bullet(
+                    UFO_BULLET_SPEED * np.cos(self.rotate_rad - (7 * np.pi / 8)),
+                    UFO_BULLET_SPEED * np.sin(self.rotate_rad - (7 * np.pi / 8))
+                ),
+                self.bullet(
+                    UFO_BULLET_SPEED * np.cos(np.pi - self.rotate_rad + (np.pi / 8)),
+                    UFO_BULLET_SPEED * np.sin(np.pi - self.rotate_rad + (np.pi / 8))
+                ),
+                self.bullet(
+                    UFO_BULLET_SPEED * np.cos(np.pi - self.rotate_rad - (np.pi / 8)),
+                    UFO_BULLET_SPEED * np.sin(np.pi - self.rotate_rad - (np.pi / 8))
+                ),
+                self.bullet(
+                    UFO_BULLET_SPEED * np.cos(np.pi - self.rotate_rad + (3 * np.pi / 8)),
+                    UFO_BULLET_SPEED * np.sin(np.pi - self.rotate_rad + (3 * np.pi / 8))
+                ),
+                self.bullet(
+                    UFO_BULLET_SPEED * np.cos(np.pi - self.rotate_rad - (3 * np.pi / 8)),
+                    UFO_BULLET_SPEED * np.sin(np.pi - self.rotate_rad - (3 * np.pi / 8))
+                ),
+                self.bullet(
+                    UFO_BULLET_SPEED * np.cos(np.pi - self.rotate_rad + (5 * np.pi / 8)),
+                    UFO_BULLET_SPEED * np.sin(np.pi - self.rotate_rad + (5 * np.pi / 8))
+                ),
+                self.bullet(
+                    UFO_BULLET_SPEED * np.cos(np.pi - self.rotate_rad - (5 * np.pi / 8)),
+                    UFO_BULLET_SPEED * np.sin(np.pi - self.rotate_rad - (5 * np.pi / 8))
+                ),
+                self.bullet(
+                    UFO_BULLET_SPEED * np.cos(np.pi - self.rotate_rad + (7 * np.pi / 8)),
+                    UFO_BULLET_SPEED * np.sin(np.pi - self.rotate_rad + (7 * np.pi / 8))
+                ),
+                self.bullet(
+                    UFO_BULLET_SPEED * np.cos(np.pi - self.rotate_rad - (7 * np.pi / 8)),
+                    UFO_BULLET_SPEED * np.sin(np.pi - self.rotate_rad - (7 * np.pi / 8))
+                )
+            ]
+        elif self.bullet_pattern == 3:  # circle
+            if self.circle_flag:
+                self.circle_flag = False
+                return [
+                    self.bullet(UFO_BULLET_SPEED, UFO_BULLET_SPEED),
+                    self.bullet(UFO_BULLET_SPEED, -UFO_BULLET_SPEED),
+                    self.bullet(-UFO_BULLET_SPEED, UFO_BULLET_SPEED),
+                    self.bullet(-UFO_BULLET_SPEED, -UFO_BULLET_SPEED),
+                    self.bullet(UFO_BULLET_SPEED, 0.0),
+                    self.bullet(0.0, UFO_BULLET_SPEED),
+                    self.bullet(-UFO_BULLET_SPEED, 0.0),
+                    self.bullet(0.0, -UFO_BULLET_SPEED)
+                ]
+            else:
+                self.circle_flag = True
+                return [
+                    self.bullet(
+                        UFO_BULLET_SPEED * np.cos(np.pi / 8), UFO_BULLET_SPEED * np.sin(np.pi / 8)
+                    ),
+                    self.bullet(
+                        UFO_BULLET_SPEED * np.cos(-np.pi / 8),
+                        UFO_BULLET_SPEED * np.sin(-np.pi / 8)
+                    ),
+                    self.bullet(
+                        UFO_BULLET_SPEED * np.cos(3 * np.pi / 8),
+                        UFO_BULLET_SPEED * np.sin(3 * np.pi / 8)
+                    ),
+                    self.bullet(
+                        UFO_BULLET_SPEED * np.cos(-3 * np.pi / 8),
+                        UFO_BULLET_SPEED * np.sin(-3 * np.pi / 8)
+                    ),
+                    self.bullet(
+                        UFO_BULLET_SPEED * np.cos(5 * np.pi / 8),
+                        UFO_BULLET_SPEED * np.sin(5 * np.pi / 8)
+                    ),
+                    self.bullet(
+                        UFO_BULLET_SPEED * np.cos(-5 * np.pi / 8),
+                        UFO_BULLET_SPEED * np.sin(-5 * np.pi / 8)
+                    ),
+                    self.bullet(
+                        UFO_BULLET_SPEED * np.cos(7 * np.pi / 8),
+                        UFO_BULLET_SPEED * np.sin(7 * np.pi / 8)
+                    ),
+                    self.bullet(
+                        UFO_BULLET_SPEED * np.cos(-7 * np.pi / 8),
+                        UFO_BULLET_SPEED * np.sin(-7 * np.pi / 8)
+                    )
+                ]
+
     def shoot(self) -> None:
-        if self.shoot_cooldown <= 0:
-            self.shoot_cooldown = UFO_SHOOT_COOLDOWN
-            new_bullets = []
-            # weird
-            if self.bullet_pattern == 1:
-                new_bullets = [
-                    Bullet(
-                        self.bullet_image,
-                        self.rect.center,
-                        UFO_BULLET_SPEED * np.cos(self.rotate_rad), UFO_BULLET_SPEED * np.sin(self.rotate_rad)
-                    ),
-                    Bullet(
-                        self.bullet_image,
-                        self.rect.center,
-                        UFO_BULLET_SPEED * np.cos(self.rotate_rad), -UFO_BULLET_SPEED * np.sin(self.rotate_rad)
-                    ),
-                    Bullet(
-                        self.bullet_image,
-                        self.rect.center,
-                        -UFO_BULLET_SPEED * np.cos(self.rotate_rad), UFO_BULLET_SPEED * np.sin(self.rotate_rad)
-                    ),
-                    Bullet(
-                        self.bullet_image,
-                        self.rect.center,
-                        -UFO_BULLET_SPEED * np.cos(self.rotate_rad), -UFO_BULLET_SPEED * np.sin(self.rotate_rad)
-                    )
-                ]
-            # spiral
-            elif self.bullet_pattern == 2:
-                new_bullets = [
-                    Bullet(
-                        self.bullet_image,
-                        self.rect.center,
-                        UFO_BULLET_SPEED * np.cos(self.rotate_rad + (np.pi / 8)),
-                        UFO_BULLET_SPEED * np.sin(self.rotate_rad + (np.pi / 8))
-                    ),
-                    Bullet(
-                        self.bullet_image,
-                        self.rect.center,
-                        UFO_BULLET_SPEED * np.cos(self.rotate_rad - (np.pi / 8)),
-                        UFO_BULLET_SPEED * np.sin(self.rotate_rad - (np.pi / 8))
-                    ),
-                    Bullet(
-                        self.bullet_image,
-                        self.rect.center,
-                        UFO_BULLET_SPEED * np.cos(self.rotate_rad + (3 * np.pi / 8)),
-                        UFO_BULLET_SPEED * np.sin(self.rotate_rad + (3 * np.pi / 8))
-                    ),
-                    Bullet(
-                        self.bullet_image,
-                        self.rect.center,
-                        UFO_BULLET_SPEED * np.cos(self.rotate_rad - (3 * np.pi / 8)),
-                        UFO_BULLET_SPEED * np.sin(self.rotate_rad - (3 * np.pi / 8))
-                    ),
-                    Bullet(
-                        self.bullet_image,
-                        self.rect.center,
-                        UFO_BULLET_SPEED * np.cos(self.rotate_rad + (5 * np.pi / 8)),
-                        UFO_BULLET_SPEED * np.sin(self.rotate_rad + (5 * np.pi / 8))
-                    ),
-                    Bullet(
-                        self.bullet_image,
-                        self.rect.center,
-                        UFO_BULLET_SPEED * np.cos(self.rotate_rad - (5 * np.pi / 8)),
-                        UFO_BULLET_SPEED * np.sin(self.rotate_rad - (5 * np.pi / 8))
-                    ),
-                    Bullet(
-                        self.bullet_image,
-                        self.rect.center,
-                        UFO_BULLET_SPEED * np.cos(self.rotate_rad + (7 * np.pi / 8)),
-                        UFO_BULLET_SPEED * np.sin(self.rotate_rad + (7 * np.pi / 8))
-                    ),
-                    Bullet(
-                        self.bullet_image,
-                        self.rect.center,
-                        UFO_BULLET_SPEED * np.cos(self.rotate_rad - (7 * np.pi / 8)),
-                        UFO_BULLET_SPEED * np.sin(self.rotate_rad - (7 * np.pi / 8))
-                    )
-                ]
-            # double spiral
-            elif self.bullet_pattern == 3:
-                new_bullets = [
-                    Bullet(
-                        self.bullet_image,
-                        self.rect.center,
-                        UFO_BULLET_SPEED * np.cos(self.rotate_rad + (np.pi / 8)),
-                        UFO_BULLET_SPEED * np.sin(self.rotate_rad + (np.pi / 8))
-                    ),
-                    Bullet(
-                        self.bullet_image,
-                        self.rect.center,
-                        UFO_BULLET_SPEED * np.cos(self.rotate_rad - (np.pi / 8)),
-                        UFO_BULLET_SPEED * np.sin(self.rotate_rad - (np.pi / 8))
-                    ),
-                    Bullet(
-                        self.bullet_image,
-                        self.rect.center,
-                        UFO_BULLET_SPEED * np.cos(self.rotate_rad + (3 * np.pi / 8)),
-                        UFO_BULLET_SPEED * np.sin(self.rotate_rad + (3 * np.pi / 8))
-                    ),
-                    Bullet(
-                        self.bullet_image,
-                        self.rect.center,
-                        UFO_BULLET_SPEED * np.cos(self.rotate_rad - (3 * np.pi / 8)),
-                        UFO_BULLET_SPEED * np.sin(self.rotate_rad - (3 * np.pi / 8))
-                    ),
-                    Bullet(
-                        self.bullet_image,
-                        self.rect.center,
-                        UFO_BULLET_SPEED * np.cos(self.rotate_rad + (5 * np.pi / 8)),
-                        UFO_BULLET_SPEED * np.sin(self.rotate_rad + (5 * np.pi / 8))
-                    ),
-                    Bullet(
-                        self.bullet_image,
-                        self.rect.center,
-                        UFO_BULLET_SPEED * np.cos(self.rotate_rad - (5 * np.pi / 8)),
-                        UFO_BULLET_SPEED * np.sin(self.rotate_rad - (5 * np.pi / 8))
-                    ),
-                    Bullet(
-                        self.bullet_image,
-                        self.rect.center,
-                        UFO_BULLET_SPEED * np.cos(self.rotate_rad + (7 * np.pi / 8)),
-                        UFO_BULLET_SPEED * np.sin(self.rotate_rad + (7 * np.pi / 8))
-                    ),
-                    Bullet(
-                        self.bullet_image,
-                        self.rect.center,
-                        UFO_BULLET_SPEED * np.cos(self.rotate_rad - (7 * np.pi / 8)),
-                        UFO_BULLET_SPEED * np.sin(self.rotate_rad - (7 * np.pi / 8))
-                    ),
-                    Bullet(
-                        self.bullet_image,
-                        self.rect.center,
-                        UFO_BULLET_SPEED * np.cos(np.pi - self.rotate_rad + (np.pi / 8)),
-                        UFO_BULLET_SPEED * np.sin(np.pi - self.rotate_rad + (np.pi / 8))
-                    ),
-                    Bullet(
-                        self.bullet_image,
-                        self.rect.center,
-                        UFO_BULLET_SPEED * np.cos(np.pi - self.rotate_rad - (np.pi / 8)),
-                        UFO_BULLET_SPEED * np.sin(np.pi - self.rotate_rad - (np.pi / 8))
-                    ),
-                    Bullet(
-                        self.bullet_image,
-                        self.rect.center,
-                        UFO_BULLET_SPEED * np.cos(np.pi - self.rotate_rad + (3 * np.pi / 8)),
-                        UFO_BULLET_SPEED * np.sin(np.pi - self.rotate_rad + (3 * np.pi / 8))
-                    ),
-                    Bullet(
-                        self.bullet_image,
-                        self.rect.center,
-                        UFO_BULLET_SPEED * np.cos(np.pi - self.rotate_rad - (3 * np.pi / 8)),
-                        UFO_BULLET_SPEED * np.sin(np.pi - self.rotate_rad - (3 * np.pi / 8))
-                    ),
-                    Bullet(
-                        self.bullet_image,
-                        self.rect.center,
-                        UFO_BULLET_SPEED * np.cos(np.pi - self.rotate_rad + (5 * np.pi / 8)),
-                        UFO_BULLET_SPEED * np.sin(np.pi - self.rotate_rad + (5 * np.pi / 8))
-                    ),
-                    Bullet(
-                        self.bullet_image,
-                        self.rect.center,
-                        UFO_BULLET_SPEED * np.cos(np.pi - self.rotate_rad - (5 * np.pi / 8)),
-                        UFO_BULLET_SPEED * np.sin(np.pi - self.rotate_rad - (5 * np.pi / 8))
-                    ),
-                    Bullet(
-                        self.bullet_image,
-                        self.rect.center,
-                        UFO_BULLET_SPEED * np.cos(np.pi - self.rotate_rad + (7 * np.pi / 8)),
-                        UFO_BULLET_SPEED * np.sin(np.pi - self.rotate_rad + (7 * np.pi / 8))
-                    ),
-                    Bullet(
-                        self.bullet_image,
-                        self.rect.center,
-                        UFO_BULLET_SPEED * np.cos(np.pi - self.rotate_rad - (7 * np.pi / 8)),
-                        UFO_BULLET_SPEED * np.sin(np.pi - self.rotate_rad - (7 * np.pi / 8))
-                    )
-                ]
-            # circle
-            elif self.bullet_pattern == 4:
-                if self.circle_flag:
-                    self.circle_flag = False
-                    new_bullets = [
-                        Bullet(
-                            self.bullet_image,
-                            self.rect.center,
-                            UFO_BULLET_SPEED, UFO_BULLET_SPEED
-                        ),
-                        Bullet(
-                            self.bullet_image,
-                            self.rect.center,
-                            UFO_BULLET_SPEED, -UFO_BULLET_SPEED
-                        ),
-                        Bullet(
-                            self.bullet_image,
-                            self.rect.center,
-                            -UFO_BULLET_SPEED, UFO_BULLET_SPEED
-                        ),
-                        Bullet(
-                            self.bullet_image,
-                            self.rect.center,
-                            -UFO_BULLET_SPEED, -UFO_BULLET_SPEED
-                        ),
-                        Bullet(
-                            self.bullet_image,
-                            self.rect.center,
-                            UFO_BULLET_SPEED, 0.0
-                        ),
-                        Bullet(
-                            self.bullet_image,
-                            self.rect.center,
-                            0.0, UFO_BULLET_SPEED
-                        ),
-                        Bullet(
-                            self.bullet_image,
-                            self.rect.center,
-                            -UFO_BULLET_SPEED, 0.0
-                        ),
-                        Bullet(
-                            self.bullet_image,
-                            self.rect.center,
-                            0.0, -UFO_BULLET_SPEED
-                        )
-                    ]
-                else:
-                    self.circle_flag = True
-                    new_bullets = [
-                        Bullet(
-                            self.bullet_image,
-                            self.rect.center,
-                            UFO_BULLET_SPEED * np.cos(np.pi / 8),
-                            UFO_BULLET_SPEED * np.sin(np.pi / 8)
-                        ),
-                        Bullet(
-                            self.bullet_image,
-                            self.rect.center,
-                            UFO_BULLET_SPEED * np.cos(-np.pi / 8),
-                            UFO_BULLET_SPEED * np.sin(-np.pi / 8)
-                        ),
-                        Bullet(
-                            self.bullet_image,
-                            self.rect.center,
-                            UFO_BULLET_SPEED * np.cos(3 * np.pi / 8),
-                            UFO_BULLET_SPEED * np.sin(3 * np.pi / 8)
-                        ),
-                        Bullet(
-                            self.bullet_image,
-                            self.rect.center,
-                            UFO_BULLET_SPEED * np.cos(-3 * np.pi / 8),
-                            UFO_BULLET_SPEED * np.sin(-3 * np.pi / 8)
-                        ),
-                        Bullet(
-                            self.bullet_image,
-                            self.rect.center,
-                            UFO_BULLET_SPEED * np.cos(5 * np.pi / 8),
-                            UFO_BULLET_SPEED * np.sin(5 * np.pi / 8)
-                        ),
-                        Bullet(
-                            self.bullet_image,
-                            self.rect.center,
-                            UFO_BULLET_SPEED * np.cos(-5 * np.pi / 8),
-                            UFO_BULLET_SPEED * np.sin(-5 * np.pi / 8)
-                        ),
-                        Bullet(
-                            self.bullet_image,
-                            self.rect.center,
-                            UFO_BULLET_SPEED * np.cos(7 * np.pi / 8),
-                            UFO_BULLET_SPEED * np.sin(7 * np.pi / 8)
-                        ),
-                        Bullet(
-                            self.bullet_image,
-                            self.rect.center,
-                            UFO_BULLET_SPEED * np.cos(-7 * np.pi / 8),
-                            UFO_BULLET_SPEED * np.sin(-7 * np.pi / 8)
-                        )
-                    ]
-            for bullet in new_bullets:
-                self.bullets.add(bullet)
-                self.player_collision_group.add(bullet)
+        if self.shoot_cooldown > 0:
+            return
+
+        self.shoot_cooldown = UFO_SHOOT_COOLDOWN
+        for bullet in self.get_bullet_pattern():
+            self.bullets.add(bullet)
+            self.player_collision_group.add(bullet)
 
     def update(self, t: float) -> None:
         if not self.activated:
@@ -335,7 +237,7 @@ class UFO(pygame.sprite.Sprite):
             center=self.image.get_rect(center=(self.cenx, self.ceny)).center
         )
 
-        self.bullet_pattern = random.randint(1, 4)
+        self.bullet_pattern = random.randint(0, 3)
         if self.pattern_dur <= 0.0:
             self.pattern_dur = random.uniform(10, 20)
 
@@ -348,4 +250,3 @@ class UFO(pygame.sprite.Sprite):
         window.blit(self.image, self.rect)
         for bullet in self.bullets:
             bullet.draw(window)
-
