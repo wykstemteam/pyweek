@@ -20,7 +20,7 @@ class Scenes(Enum):
 
 class Game:
     def __init__(self) -> None:
-        self.cur_scene = Scenes.SPACE
+        self.cur_scene = Scenes.CITY
 
         # objects in all scenes
         # ================================================================================================
@@ -141,7 +141,7 @@ class Game:
 
         # entering shop
         self.stage1_countdown = 7  # deactivate everything for .. seconds
-        self.stage2 = True  # player at right?
+        self.stage2 = False  # player at right?
         self.dimming = False
         self.darken_alpha = 0
 
@@ -328,11 +328,18 @@ class Game:
         # objects in scene.SPACE:
         if self.cur_scene == Scenes.SPACE:
             if not self.lose and not self.pause:
-                if self.distance_manager.dist_to_next_country > 0:
+                if self.distance_manager.dist_to_next_country > 30:
                     if not self.spaceship.activated:
                         self.ufo.random_activate()
                     if not self.ufo.activated:
                         self.spaceship.random_activate()
+
+                    if (self.distance_manager.dist_to_next_country > 30
+                        and self.spaceship.activated and self.spaceship.x == 1000
+                        and not self.spaceship.is_charge and not self.spaceship.is_shoot
+                        and self.spaceship.activated_dur >= 10.0
+                        and random.randint(0, 1000) <= 1):
+                            self.spaceship.is_charge = True
                 self.spaceship.update(t)
                 self.ufo.update(t)
 

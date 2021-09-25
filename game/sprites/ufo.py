@@ -121,7 +121,7 @@ class UFO(pygame.sprite.Sprite):
             return
         if random.randint(0, 1000) <= 1:
             self.activated = True
-            self.activated_dur = random.uniform(10.0, 20.0)
+            self.activated_dur = random.uniform(30.0, 50.0)
 
     def update(self, t: float) -> None:
         if not self.activated:
