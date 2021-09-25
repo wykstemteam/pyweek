@@ -1,4 +1,5 @@
 import math
+from enum import Enum
 
 import pygame
 import pygame_gui
@@ -10,29 +11,39 @@ from game.sprites import *
 
 # TODO: Replace self.pause and self.lose with self.state which is GAMING, PAUSE or LOSE
 
+class scenes(Enum):
+    CITY = 1
+    SPACE = 2
 
 class Game:
     def __init__(self) -> None:
+        cur_scene = scenes.CITY
+
+        # objects in all scenes
+        self.laser_manager = LaserManager(self.player_collision_group)
+        self.player_collision_group = pygame.sprite.Group()
+        self.arrow = Arrow(assets_manager.images['arrow'], self.player)
+
+        # objects in scene.city
         self.roads = pygame.sprite.Group(
             Road(assets_manager.images['road'], 0),
             Road(assets_manager.images['road'], SCREEN_WIDTH),
         )
-        self.player_collision_group = pygame.sprite.Group()
         self.policecar = PoliceCar(
             assets_manager.images['policecar'], pygame.Vector2(20, 280),
             assets_manager.images['bullet'], self.player_collision_group
         )
         self.bomber = Bomber(self.player_collision_group)
+        self.buildings = BuildingManager()
+
+        # objects in scene.space
         self.spaceship = Spaceship(self.player_collision_group)
         self.ufo = UFO(self.player_collision_group)
         self.player = Player(
             assets_manager.images['motorbike'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2, self
         )
-        self.laser_manager = LaserManager(self.player_collision_group)
-        self.buildings = BuildingManager()
         self.obstacle_manager = ObstacleManager(self.player_collision_group)
         self.distance_manager = DistanceManager()
-        self.arrow = Arrow(assets_manager.images['arrow'], self.player)
         self.screen_shake_manager = ScreenShakeManager()
         # self.screen_shake_manager.shaking = True
 
