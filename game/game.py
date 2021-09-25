@@ -1,4 +1,5 @@
 import math
+import random
 from enum import Enum
 
 import pygame
@@ -14,8 +15,7 @@ from game.sprites.inventory import Inventory
 
 class Scenes(Enum):
     CITY = 1
-    SHOP = 2
-    SPACE = 3
+    SPACE = 2
 
 
 class Game:
@@ -135,6 +135,9 @@ class Game:
 
         assets_manager.play_music("8bitaggressive1")
 
+    def reset(self):
+        pass
+
     def event_process(self, window: pygame.Surface):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -184,17 +187,14 @@ class Game:
                 assets_manager.play_music('8bitaggressive1')
                 # leaving shop
                 # resetting things
+                self.cur_scene = random.choice(list(Scenes))
+
                 self.distance_manager.dist_to_next_country = 100
                 self.stage1_countdown = 7
                 self.stage2 = False
                 self.dimming = False
                 self.darken_alpha = 0
                 self.coin_manager.reached_checkpoint = False
-                self.laser_manager.reached_checkpoint = False
-                self.buildings.reached_checkpoint = False
-                self.obstacle_manager.reached_checkpoint = False
-                self.policecar.activated = True
-                self.bomber.activated = True
                 self.player.inputtable = True
                 self.player.vx = -BACKGROUND_VELOCITY
                 self.player.vy = 0.0

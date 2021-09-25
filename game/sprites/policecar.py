@@ -62,12 +62,18 @@ class PoliceCar(pygame.sprite.Sprite):
             self.rect.centery += speed * t
 
     def update(self, t):
+        if self.activated:
+            self.rect.left = min(20, self.rect.left + 20 * t)
+            self.shadow_rect = self.rect.copy()
+            self.shadow_rect.topleft = self.shadow_rect.topleft + pygame.Vector2(-5, 5)
+
         if not self.activated:
             self.rect.right = max(0, self.rect.right - 20 * t)
             self.shadow_rect = self.rect.copy()
             self.shadow_rect.topleft = self.shadow_rect.topleft + pygame.Vector2(-5, 5)
             self.bullets.update(t)
             return
+
         if self.state == PoliceCar.State.RANDOM:
             if len(self.objectives) == 0:
                 self.objectives.append(random.randint(120, 600 - POLICECAR_HEIGHT))
