@@ -8,7 +8,7 @@ class Shield(pygame.sprite.Sprite):
         super().__init__()
 
         self.pos = pygame.Vector2(pos)
-        self.image = assets_manager.images['shield']
+        self.image = assets_manager.images['shield3']
         self.rect = self.image.get_rect()
         self.rect.topleft = pos
         self.shield_time = SHIELD_REMAIN_TIME
@@ -35,6 +35,7 @@ class Shield(pygame.sprite.Sprite):
         self.shield_hp -= 1
         if self.shield_hp == 0:
             self.activate = False
-        self.image = assets_manager.images['shield']
+            return
+        self.image = assets_manager.images[f'shield{self.shield_hp}']
         
 
