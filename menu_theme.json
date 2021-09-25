@@ -7,11 +7,11 @@
     "button": {
         "colours": {
             "normal_bg": "#3465a4",
-            "hovered_bg": "#284e7e"
+            "hovered_bg": "#2f5b94"
         },
         "font": {
             "name": "montserrat",
-            "size": "20",
+            "size": "22",
             "bold": "1",
             "italic": "0",
             "regular_resource": {

@@ -59,7 +59,7 @@ class Game:
         self.coin_gui = CoinGUI((1200, 36), self)
 
         # game_screen
-        self.game_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
+        self.game_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
         self.pause_button = pygame_gui.elements.UIButton(
             relative_rect=pygame.Rect((SCREEN_WIDTH - 100 - 10, 10), (100, 50)),
             text='Pause',
@@ -67,7 +67,7 @@ class Game:
         )
 
         # pause_screen
-        self.pause_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
+        self.pause_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
         self.return_button = pygame_gui.elements.UIButton(
             relative_rect=pygame.Rect((SCREEN_WIDTH - 100 - 10, 10), (100, 50)),
             text='Return',
@@ -108,12 +108,12 @@ class Game:
             relative_rect=pygame.Rect(
                 (SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT // 2 + 100), (100, 50)
             ),
-            text='Restart',
+            text='Menu',
             manager=self.pause_screen
         )
 
         # lose_screen
-        self.lose_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
+        self.lose_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
         self.restart_button = pygame_gui.elements.UIButton(
             relative_rect=pygame.Rect(
                 (SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT // 2 + 100), (100, 50)

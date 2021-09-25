@@ -6,7 +6,7 @@ from game.constants import *
 
 
 def settings(window: pygame.Surface):
-    settings_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
+    settings_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
     return_button = pygame_gui.elements.UIButton(
         relative_rect=pygame.Rect((10, 10), (100, 50)), text='Return', manager=settings_screen
     )
