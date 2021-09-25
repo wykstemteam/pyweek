@@ -79,8 +79,8 @@ class Game:
         self.earthquake = False
 
         # entering shop
-        self.stage1_countdown = 5
-        self.stage2_countdown = 5
+        self.stage1_countdown = 5 # deactivate everything for .. seconds
+        self.stage2 = False # player at right?
         self.dimming = False
         self.darken_alpha = 0
 
@@ -160,18 +160,19 @@ class Game:
                     t *= self.rate
 
             # shop
-            if self.stage2_countdown <= 0:
+            if self.stage2:
+                self.dimming = True
                 assets_manager.play_music("mid_afternoon_mood")
                 self.cur_scene = Scenes.SHOP
             elif self.stage1_countdown <= 0:
-                self.buildings.reached_checkpoint = True
                 self.player.inputtable = False
                 self.player.go_right(t)
-                self.dimming = True
-                self.stage2_countdown -= t
-            elif self.distance_manager.dist >= 10:
+                if self.player.rect.left >= SCREEN_WIDTH:
+                    self.dimming = True
+            elif self.distance_manager.dist_to_next_country <= 0:
                 self.coin_manager.reached_checkpoint = True
                 self.laser_manager.reached_checkpoint = True
+                self.buildings.reached_checkpoint = True
                 self.obstacle_manager.reached_checkpoint = True
                 self.policecar.activated = False
                 self.bomber.activated = False
@@ -240,9 +241,9 @@ class Game:
 
         if self.cur_scene == Scenes.CITY:
             self.laser_manager.draw(window)
-            self.buildings.draw(window)
-            if self.distance_manager.dist >= 100:
+            if self.distance_manager.dist_to_next_country <= 0:
                 window.blit(self.beach_image, self.beach_rect)
+            self.buildings.draw(window)
             self.policecar.draw(window)
             self.obstacle_manager.draw(window)
 
@@ -278,6 +279,8 @@ class Game:
             darken_image.set_alpha(self.darken_alpha)
             window.blit(darken_image, pygame.Rect(0, 0, 0, 0))
             self.darken_alpha = min(self.darken_alpha + 1, 255)
+            if self.darken_alpha == 255:
+                self.stage2 = True
 
         self.screen_shake_manager.shake(window)
 
