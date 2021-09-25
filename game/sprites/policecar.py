@@ -44,6 +44,8 @@ class PoliceCar(pygame.sprite.Sprite):
         self.player_collision_group = player_collision_group
         self.player_collision_group.add(self)
 
+        self.reached_checkpoint = False
+
     def shoot(self, bullet_speed):
         new_bullet = Bullet(self.bullet_image, self.rect.center, bullet_speed, 0)
         self.bullets.add(new_bullet)
@@ -59,8 +61,8 @@ class PoliceCar(pygame.sprite.Sprite):
         else:
             self.rect.centery += speed * t
 
-    def update(self, t, shop: bool = False):
-        if shop:
+    def update(self, t):
+        if self.reached_checkpoint:
             self.rect.right = max(0, self.rect.right - 20 * t)
             self.shadow_rect = self.rect.copy()
             self.shadow_rect.topleft = self.shadow_rect.topleft + pygame.Vector2(-5, 5)
