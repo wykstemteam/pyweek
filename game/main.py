@@ -17,8 +17,8 @@ def gaming() -> None:
     game = Game()
     clock = pygame.time.Clock()
 
-    shop = Shop(assets_manager.images['confirm_button'], assets_manager.images['main_menu'], assets_manager.images['darken'])
-    shop.appear(window)
+    # shop = Shop(assets_manager.images['confirm_button'], assets_manager.images['main_menu'], assets_manager.images['darken'])
+    # shop.appear(window)
 
     running = True
     while running:

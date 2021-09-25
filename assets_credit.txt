@@ -7,3 +7,4 @@ all music: dova syndrome
 
 sound effects
 explosion: mixkit
+coin: zapsplat
