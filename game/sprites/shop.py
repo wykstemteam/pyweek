@@ -28,15 +28,15 @@ class Shop:
             'Superstar',
             'Bullet Time',
             'Missile',
-            'Gravatation',
+            'Gravitation',
         ]
         self.button_text_effect = [
-            "   +1 life",
+            '   +1 life',
             '   +3 shield (30s)',
             '   5s invincible',
             '   5s bullet time',
             '   attack the boss?',
-            '   destroy all the thing',
+            '   destroy everything',
         ]
         self.buttons = [
             pygame_gui.elements.UIButton(
