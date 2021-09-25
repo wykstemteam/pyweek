@@ -79,7 +79,7 @@ class Game:
         self.earthquake = False
 
         # entering shop
-        self.stage1_countdown = 5 # deactivate everything for .. seconds
+        self.stage1_countdown = 7 # deactivate everything for .. seconds
         self.stage2 = False # player at right?
         self.dimming = False
         self.darken_alpha = 0
@@ -166,6 +166,8 @@ class Game:
                 self.cur_scene = Scenes.SHOP
             elif self.stage1_countdown <= 0:
                 self.player.inputtable = False
+                for road in self.roads:
+                    road.stop_moving = True
                 self.player.go_right(t)
                 if self.player.rect.left >= SCREEN_WIDTH:
                     self.dimming = True
@@ -176,6 +178,7 @@ class Game:
                 self.obstacle_manager.reached_checkpoint = True
                 self.policecar.activated = False
                 self.bomber.activated = False
+                self.beach_rect.move_ip(BACKGROUND_VELOCITY/2*t, 0)
                 self.stage1_countdown -= t
 
             self.player.hp = max(self.player.hp, 0)
@@ -278,7 +281,7 @@ class Game:
             darken_image.fill((0, 0, 0))
             darken_image.set_alpha(self.darken_alpha)
             window.blit(darken_image, pygame.Rect(0, 0, 0, 0))
-            self.darken_alpha = min(self.darken_alpha + 1, 255)
+            self.darken_alpha = min(self.darken_alpha + 2, 255)
             if self.darken_alpha == 255:
                 self.stage2 = True
 
