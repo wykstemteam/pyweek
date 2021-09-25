@@ -22,7 +22,6 @@ class Game:
         # objects in all scenes
         self.player_collision_group = pygame.sprite.Group()
         self.laser_manager = LaserManager(self.player_collision_group)
-        self.arrow = Arrow(assets_manager.images['arrow'], self.player)
 
         # objects in scene.city
         self.roads = pygame.sprite.Group(
@@ -42,6 +41,7 @@ class Game:
         self.player = Player(
             assets_manager.images['motorbike'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2, self
         )
+        self.arrow = Arrow(assets_manager.images['arrow'], self.player)
         self.obstacle_manager = ObstacleManager(self.player_collision_group)
         self.distance_manager = DistanceManager()
         self.screen_shake_manager = ScreenShakeManager()
