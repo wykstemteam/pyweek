@@ -6,7 +6,7 @@ from game.constants import *
 
 class Shop:
     def __init__(
-            self, confirm_button: pygame.Surface, main_menu: pygame.Surface, darken: pygame.Surface, coins: int
+            self, confirm_button: pygame.Surface, main_menu: pygame.Surface, darken: pygame.Surface, game # game: Game
     ) -> None:
         self.confirm_button = confirm_button
         self.main_menu = main_menu
@@ -43,10 +43,11 @@ class Shop:
                 relative_rect=self.button_positions[i],
                 text='',
                 object_id=f'#button_{i + 1}',
-                tool_tip_text="<font face=fira_code color=normal_text size=5>" ""
-                              f" <b><u>{self.button_text[i]}</u></b>"
-                              "<br><br>"
-                              f"<i>{self.button_text_effect[i]}</i>",
+                tool_tip_text="<font face=fira_code color=normal_text size=5>"
+                ""
+                f" <b><u>{self.button_text[i]}</u></b>"
+                "<br><br>"
+                f"<i>{self.button_text_effect[i]}</i>",
                 manager=self.shop_screen,
             ) for i in range(6)
         ]
@@ -58,10 +59,10 @@ class Shop:
             pygame_gui.elements.UIButton(
                 relative_rect=pygame.Rect((678, 120), (145, 150)),
                 text='',
-                tool_tip_text="<font face=fira_code color=normal_text size=5>" 
-                              f"<b><u>{self.button_text[i]}</u></b>"
-                              "<br><br>"
-                              f"<i>{self.button_text_effect[i]}</i>",
+                tool_tip_text="<font face=fira_code color=normal_text size=5>"
+                f"<b><u>{self.button_text[i]}</u></b>"
+                "<br><br>"
+                f"<i>{self.button_text_effect[i]}</i>",
                 object_id=f'#button_{i+1}',
                 manager=self.confirm_screen
             ) for i in range(6)
@@ -78,7 +79,8 @@ class Shop:
             text='Cancel',
             manager=self.confirm_screen
         )
-        self.coins = coins
+        self.game = game
+        self.coins = self.game.coins
 
     def appear(self, window: pygame.Surface) -> None:
         clock = pygame.time.Clock()

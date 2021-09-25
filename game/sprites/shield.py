@@ -1,7 +1,7 @@
 import pygame
-from game.constants import *
 
 from game.assets_manager import assets_manager
+from game.constants import *
 
 
 class Shield(pygame.sprite.Sprite):
@@ -34,13 +34,11 @@ class Shield(pygame.sprite.Sprite):
     def draw(self, window: pygame.Surface) -> None:
         window.blit(self.image, self.rect)
 
-    def hit(self):
+    def hit(self) -> None:
         self.shield_hp -= 1
         assets_manager.play_sound("explosion")
         if self.shield_hp == 0:
             self.activate = False
             self.shield_hp = 3
-            return
-        self.image = assets_manager.images[f'shield{self.shield_hp}']
-        
-
+        else:
+            self.image = assets_manager.images[f'shield{self.shield_hp}']
