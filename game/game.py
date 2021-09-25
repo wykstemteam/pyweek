@@ -89,7 +89,7 @@ class Game:
 
         self.shop_scene = Shop(
             assets_manager.images['confirm_button'], assets_manager.images['main_menu'],
-            assets_manager.images['darken'], self.coins
+            assets_manager.images['darken'], self
         )
 
         # objects in scene.CITY
