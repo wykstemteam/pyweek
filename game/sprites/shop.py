@@ -24,19 +24,19 @@ class Shop:
         ]
         self.button_text = [
             "Heal Potion",
-            '',
-            '',
-            '',
-            '',
-            '',
+            'Shield',
+            'Superstar',
+            'Bullet Time',
+            'Missile',
+            'Gravatation',
         ]
         self.button_text_effect = [
-            " +1 life",
-            '',
-            '',
-            '',
-            '',
-            '',
+            "   +1 life",
+            '   +3 shield (30s)',
+            '   5s invincible',
+            '   5s bullet time',
+            '   attack the boss?',
+            '   destroy all the thing',
         ]
         self.buttons = [
             pygame_gui.elements.UIButton(
@@ -44,7 +44,7 @@ class Shop:
                 text='',
                 object_id=f'#button_{i + 1}',
                 tool_tip_text="<font face=fira_code color=normal_text size=5>" ""
-                              f"<b><u>{self.button_text[i]}</u></b>"
+                              f" <b><u>{self.button_text[i]}</u></b>"
                               "<br><br>"
                               f"<i>{self.button_text_effect[i]}</i>",
                 manager=self.shop_screen,
@@ -69,7 +69,6 @@ class Shop:
                 elif event.type == pygame.USEREVENT:
                     if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                         button = event.ui_element
-                        print(f'#button_{self.buttons.index(button) + 1}')
                         self.confirm_menu(f'#button_{self.buttons.index(button) + 1}', window)
 
                 self.shop_screen.process_events(event)
@@ -82,12 +81,17 @@ class Shop:
             clock.tick(60)
 
     def confirm_menu(self, button_name: str, window: pygame.Surface) -> None:
+        numbers = [int(word) for word in button_name.split("_") if word.isdigit()]
         confirm_screen = pygame_gui.UIManager(
             (SCREEN_WIDTH, SCREEN_HEIGHT), 'shop_confirm_theme.json'
         )
         button_display = pygame_gui.elements.UIButton(
             relative_rect=pygame.Rect((678, 120), (145, 150)),
             text="",
+            tool_tip_text="<font face=fira_code color=normal_text size=5>" ""
+                          f" <b><u>{self.button_text[numbers[0]-1]}</u></b>"
+                          "<br><br>"    
+                          f"<i>{self.button_text_effect[numbers[0]-1]}</i>",
             object_id=button_name,
             manager=confirm_screen
         )
