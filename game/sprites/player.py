@@ -127,19 +127,19 @@ class Player(pygame.sprite.Sprite):
                 # FIXME: play some sound effect maybe
                 if self.hp < 4:
                     self.hp += 1
-            elif self.items[self.holding] == 2:  # invincible
+            elif self.items[self.holding] == 2:  # shield
+                self.shield.turn_on()
+            elif self.items[self.holding] == 3:  # invincible
                 self.become_item_invincible()
-            elif self.items[self.holding] == 3:
+            elif self.items[self.holding] == 4:  # bullet time
+                self.game.bullet_time = True
+                self.game.bullet_time_t = ITEM_BULLET_TIME_DURATION
+            elif self.items[self.holding] == 5:
                 self.vx -= np.cos(self.dir) * 100
                 self.vy += np.sin(self.dir) * 100
                 self.shoot_missile()
-            elif self.items[self.holding] == 4:  # earthquake
+            elif self.items[self.holding] == 6:  # earthquake
                 self.game.start_earthquake()
-            elif self.items[self.holding] == 5:  # shield
-                self.shield.turn_on()
-            elif self.items[self.holding] == 6:  # bullet time
-                self.game.bullet_time = True
-                self.game.bullet_time_t = ITEM_BULLET_TIME_DURATION
             self.items[self.holding] = 0
 
         self.missiles.update(t)

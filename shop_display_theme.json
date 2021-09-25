@@ -12,20 +12,20 @@
     "#button_2": {
         "images": {
             "normal_image": {
-                "path": "assets/images/shop_display_images/star.png"
+                "path": "assets/images/shop_display_images/Shield.png"
             },
             "hovered_image": {
-                "path": "assets/images/shop_display_images/star_hover.png"
+                "path": "assets/images/shop_display_images/Shield_hover.png"
             }
         }
     },
     "#button_3": {
         "images": {
             "normal_image": {
-                "path": "assets/images/shop_display_images/earthquake.png"
+                "path": "assets/images/shop_display_images/star.png"
             },
             "hovered_image": {
-                "path": "assets/images/shop_display_images/earthquake_hover.png"
+                "path": "assets/images/shop_display_images/star_hover.png"
             }
         }
     },
@@ -52,10 +52,10 @@
     "#button_6": {
         "images": {
             "normal_image": {
-                "path": "assets/images/shop_display_images/Shield.png"
+                "path": "assets/images/shop_display_images/earthquake.png"
             },
             "hovered_image": {
-                "path": "assets/images/shop_display_images/Shield_hover.png"
+                "path": "assets/images/shop_display_images/earthquake_hover.png"
             }
         }
     }
