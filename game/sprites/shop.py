@@ -36,22 +36,6 @@ class Shop:
             pygame.Rect((698, 391), (104, 110)),
             pygame.Rect((1178, 391), (104, 110)),
         ]
-        self.price_tag_position = [
-            pygame.Rect((191, 252), (160, 47)),
-            pygame.Rect((670, 252), (160, 47)),
-            pygame.Rect((1149, 252), (160, 47)),
-            pygame.Rect((191, 520), (160, 47)),
-            pygame.Rect((670, 520), (160, 47)),
-            pygame.Rect((1149, 520), (160, 47)),
-        ]
-        self.price = [
-            "$10",
-            "$15",
-            "$20",
-            "$25",
-            "$30",
-            "$35"
-        ]
         self.button_text = [
             "Heal Potion",
             'Shield',
@@ -81,14 +65,12 @@ class Shop:
                 manager=self.shop_screen,
             ) for i in range(6)
         ]
-        self.price_tag_button= [
-            pygame_gui.elements.UIButton(
-                relative_rect=self.price_tag_position[i],
-                text=self.price[i],
-                object_id="price_tag",
-                manager=self.shop_screen,
-            ) for i in range(6)
-        ]
+        self.price_tag_button = pygame_gui.elements.UIButton(
+            relative_rect=pygame.Rect((191, 252), (160, 47)),
+            text='$50',
+            object_id="price_tag",
+            manager=self.shop_screen,
+        )
         self.confirm_screen = pygame_gui.UIManager(
             (SCREEN_WIDTH, SCREEN_HEIGHT), 'shop_display_theme.json'
         )
@@ -160,13 +142,9 @@ class Shop:
                                 assets_manager.play_sound("select2")
                             self._hide()
                             confirmation = False
-<<<<<<< Updated upstream
                         elif not confirmation:
-=======
-                        elif button in self.price_tag_button:
->>>>>>> Stashed changes
                             assets_manager.play_sound("select1")
-                            button_number = self.price_tag_button.index(button)
+                            button_number = self.buttons.index(button)
                             self.display_buttons[button_number].show()
                             confirmation = True
 

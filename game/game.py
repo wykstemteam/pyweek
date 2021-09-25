@@ -141,7 +141,7 @@ class Game:
 
         # entering shop
         self.stage1_countdown = 7  # deactivate everything for .. seconds
-        self.stage2 = True  # player at right?
+        self.stage2 = False  # player at right?
         self.dimming = False
         self.darken_alpha = 0
 
