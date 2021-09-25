@@ -34,7 +34,6 @@ class Bomber(pygame.sprite.Sprite):
 
         self.dir = 0.0
         self.activated = False
-        self.activated_dur = 0.0
 
     def aim(self, px: float, py: float) -> None:
         self.dir = np.arctan2(self.rect.centery - py, px - self.rect.centerx)
@@ -54,18 +53,15 @@ class Bomber(pygame.sprite.Sprite):
             return
         if random.randint(0, 1000) <= 1:
             self.activated = True
-            self.activated_dur = random.uniform(10.0, 20.0)
 
     def update(self, t: float) -> None:
-        if self.activated_dur <= 0.0:
-            self.activated = False
-
         if self.activated:
-            if self.x < -100:
-                self.x += 1
-        else:
-            if self.x > -400:
-                self.x -= 1
+            self.x += 2
+            self.shoot_cooldown -= t
+            self.shoot()
+            if self.x >= SCREEN_WIDTH:
+                self.activated = False
+                self.x = -400
 
         if self.frame >= len(self.animation):
             self.frame = 0
@@ -76,10 +72,6 @@ class Bomber(pygame.sprite.Sprite):
         self.shadow_rect = self.rect.copy()
         self.shadow_rect.topleft = self.shadow_rect.topleft + pygame.Vector2(-15, 15)
         self.frame += 1
-
-        if self.activated:
-            self.shoot_cooldown -= t
-            self.shoot()
         self.bullets.update(t)
 
     def draw(self, window: pygame.Surface) -> None:

@@ -232,7 +232,7 @@ class Game:
                 # resetting things
                 self.cur_scene = random.choice(list(Scenes))
 
-                self.distance_manager.dist_to_next_country = 100
+                self.distance_manager.dist_to_next_country = INITIAL_DISTANCE_TO_NEXT_COUNTRY
                 self.stage1_countdown = 7
                 self.stage2 = False
                 self.dimming = False
@@ -298,7 +298,8 @@ class Game:
                 self.buildings.update(t)
                 self.policecar.update(t)
                 if self.distance_manager.dist_to_next_country > 0:
-                    self.bomber.random_activate()
+                    if self.distance_manager.dist_to_next_country > 150:
+                        self.bomber.random_activate()
                 self.bomber.aim(self.player.rect.centerx, self.player.rect.centery)
                 self.bomber.update(t)
                 self.obstacle_manager.update(t)
