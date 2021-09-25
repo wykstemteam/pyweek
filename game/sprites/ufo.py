@@ -11,11 +11,11 @@ from game.sprites.player import Player
 
 
 class UFO(pygame.sprite.Sprite):
+    image = assets_manager.images['UFO']
+    bullet_image = assets_manager.images['UFO_bullet']
+
     def __init__(self, player_collision_group: pygame.sprite.Group) -> None:
         super().__init__()
-
-        self.image = assets_manager.images['UFO']
-        self.bullet_image = assets_manager.images['UFO_bullet']
 
         self.cenx = 2050
         self.ceny = (SCREEN_HEIGHT / 2)
