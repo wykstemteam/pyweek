@@ -45,7 +45,7 @@ class Shop:
             pygame.Rect((663, 475), (160, 47)),
             pygame.Rect((1142, 475), (160, 47)),
         ]
-        self.price = ["1", "2", "3", "4", "5", "6"]
+        self.price = ["5", "10", "15", "20", "69420", "30"]
         self.button_text = [
             "Heal Potion",
             'Shield',
@@ -236,4 +236,3 @@ class Shop:
             else:
                 self.price_tag_button[i].enable()
 
-    
