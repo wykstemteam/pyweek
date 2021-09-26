@@ -61,7 +61,7 @@ class Game:
         self.coin_gui = CoinGUI((1200, 36), self)
 
         # difficulty
-        self.difficulty = 1
+        self.difficulty = INITIAL_DIFFICULTY
 
         # game_screen
         self.game_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
