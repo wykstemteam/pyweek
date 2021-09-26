@@ -234,7 +234,7 @@ class Game:
                 self.player.inputtable = False
                 for road in self.roads:
                     road.stop_moving = True
-                self.player.vx = -BACKGROUND_VELOCITY * 2.5
+                self.player.vx = -BACKGROUND_VELOCITY * 3
                 if self.player.rect.left >= SCREEN_WIDTH:
                     self.dimming = True
                     pygame.mixer.music.fadeout(3000)
@@ -269,7 +269,7 @@ class Game:
                 self.player.vy = 0
 
             self.coin_manager.update(t)
-            self.arrow.update(self.player)
+            self.arrow.update()
             self.distance_manager.update(t)
             self.score_manager.update(t)
             self.coin_gui.update(t)
@@ -366,7 +366,7 @@ class Game:
         # gui
         if self.lose:
             window.blit(assets_manager.images['darken'], pygame.Rect(0, 0, 0, 0))
-            window.blit(assets_manager.images['GameOver'], pygame.Rect(0, 50, 0, 0))
+            window.blit(assets_manager.images['GameOver'], pygame.Rect(0, 70, 0, 0))
             self.lose_screen.draw_ui(window)
         else:
             self.game_screen.draw_ui(window)
@@ -381,7 +381,7 @@ class Game:
             darken_image.fill((0, 0, 0))
             darken_image.set_alpha(self.darken_alpha)
             window.blit(darken_image, pygame.Rect(0, 0, 0, 0))
-            self.darken_alpha = min(self.darken_alpha + 3, 255)
+            self.darken_alpha = min(self.darken_alpha + 4, 255)
             if self.darken_alpha == 255:
                 self.stage2 = True
 
