@@ -24,7 +24,7 @@ class RoundCounter(pygame.sprite.Sprite):
     def draw(self, window: pygame.Surface):
         for di in range(-1, 2):
             for dj in range(-1, 2):
-                window.blit(self.image_shadow, self.rect.move(di * 3, dj * 3))
+                window.blit(self.image_shadow, self.rect.move(di * 2, dj * 2))
         window.blit(self.image, self.rect)
 
     def increment(self):

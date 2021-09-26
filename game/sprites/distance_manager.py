@@ -31,11 +31,7 @@ class DistanceManager(pygame.sprite.Sprite):
         )
 
     def draw(self, window: pygame.Surface) -> None:
-        di = -1
-        while di <= 1:
-            dj = -1
-            while dj <= 1:
-                window.blit(self.outline_image, self.rect.move(di * 3, dj * 3))
-                dj += 1
-            di += 1
+        for di in range(-1, 2):
+            for dj in range(-1, 2):
+                window.blit(self.outline_image, self.rect.move(di * 2, dj * 2))
         window.blit(self.image, self.rect)

@@ -12,7 +12,7 @@ class CoinGUI(pygame.sprite.Sprite):
         self.image = assets_manager.animations['coin'][0]
         self.rect = self.image.get_rect()
         self.rect.topleft = pos
-        self.text_rect = self.rect.move(COIN_WIDTH * 1.2, -16)
+        self.text_rect = self.rect.move(COIN_WIDTH * 1.2, -10)
         self.game = game
 
     def update(self, t: float) -> None:
@@ -21,8 +21,8 @@ class CoinGUI(pygame.sprite.Sprite):
 
     def draw(self, window: pygame.Surface) -> None:
         window.blit(self.image, self.rect)
-        window.blit(self.outline_image, self.text_rect.move(-3, 3))
-        window.blit(self.outline_image, self.text_rect.move(-3, -3))
-        window.blit(self.outline_image, self.text_rect.move(3, -3))
-        window.blit(self.outline_image, self.text_rect.move(3, 3))
+        window.blit(self.outline_image, self.text_rect.move(-2, 2))
+        window.blit(self.outline_image, self.text_rect.move(-2, -2))
+        window.blit(self.outline_image, self.text_rect.move(2, -2))
+        window.blit(self.outline_image, self.text_rect.move(2, 2))
         window.blit(self.text_image, self.text_rect)
