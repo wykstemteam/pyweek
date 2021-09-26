@@ -28,4 +28,4 @@ class CometManager:
             comet.draw(window)
 
     def kill(self) -> None:
-        self.obstacles.empty()
+        self.comets.empty()

@@ -32,11 +32,12 @@ class Bullet(pygame.sprite.Sprite):
 
     def in_bounds(self) -> bool:
         return (
-                self.rect.right > 0 and self.rect.left < SCREEN_WIDTH and self.rect.bottom > 0
-                and self.rect.top < SCREEN_HEIGHT
+            self.rect.right > 0 and self.rect.left < SCREEN_WIDTH and self.rect.bottom > 0
+            and self.rect.top < SCREEN_HEIGHT
         )
 
-    def player_hit(self, player: Player) -> None:  # should be called when collided by player
+    # should be called when collided by player
+    def player_hit(self, player: Player) -> None:
         if not self.explode:
             if player.hit():
                 self.image = None
