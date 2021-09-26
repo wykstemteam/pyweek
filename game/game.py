@@ -75,15 +75,14 @@ class Game:
         self.lose_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
         self.restart_button = pygame_gui.elements.UIButton(
             relative_rect=pygame.Rect(
-                (SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT // 2 + 100), (100, 50)
+                (SCREEN_WIDTH // 2 - 172, SCREEN_HEIGHT // 2 + 75), (130, 50)
             ),
             text='Restart',
             manager=self.lose_screen
         )
-        # TODO: Maybe edit it to become like exit_button
-        self.return_title_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT // 2), (100, 50)),
-            text='Return',
+        self.exit_button = pygame_gui.elements.UIButton(
+            relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 28, SCREEN_HEIGHT // 2 + 75), (200, 50)),
+            text='Exit to Menu',
             manager=self.lose_screen
         )
         self.lose = False
@@ -192,7 +191,7 @@ class Game:
                 if self.lose:
                     if event.ui_element == self.restart_button:
                         self.__init__()  # Reinitialize
-                    elif event.ui_element == self.return_title_button:
+                    elif event.ui_element == self.exit_button:
                         return True  # Stop gaming
 
             self.game_screen.process_events(event)
@@ -292,41 +291,41 @@ class Game:
                             obj.kill()
 
         # objects in scene.CITY:
-        if self.cur_scene == Scenes.CITY:
-            if not self.lose:
-                self.laser_manager.update(t)
-                self.roads.update(t)
-                self.buildings.update(t)
-                self.policecar.update(t)
-                if self.distance_manager.dist_to_next_country > 0:
-                    if self.distance_manager.dist_to_next_country > 50:
-                        self.bomber.random_activate(self.difficulty)
-                self.bomber.aim(self.player.rect.centerx, self.player.rect.centery)
-                self.bomber.update(t, self.difficulty)
-                self.obstacle_manager.update(t)
+        if self.cur_scene == Scenes.CITY and not self.lose:
+            self.laser_manager.update(t)
+            self.roads.update(t)
+            self.buildings.update(t)
+            self.policecar.update(t)
+            if (
+                self.distance_manager.dist_to_next_country > 0
+                and self.distance_manager.dist_to_next_country > 50
+            ):
+                self.bomber.random_activate(self.difficulty)
+            self.bomber.aim(self.player.rect.centerx, self.player.rect.centery)
+            self.bomber.update(t, self.difficulty)
+            self.obstacle_manager.update(t)
 
         # objects in scene.SPACE:
-        if self.cur_scene == Scenes.SPACE:
-            if not self.lose:
-                if self.distance_manager.dist_to_next_country > 30:
-                    if not self.spaceship.activated:
-                        self.ufo.random_activate(self.difficulty)
-                    if not self.ufo.activated:
-                        self.spaceship.random_activate(self.difficulty)
+        if self.cur_scene == Scenes.SPACE and not self.lose:
+            if self.distance_manager.dist_to_next_country > 30:
+                if not self.spaceship.activated:
+                    self.ufo.random_activate(self.difficulty)
+                if not self.ufo.activated:
+                    self.spaceship.random_activate(self.difficulty)
 
-                    if (
-                        self.distance_manager.dist_to_next_country > 30 and self.spaceship.activated
-                        and self.spaceship.x == 1000 and not self.spaceship.is_charge
-                        and not self.spaceship.is_shoot and self.spaceship.activated_dur >= 10.0
-                        and random.randint(0, 1000) <= self.difficulty
-                    ):
-                        self.spaceship.is_charge = True
+                if (
+                    self.distance_manager.dist_to_next_country > 30 and self.spaceship.activated
+                    and self.spaceship.x == 1000 and not self.spaceship.is_charge
+                    and not self.spaceship.is_shoot and self.spaceship.activated_dur >= 10.0
+                    and random.randint(0, 1000) <= self.difficulty
+                ):
+                    self.spaceship.is_charge = True
 
-                    self.comets.add(self.difficulty)
+                self.comets.add(self.difficulty)
 
-                self.spaceship.update(t)
-                self.ufo.update(t, self.difficulty)
-                self.comets.update(t, self.difficulty)
+            self.spaceship.update(t)
+            self.ufo.update(t, self.difficulty)
+            self.comets.update(t, self.difficulty)
 
         # gui
         self.game_screen.update(t)
