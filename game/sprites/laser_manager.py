@@ -31,11 +31,11 @@ class LaserManager:
             self.t += t
         if self.t < LASER_COOLDOWN:
             pass
-        elif self.t < LASER_COOLDOWN * 2:
+        elif self.t < LASER_COOLDOWN * 3:
             self.amounts = 1
-        elif self.t < LASER_COOLDOWN * 4:
+        elif self.t < LASER_COOLDOWN * 5:
             self.amounts = 2
-        elif self.t < LASER_COOLDOWN * 7:
+        elif self.t < LASER_COOLDOWN * 9:
             self.amounts = 3
         if self.t - self.last_laser_shoot >= LASER_COOLDOWN:
             self.last_laser_shoot = self.t
