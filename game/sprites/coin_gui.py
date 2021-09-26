@@ -6,7 +6,7 @@ from game.constants import *
 
 class CoinGUI(pygame.sprite.Sprite):
     # TODO: Maybe consider another font
-    font = pygame.font.SysFont('Comic Sans MS', 50)
+    font = pygame.font.SysFont('arial', 50)
 
     def __init__(self, pos, game) -> None:
         super().__init__()

@@ -22,7 +22,7 @@ def run(window: pygame.Surface, game):
         text='Exit to Menu',
         manager=pause_screen
     )
-    font = pygame.font.SysFont('Comic Sans MS', 40)
+    font = pygame.font.SysFont('arial', 40)
     cock = pygame.time.Clock()
     while pause:
         dt = cock.get_time() / 1000

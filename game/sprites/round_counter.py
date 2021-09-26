@@ -4,7 +4,7 @@ import pygame
 class RoundCounter(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.font = pygame.font.SysFont('Comic Sans MS', 40)
+        self.font = pygame.font.SysFont('arial', 40)
         self.rounds_survived = 0
         self.image_shadow = None
         self.update()

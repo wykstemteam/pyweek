@@ -14,7 +14,7 @@ from game.sprites import *
 from game.sprites.round_counter import RoundCounter
 import numpy as np
 
-font = pygame.font.SysFont('Comic Sans MS', 40)
+font = pygame.font.SysFont('arial', 40)
 
 class Scenes(Enum):
     CITY = 1
