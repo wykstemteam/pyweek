@@ -6,6 +6,9 @@ MotorCycle : https://www.iconspng.com/image/30199/racing-bike-top-down-for-games
 enemy Missile : https://freepikpsd.com/missile-sprite-png/322806/
 player Missile: https://opengameart.org/content/missile-0
 item missile: https://www.flaticon.com/free-icon/missile_2590308
+obstacle1: https://www.pikpng.com/transpng/ToTbbw/
+obstacle2: https://www.cleanpng.com/png-traffic-sign-road-royalty-free-construction-sign-4526422/
+obstacle3: https://creazilla.com/nodes/61279-road-sign-clipart?tag_id=1847
 
 Policecar: https://opengameart.org/content/2d-car-pack-0
 laserbeam animation (with reference to): https://www.youtube.com/watch?v=wCNqadvtVZ0
