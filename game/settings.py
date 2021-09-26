@@ -12,23 +12,23 @@ def get_audio_controls(
 ) -> Tuple[pygame_gui.elements.UILabel, pygame_gui.elements.UIHorizontalSlider,
            pygame_gui.elements.UILabel, pygame_gui.elements.UIHorizontalSlider]:
     music_label = pygame_gui.elements.UILabel(
-        relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 - 25), (400, 10)),
+        relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 - 35), (400, 20)),
         text='Music Volume',
         manager=manager
     )
     music_slider = pygame_gui.elements.UIHorizontalSlider(
-        relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 - 15), (400, 30)),
+        relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 - 17), (400, 30)),
         start_value=assets_manager.music_volume,
         value_range=(0.0, 1.0),
         manager=manager
     )
     sound_label = pygame_gui.elements.UILabel(
-        relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 + 20), (400, 10)),
+        relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 + 20), (400, 20)),
         text='Sound Volume',
         manager=manager
     )
     sound_slider = pygame_gui.elements.UIHorizontalSlider(
-        relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 + 30), (400, 30)),
+        relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 + 38), (400, 30)),
         start_value=assets_manager.sound_volume,
         value_range=(0.0, 1.0),
         manager=manager
