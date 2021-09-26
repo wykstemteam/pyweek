@@ -124,10 +124,10 @@ class Shop:
             relative_rect=pygame.Rect((555, 301), (200, 60)),
             text='Confirm',
             tool_tip_text="<font face=fira_code color=#8e1b1b size=6>"
-                "<b><u>WARNING:</u></b>"
-                "<br><br>"
-                "<font color=#000000 size=5><i>If your inventory is full, your current selected item will be overwritten.</i></font>",
-            object_id = "#button_confirm",
+            "<b><u>WARNING:</u></b>"
+            "<br><br>"
+            "<font color=#000000 size=5><i>If your inventory is full, your current selected item will be overwritten.</i></font>",
+            object_id="#button_confirm",
             manager=self.confirm_screen
         )
         self.button_cancel = pygame_gui.elements.UIButton(
@@ -181,10 +181,10 @@ class Shop:
                                         #warning message
                                         pass
                                     self.game.player.items[self.game.player.holding
-                                                       ] = self.button_number + 1
+                                                           ] = self.button_number + 1
                                 else:
                                     self.game.player.items[self.game.player.holding
-                                                       ] = self.button_number + 1
+                                                           ] = self.button_number + 1
                             self._hide()
                             for i in range(6):
                                 self.price_tag_button[i].enable()
@@ -235,4 +235,3 @@ class Shop:
                 self.price_tag_button[i].disable()
             else:
                 self.price_tag_button[i].enable()
-

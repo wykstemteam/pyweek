@@ -169,9 +169,8 @@ class Spaceship(pygame.sprite.Sprite):
 
     def collision_player(self, player: Player):
         if (
-                self.is_shoot and 2 <= self.ls_frame <= 18
-                and player.rect.colliderect(pygame.Rect(0, 220, 1500, 200))
-                and not self.earthquake
+            self.is_shoot and 2 <= self.ls_frame <= 18
+            and player.rect.colliderect(pygame.Rect(0, 220, 1500, 200)) and not self.earthquake
         ):
             player.hit()
 
@@ -180,4 +179,3 @@ class Spaceship(pygame.sprite.Sprite):
             self.activated = False
             missile.hit()
             self.game.space_temp_deactivated_enemies = True
-
