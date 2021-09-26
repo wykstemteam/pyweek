@@ -45,7 +45,7 @@ class Shop:
             pygame.Rect((663, 475), (160, 47)),
             pygame.Rect((1142, 475), (160, 47)),
         ]
-        self.price = ["5", "10", "15", "20", "69420", "30"]
+        self.price = ["4", "10", "13", "15", "16", "18"]
         self.button_text = [
             "Heal Potion",
             'Shield',
@@ -56,10 +56,10 @@ class Shop:
         ]
         self.button_text_effect = [
             '+1 life, instantly used if currently damaged',
-            '+3 shield (30s)',
-            '5s invincibility',
-            'Time slows down for 5s',
-            'Attack the boss?',
+            f'Shield that blocks 3 hits for {SHIELD_REMAIN_TIME}s',
+            f'{ITEM_INVINCIBILITY_TIME}s invincibility',
+            f'Time slows down for {ITEM_BULLET_TIME_DURATION}s',
+            'Attack enemies',
             'Annihilation',
         ]
         self.button_text_effect = [f'   {t}' for t in self.button_text_effect]
