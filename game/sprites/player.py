@@ -69,10 +69,9 @@ class Player(pygame.sprite.Sprite):
             self.vy = min(0, self.vy + FRICTION_VERT)
 
     def update(self, t: float, scene) -> None:
+        print(self.real_x)
         self.real_x += (self.vx + BACKGROUND_VELOCITY) * t
         self.real_y += self.vy * t
-        self.rect.left = self.real_x
-        self.rect.top = self.real_y
         self.shadow_rect.left = self.real_x - 5
         self.shadow_rect.top = self.real_y + 5
 
@@ -94,7 +93,7 @@ class Player(pygame.sprite.Sprite):
         if self.real_x < 0:  # touches left border
             self.real_x = 0
             self.vx = -BACKGROUND_VELOCITY
-        if self.real_x < SCREEN_WIDTH - PLAYER_WIDTH // 2:
+        if self.real_x < SCREEN_WIDTH - PLAYER_WIDTH:
             if self.inputtable:
                 if keys[pygame.K_w]:
                     self.acc(0, -PLAYER_ACC)
@@ -105,9 +104,8 @@ class Player(pygame.sprite.Sprite):
                 if keys[pygame.K_a]:
                     self.acc(-PLAYER_ACC, 0)
         else:  # touches right border
-            if self.inputtable:
-                self.rect.left = SCREEN_WIDTH
-                self.vx = -BACKGROUND_VELOCITY
+            self.real_x = SCREEN_WIDTH - PLAYER_WIDTH
+            self.vx = -BACKGROUND_VELOCITY
 
         if FREE_ITEMS:
             for i in range(6):
@@ -116,7 +114,6 @@ class Player(pygame.sprite.Sprite):
             if keys[pygame.K_c]:
                 self.add_coin()
                 assets_manager.play_sound("coin")
-
 
         if keys[pygame.K_1]:
             self.holding = 1
@@ -164,6 +161,8 @@ class Player(pygame.sprite.Sprite):
 
         if self.shield.activate:
             self.shield.update(t, self.rect.center)
+        self.rect.left = self.real_x
+        self.rect.top = self.real_y
 
     def draw(self, window: pygame.Surface) -> None:
         for missile in self.missiles:
