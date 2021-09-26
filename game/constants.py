@@ -120,7 +120,7 @@ ITEM_HEIGHT_SHOP = 64
 INVENTORY_X_SHOP = 1305
 INVENTORY_Y_SHOP = 50
 
-FONT_PATH = 'data/fonts/Montserrat-Bold.ttf'
+FONT_PATH = 'assets/fonts/Montserrat-Bold.ttf'
 
 # debug
 DISABLE_BUILDINGS = False
