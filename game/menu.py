@@ -13,9 +13,9 @@ instruction_font = pygame.font.SysFont('Comic Sans MS', 30)
 instruction_height = instruction_font.render("test", True, (0, 0, 0)).get_height()
 
 instructions = [
-    'WASD to move',
-    '1 and 2 to select item in inventory',
-    'Left click mouse to use item',
+    'Move: WASD',
+    'Select item in inventory: 1 and 2',
+    'Use item: Mouse left click',
     'Press any key to start',
 ]
 
