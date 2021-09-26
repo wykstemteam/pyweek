@@ -56,12 +56,12 @@ class Shop:
         self.button_text_effect = [
             '+1 life',
             '+3 shield (30s)',
-            '5s invinciblility',
-            '5s bullet time',  # TODO: Put more clear description
+            '5s invincibility',
+            'time slows down for 5s',
             'Attack the boss?',
             'Annihilation',
         ]
-        self.button_text_effect = [" " * 3 + t for t in self.button_text_effect]
+        self.button_text_effect = [f'   {t}' for t in self.button_text_effect]  # append 3 spaces in front
         self.buttons = [
             pygame_gui.elements.UIButton(
                 relative_rect=self.button_positions[i],
@@ -112,6 +112,9 @@ class Shop:
             )
             self.display_buttons[i].hovered_image = pygame.transform.scale(
                 self.display_buttons[i].hovered_image, (145, 150)
+            )
+            self.display_buttons[i].selected_image = pygame.transform.scale(
+                self.display_buttons[i].selected_image, (145, 150)
             )
             self.display_buttons[i].rebuild()
         self._hide()
