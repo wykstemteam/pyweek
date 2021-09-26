@@ -13,7 +13,7 @@ class UFO(pygame.sprite.Sprite):
     image = assets_manager.images['UFO']
     bullet_image = assets_manager.images['UFO_bullet']
 
-    def __init__(self, player_collision_group: pygame.sprite.Group) -> None:
+    def __init__(self, player_collision_group: pygame.sprite.Group, game) -> None:
         super().__init__()
 
         self.cenx = 2050
@@ -37,6 +37,8 @@ class UFO(pygame.sprite.Sprite):
 
         self.circle_flag = False
         self.player_collision_group.add(self)
+
+        self.game = game
 
     def bullet(self, *args, **kwargs):
         return Bullet(self.bullet_image, self.rect.center, *args, **kwargs)
@@ -116,7 +118,7 @@ class UFO(pygame.sprite.Sprite):
             self.player_collision_group.add(bullet)
 
     def random_activate(self, difficulty):
-        if self.activated:
+        if self.activated or self.game.space_temp_deactivated_enemies:
             return
         if random.randint(0, 1000) <= difficulty:
             self.activated = True
@@ -161,3 +163,4 @@ class UFO(pygame.sprite.Sprite):
         if self.activated:
             self.activated = False
             missile.hit()
+            self.game.space_temp_deactivated_enemies = True

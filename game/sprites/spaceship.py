@@ -10,7 +10,7 @@ from game.sprites.player import Player
 
 
 class Spaceship(pygame.sprite.Sprite):
-    def __init__(self, player_collision_group: pygame.sprite.Group) -> None:
+    def __init__(self, player_collision_group: pygame.sprite.Group, game) -> None:
         super().__init__()
 
         self.image = assets_manager.images['space_ship']
@@ -51,6 +51,8 @@ class Spaceship(pygame.sprite.Sprite):
 
         self.player_collision_group.add(self)
         self.earthquake = False
+
+        self.game = game
 
     def get_bullet_pattern(self) -> List[Bullet]:
         if self.bullet_pattern == 0:
@@ -109,7 +111,7 @@ class Spaceship(pygame.sprite.Sprite):
             self.shoot_cooldown = SPACESHIP_SHOOT_COOLDOWN
 
     def random_activate(self, difficulty):
-        if self.activated:
+        if self.activated or self.game.space_temp_deactivated_enemies:
             return
         if random.randint(0, 1000) <= difficulty:
             self.activated = True
@@ -175,4 +177,5 @@ class Spaceship(pygame.sprite.Sprite):
         if self.activated:
             self.activated = False
             missile.hit()
+            self.game.space_temp_deactivated_enemies = True
 
