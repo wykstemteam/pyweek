@@ -17,7 +17,7 @@ class Shop:
     confirm_button = assets_manager.images['confirm_button']
     main_menu = assets_manager.images['main_menu_final']
     darken = assets_manager.images['darken']
-
+    
     def __init__(self, game: "Game") -> None:
         self.shop_screen = pygame_gui.UIManager(
             (SCREEN_WIDTH, SCREEN_HEIGHT), 'shop_display_theme.json'
@@ -77,6 +77,11 @@ class Shop:
                 manager=self.shop_screen,
             ) for i in range(6)
         ]
+        self.button_exit = pygame_gui.elements.UIButton(
+            relative_rect=pygame.Rect((43, 40), (74, 43)),
+            text='Exit',
+            manager=self.shop_screen,
+        )
         self.price_tag_button = [
             pygame_gui.elements.UIButton(
                 relative_rect=self.price_tag_position[i],
@@ -133,6 +138,7 @@ class Shop:
             text='Cancel',
             manager=self.confirm_screen
         )
+
         self.price_count = 0
         self.game = game
         self.running = False
@@ -156,15 +162,12 @@ class Shop:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     exit()
-
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_p:
-                        print("Shop closed")
-                        self.running = False
                 elif event.type == pygame.USEREVENT:
                     if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                         button = event.ui_element
-                        if button in (self.button_cancel, self.button_confirm):
+                        if button == self.button_exit:
+                            self.running = False
+                        elif button in (self.button_cancel, self.button_confirm):
                             if button == self.button_confirm:
                                 assets_manager.play_sound("select2")
                                 self.game.coins -= int(self.price_count)
