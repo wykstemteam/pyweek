@@ -1,12 +1,21 @@
 import pygame
+import pygame_gui
 
 from game.assets_manager import assets_manager
 from game.constants import *
+from game.settings import settings
 from game.sprites import *
 
 
 def run(window: pygame.Surface):
     assets_manager.play_music("boys_summer_vacation")
+    screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
+    settings_button = pygame_gui.elements.UIButton(
+        relative_rect=pygame.Rect((SCREEN_WIDTH - 200 - 50, SCREEN_HEIGHT - 50 - 50), (200, 50)),
+        text='Settings',
+        manager=screen,
+    )
+
     running = True
     cock = pygame.time.Clock()
     buildings = BuildingManager()
@@ -36,9 +45,13 @@ def run(window: pygame.Surface):
                 exit()
             if event.type == pygame.KEYDOWN:
                 return
+            if event.type == pygame.USEREVENT and event.user_type == pygame_gui.UI_BUTTON_PRESSED:
+                settings(window)
+            screen.process_events(event)
 
         buildings.update(dt)
         roads.update(dt)
+        screen.update(dt)
 
         window.fill((0, 0, 0))
         buildings.draw(window)
@@ -53,6 +66,7 @@ def run(window: pygame.Surface):
         for i in range(len(instructions)):
             window.blit(instructions[i],
                         (20, SCREEN_HEIGHT - 50 - instructions[i].get_height() * (len(instructions) - i - 1)))
+        screen.draw_ui(window)
 
         pygame.display.flip()
         cock.tick(60)
