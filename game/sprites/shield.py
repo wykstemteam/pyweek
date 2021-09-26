@@ -36,9 +36,8 @@ class Shield(pygame.sprite.Sprite):
 
     def hit(self) -> None:
         self.shield_hp -= 1
-        assets_manager.play_sound("shield_hit")  # Maybe shield break sound when hp == 0
+        assets_manager.play_sound("shield_hit")
         if self.shield_hp == 0:
             self.activate = False
-            self.shield_hp = 3
         else:
             self.image = assets_manager.images[f'shield{self.shield_hp}']

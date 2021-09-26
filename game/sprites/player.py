@@ -71,8 +71,6 @@ class Player(pygame.sprite.Sprite):
     def update(self, t: float, scene) -> None:
         self.real_x += (self.vx + BACKGROUND_VELOCITY) * t
         self.real_y += self.vy * t
-        self.shadow_rect.left = self.real_x - 5
-        self.shadow_rect.top = self.real_y + 5
 
         self.invincibility_after_damage -= t
         if self.invincibility_after_damage <= 0:
@@ -160,10 +158,12 @@ class Player(pygame.sprite.Sprite):
                 self.image.fill(self.invincible_color, special_flags=pygame.BLEND_RGB_MULT)
                 self.invincible_color += 0xFFFFFF // (60 * ITEM_INVINCIBILITY_TIME)
 
-        if self.shield.activate:
-            self.shield.update(t, self.rect.center)
+        self.shadow_rect.left = self.real_x - 5
+        self.shadow_rect.top = self.real_y + 5
         self.rect.left = self.real_x
         self.rect.top = self.real_y
+        if self.shield.activate:
+            self.shield.update(t, self.rect.center)
 
     def draw(self, window: pygame.Surface) -> None:
         for missile in self.missiles:
