@@ -1,3 +1,5 @@
+from typing import Tuple
+
 import pygame
 import pygame_gui
 
@@ -5,34 +7,41 @@ from game.assets_manager import assets_manager
 from game.constants import *
 
 
-def settings(window: pygame.Surface) -> None:
-    settings_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
-    return_button = pygame_gui.elements.UIButton(
-        relative_rect=pygame.Rect((10, 10), (100, 50)), text='Return', manager=settings_screen
-    )
+def get_audio_controls(
+    manager: pygame_gui.UIManager
+) -> Tuple[pygame_gui.elements.UILabel, pygame_gui.elements.UIHorizontalSlider,
+           pygame_gui.elements.UILabel, pygame_gui.elements.UIHorizontalSlider]:
     music_label = pygame_gui.elements.UILabel(
         relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 - 25), (400, 10)),
         text='Music Volume',
-        manager=settings_screen
+        manager=manager
     )
     music_slider = pygame_gui.elements.UIHorizontalSlider(
         relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 - 15), (400, 30)),
         start_value=assets_manager.music_volume,
         value_range=(0.0, 1.0),
-        manager=settings_screen
+        manager=manager
     )
-
     sound_label = pygame_gui.elements.UILabel(
         relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 + 20), (400, 10)),
         text='Sound Volume',
-        manager=settings_screen
+        manager=manager
     )
     sound_slider = pygame_gui.elements.UIHorizontalSlider(
         relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 + 30), (400, 30)),
         start_value=assets_manager.sound_volume,
         value_range=(0.0, 1.0),
-        manager=settings_screen
+        manager=manager
     )
+    return music_label, music_slider, sound_label, sound_slider
+
+
+def settings(window: pygame.Surface) -> None:
+    settings_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
+    return_button = pygame_gui.elements.UIButton(
+        relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 110, SCREEN_HEIGHT // 2 + 75), (220, 50)), text='Return to Menu', manager=settings_screen
+    )
+    music_label, music_slider, sound_label, sound_slider = get_audio_controls(settings_screen)
 
     clock = pygame.time.Clock()
 
