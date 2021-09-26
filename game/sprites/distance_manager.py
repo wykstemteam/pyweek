@@ -6,7 +6,7 @@ from game.constants import *
 
 class DistanceManager(pygame.sprite.Sprite):
     # TODO: Maybe consider another font
-    font = pygame.font.SysFont('Comic Sans MS', 40)
+    font = pygame.font.SysFont('arial', 40)
 
     def __init__(self, game) -> None:
         super().__init__()
@@ -36,8 +36,7 @@ class DistanceManager(pygame.sprite.Sprite):
         while di <= 1:
             dj = -1
             while dj <= 1:
-                window.blit(self.outline_image, self.rect.move(di*3, dj*3))
+                window.blit(self.outline_image, self.rect.move(di * 3, dj * 3))
                 dj += 1
             di += 1
         window.blit(self.image, self.rect)
-

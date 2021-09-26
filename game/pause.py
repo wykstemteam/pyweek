@@ -1,3 +1,5 @@
+from typing import TYPE_CHECKING
+
 import pygame
 import pygame_gui
 
@@ -5,8 +7,11 @@ from game.assets_manager import assets_manager
 from game.constants import *
 from game.settings import get_controls, update_quotes_button
 
+if TYPE_CHECKING:
+    from game.game import Game
 
-def run(window: pygame.Surface, game):
+
+def pause(window: pygame.Surface, game: "Game") -> bool:
     previous_screen = window.copy()
     pause_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
     pause = True
@@ -24,7 +29,7 @@ def run(window: pygame.Surface, game):
         text='Exit to Menu',
         manager=pause_screen
     )
-    font = pygame.font.SysFont('Comic Sans MS', 40)
+    font = pygame.font.SysFont('arial', 40)
     cock = pygame.time.Clock()
     while pause:
         dt = cock.get_time() / 1000

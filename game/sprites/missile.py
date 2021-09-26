@@ -6,7 +6,7 @@ from game.constants import *
 from game.sprites.explode import Explode
 
 
-class Missile(pygame.sprite.Sprite):  # TODO: Maybe rename dir
+class Missile(pygame.sprite.Sprite):
     def __init__(self, pos: pygame.Vector2, dir: float) -> None:
         super().__init__()
 
@@ -21,7 +21,9 @@ class Missile(pygame.sprite.Sprite):  # TODO: Maybe rename dir
 
     def update(self, t: float) -> None:
         if not self.explode:
-            self.pos += (MISSILE_SPEED * t * np.cos(self.dir), -MISSILE_SPEED * t * np.sin(self.dir))
+            self.pos += (
+                MISSILE_SPEED * t * np.cos(self.dir), -MISSILE_SPEED * t * np.sin(self.dir)
+            )
             self.image = pygame.transform.rotate(
                 assets_manager.images['missile'], self.dir * 360 // (2 * np.pi)
             )
