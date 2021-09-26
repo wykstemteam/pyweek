@@ -180,6 +180,7 @@ class Game:
         self.set_scene_music()
         self.play_quote()
         self.round_counter.increment()
+        self.fade_in_manager.start_fade_in()
 
     def event_process(self, window: pygame.Surface):
         for event in pygame.event.get():
