@@ -56,27 +56,27 @@ class Spaceship(pygame.sprite.Sprite):
         if self.bullet_pattern == 0:
             return [
                 Bullet(
-                    self.bullet_image, pygame.Vector2(self.rect.centerx, self.rect.centery - 300),
+                    self.bullet_image, pygame.Vector2(SCREEN_WIDTH, self.rect.centery - 300),
                     -SPACESHIP_BULLET_SPEED, 0
                 ),
                 Bullet(
-                    self.bullet_image, pygame.Vector2(self.rect.centerx, self.rect.centery - 200),
+                    self.bullet_image, pygame.Vector2(SCREEN_WIDTH, self.rect.centery - 200),
                     -SPACESHIP_BULLET_SPEED, 0
                 ),
                 Bullet(
-                    self.bullet_image, pygame.Vector2(self.rect.centerx, self.rect.centery - 100),
+                    self.bullet_image, pygame.Vector2(SCREEN_WIDTH, self.rect.centery - 100),
                     -SPACESHIP_BULLET_SPEED, 0
                 ),
                 Bullet(
-                    self.bullet_image, pygame.Vector2(self.rect.centerx, self.rect.centery + 100),
+                    self.bullet_image, pygame.Vector2(SCREEN_WIDTH, self.rect.centery + 100),
                     -SPACESHIP_BULLET_SPEED, 0
                 ),
                 Bullet(
-                    self.bullet_image, pygame.Vector2(self.rect.centerx, self.rect.centery + 200),
+                    self.bullet_image, pygame.Vector2(SCREEN_WIDTH, self.rect.centery + 200),
                     -SPACESHIP_BULLET_SPEED, 0
                 ),
                 Bullet(
-                    self.bullet_image, pygame.Vector2(self.rect.centerx, self.rect.centery + 300),
+                    self.bullet_image, pygame.Vector2(SCREEN_WIDTH, self.rect.centery + 300),
                     -SPACESHIP_BULLET_SPEED, 0
                 )
             ]
