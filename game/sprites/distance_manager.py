@@ -6,7 +6,7 @@ from game.constants import *
 
 class DistanceManager(pygame.sprite.Sprite):
     # TODO: Maybe consider another font
-    font = pygame.font.SysFont('Comic Sans MS', 50)
+    font = pygame.font.SysFont('Comic Sans MS', 40)
 
     def __init__(self) -> None:
         super().__init__()
@@ -14,7 +14,7 @@ class DistanceManager(pygame.sprite.Sprite):
         self.dist_to_next_country = INITIAL_DISTANCE_TO_NEXT_COUNTRY
         self.update(0)
         self.rect = Rect(0, 0, 0, 0)
-        self.rect.topleft = (420, 20)
+        self.rect.topleft = (420, 0)
 
     def update(self, t: float) -> None:
         self.dist += -BACKGROUND_VELOCITY * t / 100 * DIST_SPD
@@ -28,8 +28,12 @@ class DistanceManager(pygame.sprite.Sprite):
         )
 
     def draw(self, window: pygame.Surface) -> None:
-        window.blit(self.outline_image, self.rect.move(-3, 3))
-        window.blit(self.outline_image, self.rect.move(-3, -3))
-        window.blit(self.outline_image, self.rect.move(3, -3))
-        window.blit(self.outline_image, self.rect.move(3, 3))
+        di = -1
+        while di <= 1:
+            dj = -1
+            while dj <= 1:
+                window.blit(self.outline_image, self.rect.move(di*3, dj*3))
+                dj += 1
+            di += 1
         window.blit(self.image, self.rect)
+
