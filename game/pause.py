@@ -3,22 +3,24 @@ import pygame_gui
 
 from game.assets_manager import assets_manager
 from game.constants import *
-from game.settings import get_audio_controls
+from game.settings import get_controls, update_quotes_button
 
 
 def run(window: pygame.Surface, game):
     previous_screen = window.copy()
     pause_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
     pause = True
-    music_label, music_slider, sound_label, sound_slider = get_audio_controls(manager=pause_screen)
+    music_label, music_slider, sound_label, sound_slider, quotes_button = get_controls(
+        manager=pause_screen
+    )
     continue_button = pygame_gui.elements.UIButton(
-        relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 172, SCREEN_HEIGHT // 2 + 80), (130, 50)),
+        relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 172, SCREEN_HEIGHT // 2 + 90), (130, 50)),
         text='Continue',
         manager=pause_screen
     )
     exit_button = pygame_gui.elements.UIButton(
-        relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 28, SCREEN_HEIGHT // 2 + 80), (200, 50)),
-        object_id='#exit_button',
+        relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 28, SCREEN_HEIGHT // 2 + 90), (200, 50)),
+        object_id='#red',
         text='Exit to Menu',
         manager=pause_screen
     )
@@ -38,6 +40,9 @@ def run(window: pygame.Surface, game):
                         return False
                     elif event.ui_element == exit_button:
                         return True
+                    elif event.ui_element == quotes_button:
+                        assets_manager.play_quotes = not assets_manager.play_quotes
+                        update_quotes_button(quotes_button)
             elif event.type == pygame.QUIT:
                 exit()
 
@@ -47,11 +52,9 @@ def run(window: pygame.Surface, game):
         window.blit(previous_screen, (0, 0))
         window.blit(assets_manager.images['darken'], (0, 0))
         pause_screen.draw_ui(window)
-        score_image = font.render(
-            f'Score: {game.score}', True, (255, 255, 255)
-        )
+        score_image = font.render(f'Score: {game.score}', True, (255, 255, 255))
         score_rect = score_image.get_rect()
-        score_rect.center = (SCREEN_WIDTH/2, SCREEN_HEIGHT/2 - 100)
+        score_rect.center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 100)
         window.blit(score_image, score_rect)
 
         pygame.display.flip()
