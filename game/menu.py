@@ -6,7 +6,7 @@ from game.constants import *
 from game.settings import settings
 from game.sprites import *
 
-title_font = pygame.font.SysFont('Castellar', 30, True)
+title_font = pygame.font.SysFont('Castellar', 60, True)
 instruction_font = pygame.font.SysFont('Comic Sans MS', 30)
 
 
@@ -14,14 +14,14 @@ def instruction(text: str):
     return instruction_font.render(text, False, (255, 255, 255))
 
 
-def run(window: pygame.Surface):
+def menu(window: pygame.Surface):
     assets_manager.play_music("boys_summer_vacation")
     assets_manager.play_sound("hi")
     screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
     settings_button = pygame_gui.elements.UIButton(
         relative_rect=pygame.Rect((SCREEN_WIDTH - 200 - 50, SCREEN_HEIGHT - 50 - 50), (200, 50)),
         text='Settings',
-        manager=screen,
+        manager=screen
     )
 
     running = True
@@ -31,9 +31,7 @@ def run(window: pygame.Surface):
         Road(assets_manager.images['road'], 0),
         Road(assets_manager.images['road'], SCREEN_WIDTH),
     )
-    title = title_font.render(
-        'ESCAPE FROM COPS 2021 HD DELUXE PRO MAX ULTRA REMASTERED', False, (255, 255, 0)
-    )
+    title = title_font.render('Rock: The Impostor', False, (255, 255, 0))
     instructions = [
         instruction('WASD to move'),
         instruction('1 and 2 to select item in inventory'),

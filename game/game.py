@@ -75,14 +75,14 @@ class Game:
             manager=self.pause_screen
         )
         self.continue_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 170, SCREEN_HEIGHT // 2 + 80), (130, 50)),
+            relative_rect=pygame.Rect(
+                (SCREEN_WIDTH // 2 - 170, SCREEN_HEIGHT // 2 + 80), (130, 50)
+            ),
             text='Continue',
             manager=self.pause_screen
         )
         self.exit_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(
-                (SCREEN_WIDTH // 2 - 30, SCREEN_HEIGHT // 2 + 80), (200, 50)
-            ),
+            relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 30, SCREEN_HEIGHT // 2 + 80), (200, 50)),
             object_id='#exit_button',
             text='Exit to Menu',
             manager=self.pause_screen
