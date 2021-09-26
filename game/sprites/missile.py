@@ -6,7 +6,7 @@ from game.constants import *
 from game.sprites.explode import Explode
 
 
-class Missile(pygame.sprite.Sprite):  # TODO: Maybe rename dir
+class Missile(pygame.sprite.Sprite):
     def __init__(self, pos: pygame.Vector2, dir: float) -> None:
         super().__init__()
 
