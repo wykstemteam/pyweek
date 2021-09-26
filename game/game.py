@@ -384,6 +384,9 @@ class Game:
             )
             round_rect = score_rect.move(0, 50)
             window.blit(round_image, round_rect)
+            hint_image = font.render(f'Press "Exit to Menu" to save highscore', True, (255, 255, 255))
+            hint_rect = score_rect.move(0, 170)
+            window.blit(hint_image, hint_rect)
 
         else:
             self.game_screen.draw_ui(window)
