@@ -11,6 +11,7 @@ from game.constants import *
 from game.screen_shake_manager import ScreenShakeManager
 from game.shop import Shop
 from game.sprites import *
+from game.sprites.round_counter import RoundCounter
 
 
 class Scenes(Enum):
@@ -42,6 +43,7 @@ class Game:
             ], self
         )
 
+        self.round_counter = RoundCounter()
         self.distance_manager = DistanceManager()
         self.screen_shake_manager = ScreenShakeManager()
         self.score_manager = ScoreManager()
@@ -177,6 +179,7 @@ class Game:
 
         self.set_scene_music()
         self.play_quote()
+        self.round_counter.increment()
 
     def event_process(self, window: pygame.Surface):
         for event in pygame.event.get():
@@ -369,6 +372,7 @@ class Game:
         else:
             self.game_screen.draw_ui(window)
         self.distance_manager.draw(window)
+        self.round_counter.draw(window)
         self.coin_gui.draw(window)
         self.hp_manager.draw(window)
         self.inventory.draw(window)
