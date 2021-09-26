@@ -44,8 +44,8 @@
     },
     "#quotes": {
         "colours": {
-            "normal_bg": "#3465a4",
-            "hovered_bg": "#2f5b94"
+            "normal_bg": "#e43d40",
+            "hovered_bg": "#e23034"
         }
     }
 }

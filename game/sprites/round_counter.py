@@ -1,10 +1,12 @@
 import pygame
 
+from game.constants import *
+
 
 class RoundCounter(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.font = pygame.font.SysFont('arial', 40)
+        self.font = pygame.font.Font(FONT_PATH, 40)
         self.rounds_survived = 0
         self.image_shadow = None
         self.update()
@@ -20,13 +22,9 @@ class RoundCounter(pygame.sprite.Sprite):
         )
 
     def draw(self, window: pygame.Surface):
-        di = -1
-        while di <= 1:
-            dj = -1
-            while dj <= 1:
+        for di in range(-1, 2):
+            for dj in range(-1, 2):
                 window.blit(self.image_shadow, self.rect.move(di * 3, dj * 3))
-                dj += 1
-            di += 1
         window.blit(self.image, self.rect)
 
     def increment(self):
