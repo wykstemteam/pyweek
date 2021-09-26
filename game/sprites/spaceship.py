@@ -171,3 +171,7 @@ class Spaceship(pygame.sprite.Sprite):
         ):
             player.hit()
 
+    def missile_hit(self, missile):
+        self.activated = False
+        missile.hit()
+
