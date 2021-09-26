@@ -162,7 +162,7 @@ class Game:
         self.stage2 = False
         self.dimming = False
         self.darken_alpha = 0
-        self.coin_manager.reached_checkpoint = False
+        self.coin_manager.__init__(self.player_collision_group)
         self.player.inputtable = True
         self.player.vx = -BACKGROUND_VELOCITY
         self.player.vy = 0.0
