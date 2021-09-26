@@ -43,8 +43,8 @@ class Comet(pygame.sprite.Sprite):
             self.laser.update(t)
             if self.laser.t > LASERREMAINTIME:
                 if not self.explode:
-                    self.x += t * np.cos(self.dir) * 200 * min(5, difficulty)
-                    self.y += t * np.sin(self.dir) * 200 * min(5, difficulty)
+                    self.x += t * np.cos(self.dir) * 200 * min(2, difficulty)
+                    self.y += t * np.sin(self.dir) * 200 * min(2, difficulty)
                     self.hitbox = pygame.Rect(
                         (self.x - 15 + 70 * np.cos(self.dir),
                         self.y - 15 + 70 * np.sin(self.dir)), (30, 30)
@@ -61,8 +61,8 @@ class Comet(pygame.sprite.Sprite):
                 elif not self.explode.update(t):
                     self.kill()
         else:
-            self.x += t * np.cos(self.dir) * 200 * min(5, difficulty)
-            self.y += t * np.sin(self.dir) * 200 * min(5, difficulty)
+            self.x += t * np.cos(self.dir) * 200 * min(2, difficulty)
+            self.y += t * np.sin(self.dir) * 200 * min(2, difficulty)
             self.hitbox = pygame.Rect(
                 (self.x - 15 + 70 * np.cos(self.dir),
                 self.y - 15 + 70 * np.sin(self.dir)), (30, 30)
