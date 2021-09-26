@@ -75,14 +75,14 @@ class Game:
             manager=self.pause_screen
         )
         self.continue_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 170, SCREEN_HEIGHT // 2 + 80), (130, 50)),
+            relative_rect=pygame.Rect(
+                (SCREEN_WIDTH // 2 - 170, SCREEN_HEIGHT // 2 + 80), (130, 50)
+            ),
             text='Continue',
             manager=self.pause_screen
         )
         self.exit_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(
-                (SCREEN_WIDTH // 2 - 30, SCREEN_HEIGHT // 2 + 80), (200, 50)
-            ),
+            relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 30, SCREEN_HEIGHT // 2 + 80), (200, 50)),
             object_id='#exit_button',
             text='Exit to Menu',
             manager=self.pause_screen
@@ -275,7 +275,7 @@ class Game:
             self.player.hp = max(self.player.hp, 0)
 
             self.fade_in_manager.update(t)
-            self.player.update(t if not self.bullet_time else t / self.rate)
+            self.player.update(t if not self.bullet_time else t / self.rate, self.cur_scene)
             self.player_collision()
             self.coin_manager.update(t)
             self.arrow.update(self.player)
