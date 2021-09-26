@@ -7,7 +7,6 @@ import pygame
 from game.assets_manager import assets_manager
 from game.constants import *
 from game.sprites.bullet import Bullet
-from game.sprites.player import Player
 
 
 class UFO(pygame.sprite.Sprite):
@@ -132,7 +131,6 @@ class UFO(pygame.sprite.Sprite):
             if self.activated_dur <= 0:
                 self.activated = False
             self.cenx = max(1450, self.cenx - 5)
-
 
         self.rotate_deg += self.rotate_velocity
         if self.rotate_deg <= -360:

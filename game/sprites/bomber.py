@@ -42,7 +42,7 @@ class Bomber(pygame.sprite.Sprite):
         if self.shoot_cooldown <= 0:
             new_bullet = Bullet(
                 self.bullet_image, self.rect.center, BOMBER_BULLET_SPEED * np.cos(self.dir),
-                -BOMBER_BULLET_SPEED * np.sin(self.dir)
+                                                     -BOMBER_BULLET_SPEED * np.sin(self.dir)
             )
             self.bullets.add(new_bullet)
             self.player_collision_group.add(new_bullet)

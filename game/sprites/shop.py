@@ -68,9 +68,9 @@ class Shop:
                 text='',
                 object_id=f'#button_{i + 1}',
                 tool_tip_text="<font face=fira_code color=normal_text size=5>"
-                f" <b><u>{self.button_text[i]}</u></b>"
-                "<br><br>"
-                f"<i>{self.button_text_effect[i]}</i>",
+                              f" <b><u>{self.button_text[i]}</u></b>"
+                              "<br><br>"
+                              f"<i>{self.button_text_effect[i]}</i>",
                 manager=self.shop_screen,
             ) for i in range(6)
         ]
@@ -99,9 +99,9 @@ class Shop:
                 relative_rect=pygame.Rect((678, 120), (145, 150)),
                 text='',
                 tool_tip_text="<font face=fira_code color=normal_text size=5>"
-                f"<b><u>{self.button_text[i]}</u></b>"
-                "<br><br>"
-                f"<i>{self.button_text_effect[i]}</i>",
+                              f"<b><u>{self.button_text[i]}</u></b>"
+                              "<br><br>"
+                              f"<i>{self.button_text_effect[i]}</i>",
                 object_id=f'#button_{i + 1}',
                 manager=self.confirm_screen
             ) for i in range(6)

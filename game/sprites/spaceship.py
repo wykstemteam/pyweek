@@ -154,7 +154,7 @@ class Spaceship(pygame.sprite.Sprite):
 
     def collision_player(self, player: Player):
         if (
-            self.is_shoot and 2 <= self.ls_frame <= 18
-            and player.rect.colliderect(pygame.Rect(0, 220, 1500, 200))
+                self.is_shoot and 2 <= self.ls_frame <= 18
+                and player.rect.colliderect(pygame.Rect(0, 220, 1500, 200))
         ):
             player.hit()

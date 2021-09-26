@@ -1,10 +1,10 @@
 import numpy as np
 import pygame
 
+from game.assets_manager import assets_manager
 from game.constants import *
 from game.sprites.missile import Missile
 from game.sprites.obstacle import Obstacle
-from game.assets_manager import assets_manager
 from game.sprites.shield import Shield
 
 
@@ -236,4 +236,3 @@ class Player(pygame.sprite.Sprite):
 
     def add_coin(self):
         self.game.coins += 1
-

@@ -14,8 +14,8 @@ class PoliceCar(pygame.sprite.Sprite):
         UP_TO_BOTTOM = 2
 
     def __init__(
-        self, image: pygame.Surface, pos: pygame.Vector2, bullet_image: pygame.Surface,
-        player_collision_group: pygame.sprite.Group
+            self, image: pygame.Surface, pos: pygame.Vector2, bullet_image: pygame.Surface,
+            player_collision_group: pygame.sprite.Group
     ) -> None:
         super().__init__()
 

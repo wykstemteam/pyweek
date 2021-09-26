@@ -1,7 +1,7 @@
 import pygame
 
-from game.constants import *
 from game.assets_manager import assets_manager
+from game.constants import *
 from game.sprites.player import Player
 
 

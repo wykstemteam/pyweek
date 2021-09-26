@@ -1,8 +1,8 @@
 import pygame
-from pygame.rect import Rect
 
-from game.constants import *
 from game.assets_manager import assets_manager
+from game.constants import *
+
 
 class CoinGUI(pygame.sprite.Sprite):
     # TODO: Maybe consider another font
@@ -13,7 +13,7 @@ class CoinGUI(pygame.sprite.Sprite):
         self.image = assets_manager.animations['coin'][0]
         self.rect = self.image.get_rect()
         self.rect.topleft = pos
-        self.text_rect = self.rect.move(COIN_WIDTH*1.2, -16)
+        self.text_rect = self.rect.move(COIN_WIDTH * 1.2, -16)
         self.game = game
 
     def update(self, t: float) -> None:
