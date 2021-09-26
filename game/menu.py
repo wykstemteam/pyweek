@@ -8,8 +8,8 @@ from game.constants import *
 from game.settings import settings
 from game.sprites import *
 
-title_font = pygame.font.SysFont('Corbel', 60, True)
-instruction_font = pygame.font.SysFont('arial', 30)
+title_font = pygame.font.Font(FONT_PATH, 60)
+instruction_font = pygame.font.Font(FONT_PATH, 30)
 instruction_height = instruction_font.render("test", True, (0, 0, 0)).get_height()
 
 instructions = [

@@ -14,7 +14,7 @@ from game.shop import Shop
 from game.sprites import *
 from game.sprites.round_counter import RoundCounter
 
-font = pygame.font.SysFont('arial', 40)
+font = pygame.font.Font(FONT_PATH, 40)
 
 
 class Scenes(Enum):
