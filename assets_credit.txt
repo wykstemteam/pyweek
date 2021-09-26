@@ -9,6 +9,8 @@ item missile: https://www.flaticon.com/free-icon/missile_2590308
 
 Policecar: https://opengameart.org/content/2d-car-pack-0
 laserbeam animation (with reference to): https://www.youtube.com/watch?v=wCNqadvtVZ0
+explosion animation: https://www.pinterest.com/pin/317714948716758797/
+coins: https://opengameart.org/content/spinning-pixel-coin-0
 health bottle: https://pngtree.com/freepng/cartoon-game-red-magic-potion-bottle_5773129.html
 spaceship: https://www.pngegg.com/en/png-zogku
 star: https://opengameart.org/content/star
