@@ -45,7 +45,7 @@ class Shop:
             pygame.Rect((663, 475), (160, 47)),
             pygame.Rect((1142, 475), (160, 47)),
         ]
-        self.price = ["5", "20", "20", "30", "69420", "20"]
+        self.price = ["5", "10", "15", "20", "69420", "30"]
         self.button_text = [
             "Heal Potion",
             'Shield',
