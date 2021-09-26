@@ -304,7 +304,7 @@ class Game:
                     if self.distance_manager.dist_to_next_country > 150:
                         self.bomber.random_activate(self.difficulty)
                 self.bomber.aim(self.player.rect.centerx, self.player.rect.centery)
-                self.bomber.update(t)
+                self.bomber.update(t, self.difficulty)
                 self.obstacle_manager.update(t)
 
         # objects in scene.SPACE:
