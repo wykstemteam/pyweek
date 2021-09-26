@@ -56,7 +56,7 @@ class Bomber(pygame.sprite.Sprite):
 
     def update(self, t: float, difficulty) -> None:
         if self.activated:
-            self.x += 2
+            self.x += 5
             self.shoot_cooldown -= t
             self.shoot(difficulty)
             if self.x >= SCREEN_WIDTH:

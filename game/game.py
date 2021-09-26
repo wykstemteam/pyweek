@@ -298,7 +298,7 @@ class Game:
                 self.buildings.update(t)
                 self.policecar.update(t)
                 if self.distance_manager.dist_to_next_country > 0:
-                    if self.distance_manager.dist_to_next_country > 150:
+                    if self.distance_manager.dist_to_next_country > 30:
                         self.bomber.random_activate(self.difficulty)
                 self.bomber.aim(self.player.rect.centerx, self.player.rect.centery)
                 self.bomber.update(t, self.difficulty)
