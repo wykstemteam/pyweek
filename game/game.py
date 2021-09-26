@@ -277,6 +277,16 @@ class Game:
             self.fade_in_manager.update(t)
             self.player.update(t if not self.bullet_time else t / self.rate, self.cur_scene)
             self.player_collision()
+            if self.cur_scene == Scenes.CITY and self.player.real_y < BUILDING_HEIGHT:
+                self.player.real_y = BUILDING_HEIGHT
+                self.player.vy = 0
+            if self.cur_scene == Scenes.SPACE and self.player.real_y < 0:
+                self.player.real_y = 0
+                self.player.vy = 0
+            if self.player.real_y + PLAYER_HEIGHT > SCREEN_HEIGHT:
+                self.player.real_y = SCREEN_HEIGHT - PLAYER_HEIGHT
+                self.player.vy = 0
+
             self.coin_manager.update(t)
             self.arrow.update(self.player)
             self.distance_manager.update(t)
