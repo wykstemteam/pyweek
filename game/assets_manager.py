@@ -10,6 +10,7 @@ class AssetsManager:
         pygame.mixer.init()
         self.sound_volume = INIT_SOUND_VOLUME
         self.music_volume = INIT_MUSIC_VOLUME
+        self.play_quotes = False
 
         self.images = {}
         self.animations = {}

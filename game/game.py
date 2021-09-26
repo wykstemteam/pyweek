@@ -142,6 +142,8 @@ class Game:
         self.score: int = 0
 
     def play_quote(self) -> None:
+        if not assets_manager.play_quotes:
+            return
         if self.cur_scene == Scenes.CITY:
             assets_manager.play_sound("long_road")
         elif self.cur_scene == Scenes.SPACE:
@@ -416,7 +418,8 @@ class Game:
     def trigger_lose(self) -> None:
         if not self.lose and not PLAYER_INVIN:
             assets_manager.play_music("ensolarado")
-            assets_manager.play_sound("die")
+            if assets_manager.play_quotes:
+                assets_manager.play_sound("die")
             self.lose = True
 
     def player_collision(self) -> None:
