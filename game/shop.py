@@ -203,7 +203,7 @@ class Shop:
             self.coin_gui.draw(window)
             self.hp_manager.update(t / 1000)
             self.hp_manager.draw(window)
-            self.game.player.update(0)
+            self.game.player.update(0, 0)
             self.inventory.draw(window)
             self.checkcoins()
 

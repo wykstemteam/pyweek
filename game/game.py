@@ -75,14 +75,14 @@ class Game:
             manager=self.pause_screen
         )
         self.continue_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 170, SCREEN_HEIGHT // 2 + 80), (130, 50)),
+            relative_rect=pygame.Rect(
+                (SCREEN_WIDTH // 2 - 170, SCREEN_HEIGHT // 2 + 80), (130, 50)
+            ),
             text='Continue',
             manager=self.pause_screen
         )
         self.exit_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(
-                (SCREEN_WIDTH // 2 - 30, SCREEN_HEIGHT // 2 + 80), (200, 50)
-            ),
+            relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 30, SCREEN_HEIGHT // 2 + 80), (200, 50)),
             object_id='#exit_button',
             text='Exit to Menu',
             manager=self.pause_screen
@@ -172,6 +172,7 @@ class Game:
         self.spaceship.activated = False
         self.ufo.activated = False
         self.comets.kill()
+        self.kill_bullets()
         if self.cur_scene == Scenes.CITY:
             self.policecar.activated = True
             for road in self.roads:
@@ -274,7 +275,7 @@ class Game:
             self.player.hp = max(self.player.hp, 0)
 
             self.fade_in_manager.update(t)
-            self.player.update(t if not self.bullet_time else t / self.rate)
+            self.player.update(t if not self.bullet_time else t / self.rate, self.cur_scene)
             self.player_collision()
             self.coin_manager.update(t)
             self.arrow.update(self.player)
@@ -284,8 +285,7 @@ class Game:
             self.hp_manager.update(t)
 
             if self.player.hp <= 0:
-                if not PLAYER_INVIN:
-                    self.trigger_lose()
+                self.trigger_lose()
 
             if self.earthquake:
                 self.earthquake_time -= t
@@ -293,6 +293,7 @@ class Game:
                     self.earthquake = False
                     self.screen_shake_manager.shaking = False
                 else:
+                    self.spaceship.earthquake = True
                     for obj in self.player_collision_group:
                         if type(obj) not in (PoliceCar, Bomber, Spaceship, UFO, Coin):
                             obj.kill()
@@ -398,7 +399,7 @@ class Game:
         self.screen_shake_manager.shake(window)
 
     def trigger_lose(self) -> None:
-        if not self.lose and not self.pause:
+        if not self.lose and not self.pause and not PLAYER_INVIN:
             assets_manager.play_music("ensolarado")
             self.lose = True
 
@@ -409,17 +410,23 @@ class Game:
                 and type(obj) not in (Coin, Obstacle)
             ):
                 continue
-            if type(obj) in (Spaceship, Comet):
+            if self.cur_scene == Scenes.SPACE and type(obj) in (Spaceship, Comet):
                 obj.collision_player(self.player)
             if self.player.rect.colliderect(obj.rect):
-                if type(obj) == PoliceCar and not PLAYER_INVIN:
-                    self.trigger_lose()
-                elif type(obj) in (Bullet, MissileAircraft):
+                if type(obj) in (Bullet, MissileAircraft):
                     obj.player_hit(self.player)
-                elif type(obj) == Obstacle:
-                    self.player.resolve_collision(obj)
                 elif type(obj) == Coin:
                     obj.player_hit(self.player)
+                elif self.cur_scene == Scenes.CITY:
+                    if type(obj) == PoliceCar:
+                        self.trigger_lose()
+                    elif type(obj) == Obstacle:
+                        self.player.resolve_collision(obj)
+
+    def kill_bullets(self):
+        for obj in self.player_collision_group:
+            if type(obj) in (Bullet, MissileAircraft, Comet):
+                obj.kill()
 
     def start_earthquake(self) -> None:
         self.screen_shake_manager.shaking = True
@@ -440,12 +447,12 @@ class Game:
 
             if SHOW_FPS:
                 print(f'fps = {0 if t == 0 else 1000 / t}')
-                print('\n')
-                print('distance = ')
-                print(self.distance_manager.dist)
-                print('\n')
-                print('score = ')
-                print(self.score_manager.score)
-                print('\n')
-                print('highscore = ')
-                print(self.score_manager.highscore)
+                # print('\n')
+                # print('distance = ')
+                # print(self.distance_manager.dist)
+                # print('\n')
+                # print('score = ')
+                # print(self.score_manager.score)
+                # print('\n')
+                # print('highscore = ')
+                # print(self.score_manager.highscore)

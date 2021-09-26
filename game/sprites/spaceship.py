@@ -50,10 +50,15 @@ class Spaceship(pygame.sprite.Sprite):
         self.shoot_cooldown = SPACESHIP_SHOOT_COOLDOWN
 
         self.player_collision_group.add(self)
+        self.earthquake = False
 
     def get_bullet_pattern(self) -> List[Bullet]:
         if self.bullet_pattern == 0:
             return [
+                Bullet(
+                    self.bullet_image, pygame.Vector2(self.rect.centerx, self.rect.centery - 300),
+                    -SPACESHIP_BULLET_SPEED, 0
+                ),
                 Bullet(
                     self.bullet_image, pygame.Vector2(self.rect.centerx, self.rect.centery - 200),
                     -SPACESHIP_BULLET_SPEED, 0
@@ -68,6 +73,10 @@ class Spaceship(pygame.sprite.Sprite):
                 ),
                 Bullet(
                     self.bullet_image, pygame.Vector2(self.rect.centerx, self.rect.centery + 200),
+                    -SPACESHIP_BULLET_SPEED, 0
+                ),
+                Bullet(
+                    self.bullet_image, pygame.Vector2(self.rect.centerx, self.rect.centery + 300),
                     -SPACESHIP_BULLET_SPEED, 0
                 )
             ]
@@ -146,15 +155,19 @@ class Spaceship(pygame.sprite.Sprite):
         self.bullets.update(t)
 
     def draw(self, window: pygame.Surface) -> None:
-        window.blit(self.lc_img, self.lc_rect)
-        window.blit(self.ls_img, self.ls_rect)
+        if not self.earthquake:
+            window.blit(self.lc_img, self.lc_rect)
+            window.blit(self.ls_img, self.ls_rect)
         window.blit(self.image, self.rect)
         for bullet in self.bullets:
             bullet.draw(window)
+        self.earthquake = False
 
     def collision_player(self, player: Player):
         if (
                 self.is_shoot and 2 <= self.ls_frame <= 18
                 and player.rect.colliderect(pygame.Rect(0, 220, 1500, 200))
+                and not self.earthquake
         ):
             player.hit()
+
