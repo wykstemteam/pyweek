@@ -121,6 +121,12 @@ class Spaceship(pygame.sprite.Sprite):
         if not self.activated:
             self.x = min(1600, self.x + 5)
             self.activated_dur = 0.0
+            self.is_shoot = False
+            self.ls_img = assets_manager.images['ls_shoot_none']
+            self.ls_frame = 0.0
+            self.is_charge = False
+            self.lc_img = assets_manager.images['lc_charge_none']
+            self.lc_frame = 0.0
         else:
             self.activated_dur -= t
             if self.activated_dur <= 0:
@@ -167,9 +173,8 @@ class Spaceship(pygame.sprite.Sprite):
 
     def collision_player(self, player: Player):
         if (
-                self.is_shoot and 2 <= self.ls_frame <= 18
-                and player.rect.colliderect(pygame.Rect(0, 220, 1500, 200))
-                and not self.earthquake
+            self.is_shoot and 2 <= self.ls_frame <= 18
+            and player.rect.colliderect(pygame.Rect(0, 220, 1500, 200)) and not self.earthquake
         ):
             player.hit()
 
@@ -178,4 +183,3 @@ class Spaceship(pygame.sprite.Sprite):
             self.activated = False
             missile.hit()
             self.game.space_temp_deactivated_enemies = True
-

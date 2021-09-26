@@ -14,12 +14,15 @@ class Arrow(pygame.sprite.Sprite):
 
     def update(self) -> None:
         if self.player.items[self.player.holding] != 5:
-            return 
-        self.image = pygame.transform.rotate(self.original_image, self.player.dir * 360 // (2 * np.pi))
+            return
+        self.image = pygame.transform.rotate(
+            self.original_image, self.player.dir * 360 // (2 * np.pi)
+        )
         self.rect = self.image.get_rect(
             center=self.original_image.get_rect(
                 center=(
-                    self.player.rect.left + (PLAYER_WIDTH / 2), self.player.rect.top + (PLAYER_HEIGHT / 2)
+                    self.player.rect.left + (PLAYER_WIDTH / 2),
+                    self.player.rect.top + (PLAYER_HEIGHT / 2)
                 )
             ).center
         )
@@ -28,5 +31,5 @@ class Arrow(pygame.sprite.Sprite):
 
     def draw(self, window: pygame.Surface) -> None:
         if self.player.items[self.player.holding] != 5:
-            return 
+            return
         window.blit(self.image, self.rect)

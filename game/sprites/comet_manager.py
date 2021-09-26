@@ -1,4 +1,3 @@
-
 from game.sprites.comet import Comet
 import pygame.sprite
 import random

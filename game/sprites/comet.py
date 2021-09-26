@@ -19,26 +19,27 @@ class Comet(pygame.sprite.Sprite):
         self.y += 3000 * -np.sin(self.dir)
 
         self.image = pygame.transform.rotate(
-            assets_manager.images['comet'], ((
-                np.pi - self.dir) * 360) / (2 * np.pi)
+            assets_manager.images['comet'], ((np.pi - self.dir) * 360) / (2 * np.pi)
         )
-        self.rect = self.image.get_rect(
-            center=self.image.get_rect(center=(self.x, self.y)).center)
+        self.rect = self.image.get_rect(center=self.image.get_rect(center=(self.x, self.y)).center)
         self.hitbox = pygame.Rect(
-            (self.x - 15 + 70 * np.cos(self.dir),
-             self.y - 15 + 70 * np.sin(self.dir)), (30, 30)
+            (self.x - 15 + 70 * np.cos(self.dir), self.y - 15 + 70 * np.sin(self.dir)), (30, 30)
         )
         self.explode = None
         self.laser = None
         self.first_inbound = False
 
     def hitbox_inbounds(self):
-        return (self.hitbox.bottom <= SCREEN_HEIGHT + 20 and self.hitbox.top >= -20 and
-                self.hitbox.right <= SCREEN_WIDTH + 20 and self.hitbox.left >= -20)
+        return (
+            self.hitbox.bottom <= SCREEN_HEIGHT + 20 and self.hitbox.top >= -20
+            and self.hitbox.right <= SCREEN_WIDTH + 20 and self.hitbox.left >= -20
+        )
 
     def hitbox_outbounds_2nd_time(self):
-        return not (self.hitbox.bottom <= SCREEN_HEIGHT + 200 and self.hitbox.top >= -200 and
-                self.hitbox.right <= SCREEN_WIDTH + 200 and self.hitbox.left >= -200)
+        return not (
+            self.hitbox.bottom <= SCREEN_HEIGHT + 200 and self.hitbox.top >= -200
+            and self.hitbox.right <= SCREEN_WIDTH + 200 and self.hitbox.left >= -200
+        )
 
     def update(self, t: float, difficulty) -> None:
         if self.hitbox_inbounds() or self.first_inbound:
@@ -51,15 +52,15 @@ class Comet(pygame.sprite.Sprite):
                     self.x += t * np.cos(self.dir) * 200 * min(2, difficulty)
                     self.y += t * np.sin(self.dir) * 200 * min(2, difficulty)
                     self.hitbox = pygame.Rect(
-                        (self.x - 15 + 70 * np.cos(self.dir),
-                        self.y - 15 + 70 * np.sin(self.dir)), (30, 30)
+                        (self.x - 15 + 70 * np.cos(self.dir), self.y - 15 + 70 * np.sin(self.dir)),
+                        (30, 30)
                     )
                     self.image = pygame.transform.rotate(
-                        assets_manager.images['comet'], ((
-                            np.pi - self.dir) * 360) / (2 * np.pi)
+                        assets_manager.images['comet'], ((np.pi - self.dir) * 360) / (2 * np.pi)
                     )
                     self.rect = self.image.get_rect(
-                        center=self.image.get_rect(center=(self.x, self.y)).center)
+                        center=self.image.get_rect(center=(self.x, self.y)).center
+                    )
                     if self.hitbox_outbounds_2nd_time():
                         self.kill()
                 elif not self.explode.update(t):
@@ -68,8 +69,8 @@ class Comet(pygame.sprite.Sprite):
             self.x += t * np.cos(self.dir) * 200 * min(2, difficulty)
             self.y += t * np.sin(self.dir) * 200 * min(2, difficulty)
             self.hitbox = pygame.Rect(
-                (self.x - 15 + 70 * np.cos(self.dir),
-                self.y - 15 + 70 * np.sin(self.dir)), (30, 30)
+                (self.x - 15 + 70 * np.cos(self.dir), self.y - 15 + 70 * np.sin(self.dir)),
+                (30, 30)
             )
 
     def draw(self, window: pygame.Surface) -> None:

@@ -44,7 +44,8 @@ def blit_outlined_text(
 
 def menu(window: pygame.Surface):
     assets_manager.play_music("tanukichis_adventure")
-    assets_manager.play_sound("hi")
+    if assets_manager.play_quotes:
+        assets_manager.play_sound("hi")
     screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
     settings_button = pygame_gui.elements.UIButton(
         relative_rect=pygame.Rect((SCREEN_WIDTH - 200 - 50, SCREEN_HEIGHT - 50 - 50), (200, 50)),
