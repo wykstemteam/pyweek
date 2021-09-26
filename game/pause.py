@@ -5,6 +5,7 @@ import pygame_gui
 
 from game.assets_manager import assets_manager
 from game.constants import *
+from game.highscore import save_highscore
 from game.settings import get_controls, update_quotes_button
 
 if TYPE_CHECKING:
@@ -49,6 +50,7 @@ def pause(window: pygame.Surface, game: "Game") -> bool:
                         assets_manager.play_quotes = not assets_manager.play_quotes
                         update_quotes_button(quotes_button)
             elif event.type == pygame.QUIT:
+                save_highscore(game.highscore)
                 exit()
 
             pause_screen.process_events(event)

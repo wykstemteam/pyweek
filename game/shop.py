@@ -5,6 +5,7 @@ import pygame_gui
 
 from game.assets_manager import assets_manager
 from game.constants import *
+from game.highscore import save_highscore
 from game.sprites import CoinGUI, HPManager, Inventory
 
 if TYPE_CHECKING:
@@ -161,6 +162,7 @@ class Shop:
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
+                    save_highscore(self.game.highscore)
                     exit()
                 elif event.type == pygame.USEREVENT:
                     if event.user_type == pygame_gui.UI_BUTTON_PRESSED:

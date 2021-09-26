@@ -8,6 +8,7 @@ import pygame_gui
 
 from game.assets_manager import assets_manager
 from game.constants import *
+from game.highscore import save_highscore
 from game.pause import pause
 from game.screen_shake_manager import ScreenShakeManager
 from game.shop import Shop
@@ -153,7 +154,9 @@ class Game:
 
     def reset(self):
         self.difficulty *= 2
-        self.distance_manager.dist_to_next_country = INITIAL_DISTANCE_TO_NEXT_COUNTRY * (1 + (np.log2(self.difficulty) / 5))
+        self.distance_manager.dist_to_next_country = INITIAL_DISTANCE_TO_NEXT_COUNTRY * (
+            1 + (np.log2(self.difficulty) / 5)
+        )
         self.stage1_countdown = DEACTIVATE_DURATION
         self.stage2 = False
         self.dimming = False
@@ -188,6 +191,7 @@ class Game:
     def event_process(self, window: pygame.Surface):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                save_highscore(self.highscore)
                 exit()
             elif event.type == pygame.USEREVENT and event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                 if self.lose:
@@ -375,7 +379,9 @@ class Game:
             window.blit(assets_manager.images['darken'], pygame.Rect(0, 0, 0, 0))
             window.blit(assets_manager.images['GameOver'], pygame.Rect(0, 0, 0, 0))
             self.lose_screen.draw_ui(window)
-            score_image = font.render(f'Score: {self.score} (Highest: {self.highscore})', True, (255, 255, 255))
+            score_image = font.render(
+                f'Score: {self.score} (Highest: {self.highscore})', True, (255, 255, 255)
+            )
             score_rect = score_image.get_rect()
             score_rect.center = (SCREEN_WIDTH / 2 - 90, SCREEN_HEIGHT / 2 - 10)
             window.blit(score_image, score_rect)
@@ -384,7 +390,9 @@ class Game:
             )
             round_rect = score_rect.move(0, 50)
             window.blit(round_image, round_rect)
-            hint_image = font.render(f'Press "Exit to Menu" to save highscore', True, (255, 255, 255))
+            hint_image = font.render(
+                f'Press "Exit to Menu" to save highscore', True, (255, 255, 255)
+            )
             hint_rect = score_rect.move(0, 170)
             window.blit(hint_image, hint_rect)
 
