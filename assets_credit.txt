@@ -5,9 +5,15 @@ Red spaceship: https://opengameart.org/content/large-spaceship
 MotorCycle : https://www.iconspng.com/image/30199/racing-bike-top-down-for-games
 Missile : https://freepikpsd.com/missile-sprite-png/322806/
 
+Policecar: https://opengameart.org/content/2d-car-pack-0
+laserbeam animation (with reference to): https://www.youtube.com/watch?v=wCNqadvtVZ0
+health bottle: https://pngtree.com/freepng/cartoon-game-red-magic-potion-bottle_5773129.html
+spaceship: https://www.pngegg.com/en/png-zogku
 
-All music: dova syndrome https://dova-s.jp/
+Music
+All: dova syndrome https://dova-s.jp/
 except galaxy: TAM Music Factory https://www.tam-music.com/
 
-All sound effects: zapsplat https://www.zapsplat.com/
+Sound Effects
+All: zapsplat https://www.zapsplat.com/
 except explosion: mixkit https://mixkit.co/
