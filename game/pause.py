@@ -6,7 +6,7 @@ from game.constants import *
 from game.settings import get_audio_controls
 
 
-def run(window: pygame.Surface):
+def run(window: pygame.Surface, game):
     previous_screen = window.copy()
     pause_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
     pause = True
@@ -22,7 +22,7 @@ def run(window: pygame.Surface):
         text='Exit to Menu',
         manager=pause_screen
     )
-
+    font = pygame.font.SysFont('Comic Sans MS', 40)
     cock = pygame.time.Clock()
     while pause:
         dt = cock.get_time() / 1000
@@ -47,6 +47,13 @@ def run(window: pygame.Surface):
         window.blit(previous_screen, (0, 0))
         window.blit(assets_manager.images['darken'], (0, 0))
         pause_screen.draw_ui(window)
+        score_image = font.render(
+            f'Score: {game.score}', True, (255, 255, 255)
+        )
+        score_rect = score_image.get_rect()
+        score_rect.center = (SCREEN_WIDTH/2, SCREEN_HEIGHT/2 - 100)
+        window.blit(score_image, score_rect)
+
         pygame.display.flip()
 
         cock.tick(60)

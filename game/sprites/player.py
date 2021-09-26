@@ -242,5 +242,4 @@ class Player(pygame.sprite.Sprite):
         self.invincible_color = 0x000000
 
     def add_coin(self):
-        self.game.coins += 1
-        self.game.score_manager.score += 100
+        self.game.add_coin()

@@ -12,7 +12,9 @@ from game.screen_shake_manager import ScreenShakeManager
 from game.shop import Shop
 from game.sprites import *
 from game.sprites.round_counter import RoundCounter
+import numpy as np
 
+font = pygame.font.SysFont('Comic Sans MS', 40)
 
 class Scenes(Enum):
     CITY = 1
@@ -44,12 +46,12 @@ class Game:
         )
 
         self.round_counter = RoundCounter()
-        self.distance_manager = DistanceManager()
+        self.distance_manager = DistanceManager(self)
         self.screen_shake_manager = ScreenShakeManager()
-        self.score_manager = ScoreManager()
 
         # self.screen_shake_manager.shaking = True
-        self.fade_in_manager = FadeInManager(assets_manager.images['gradient_line'])
+        self.fade_in_manager = FadeInManager(
+            assets_manager.images['gradient_line'])
         self.fade_in_manager.start_fade_in()
 
         # Health_bar
@@ -64,15 +66,18 @@ class Game:
         self.difficulty = INITIAL_DIFFICULTY
 
         # game_screen
-        self.game_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
+        self.game_screen = pygame_gui.UIManager(
+            (SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
         self.pause_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect((SCREEN_WIDTH - 100 - 10, 10), (100, 50)),
+            relative_rect=pygame.Rect(
+                (SCREEN_WIDTH - 100 - 10, 10), (100, 50)),
             text='Pause',
             manager=self.game_screen
         )
 
         # lose_screen
-        self.lose_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
+        self.lose_screen = pygame_gui.UIManager(
+            (SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
         self.restart_button = pygame_gui.elements.UIButton(
             relative_rect=pygame.Rect(
                 (SCREEN_WIDTH // 2 - 172, SCREEN_HEIGHT // 2 + 75), (130, 50)
@@ -81,7 +86,8 @@ class Game:
             manager=self.lose_screen
         )
         self.exit_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 28, SCREEN_HEIGHT // 2 + 75), (200, 50)),
+            relative_rect=pygame.Rect(
+                (SCREEN_WIDTH // 2 - 28, SCREEN_HEIGHT // 2 + 75), (200, 50)),
             text='Exit to Menu',
             manager=self.lose_screen
         )
@@ -133,6 +139,7 @@ class Game:
 
         self.set_scene_music()
         self.play_quote()
+        self.score: int = 0
 
     def play_quote(self) -> None:
         if self.cur_scene == Scenes.CITY:
@@ -149,8 +156,6 @@ class Game:
     def reset(self):
         self.difficulty *= 2
         self.distance_manager.dist_to_next_country = INITIAL_DISTANCE_TO_NEXT_COUNTRY
-        self.score_manager.highscore = max(0.0, self.score_manager.score)
-        self.score_manager.score = 0
         self.stage1_countdown = DEACTIVATE_DURATION
         self.stage2 = False
         self.dimming = False
@@ -189,7 +194,7 @@ class Game:
 
             if event.type == pygame.USEREVENT and event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                 if not self.lose and event.ui_element == self.pause_button:
-                    return game.pause.run(window)
+                    return game.pause.run(window, self)
                 if self.lose:
                     if event.ui_element == self.restart_button:
                         self.__init__()  # Reinitialize
@@ -216,7 +221,8 @@ class Game:
                         ) + 1
                     else:
                         self.rate = (1 - BULLET_TIME_RATE) * (
-                            (1 - self.bullet_time_t / (ITEM_BULLET_TIME_DURATION - 1))**2
+                            (1 - self.bullet_time_t /
+                             (ITEM_BULLET_TIME_DURATION - 1))**2
                         ) + BULLET_TIME_RATE
                     t *= self.rate
 
@@ -245,8 +251,6 @@ class Game:
                 self.laser_manager.reached_checkpoint = True
                 self.buildings.reached_checkpoint = True
                 self.obstacle_manager.reached_checkpoint = True
-                self.score_manager.reached_checkpoint = True
-                self.score_manager.checkpoint_count += 1
                 self.policecar.activated = False
                 self.bomber.activated = False
                 self.ufo.activated = False
@@ -257,7 +261,8 @@ class Game:
             self.player.hp = max(self.player.hp, 0)
 
             self.fade_in_manager.update(t)
-            self.player.update(t if not self.bullet_time else t / self.rate, self.cur_scene)
+            self.player.update(
+                t if not self.bullet_time else t / self.rate, self.cur_scene)
             self.player_collision()
             self.missile_collision()
             if self.cur_scene == Scenes.CITY and self.player.real_y < BUILDING_HEIGHT:
@@ -273,7 +278,6 @@ class Game:
             self.coin_manager.update(t)
             self.arrow.update()
             self.distance_manager.update(t)
-            self.score_manager.update(t)
             self.coin_gui.update(t)
             self.hp_manager.update(t)
 
@@ -344,7 +348,8 @@ class Game:
         if self.cur_scene == Scenes.CITY:
             self.roads.draw(window)
         if self.cur_scene == Scenes.SPACE:
-            window.blit(assets_manager.images['space_background1'], pygame.Rect(0, -200, 0, 0))
+            window.blit(
+                assets_manager.images['space_background1'], pygame.Rect(0, -200, 0, 0))
 
         # objects on the ground:
         self.coin_manager.draw(window)
@@ -371,9 +376,18 @@ class Game:
 
         # gui
         if self.lose:
-            window.blit(assets_manager.images['darken'], pygame.Rect(0, 0, 0, 0))
-            window.blit(assets_manager.images['GameOver'], pygame.Rect(0, 70, 0, 0))
+            window.blit(
+                assets_manager.images['darken'], pygame.Rect(0, 0, 0, 0))
+            window.blit(
+                assets_manager.images['GameOver'], pygame.Rect(0, 0, 0, 0))
             self.lose_screen.draw_ui(window)
+            score_image = font.render(
+                f'Score: {self.score}', True, (255, 255, 255)
+            )
+            score_rect = score_image.get_rect()
+            score_rect.center = (SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
+            window.blit(score_image, score_rect)
+
         else:
             self.game_screen.draw_ui(window)
         self.distance_manager.draw(window)
@@ -435,6 +449,13 @@ class Game:
         self.earthquake = True
         self.earthquake_time = ITEM_EARTHQUAKE_DURATION
 
+    def add_coin(self):
+        self.coins += 1
+        self.score += int(np.log2(2*self.difficulty)) * COIN_SCORE_MULT
+
+    def add_dist(self, dist):
+        self.score += int(np.log2(2*self.difficulty)) * DIST_SCORE_MULT * dist
+
     def run(self, window) -> None:
         previous_pause = False
         while True:
@@ -455,12 +476,3 @@ class Game:
 
             if SHOW_FPS:
                 print(f'fps = {0 if t == 0 else 1000 / t}')
-                # print('\n')
-                # print('distance = ')
-                # print(self.distance_manager.dist)
-                # print('\n')
-                # print('score = ')
-                # print(self.score_manager.score)
-                # print('\n')
-                # print('highscore = ')
-                # print(self.score_manager.highscore)
