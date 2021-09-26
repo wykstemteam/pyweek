@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 
 class Shop:
     confirm_button = assets_manager.images['confirm_button']
-    main_menu = assets_manager.images['main_menu_final_final']  # TODO: Rename
+    main_menu = assets_manager.images['main_menu']  # TODO: Rename
     darken = assets_manager.images['darken']
 
     def __init__(self, game: "Game") -> None:

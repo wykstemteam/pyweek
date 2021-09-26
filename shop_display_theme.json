@@ -49,7 +49,7 @@
     "#button_2": {
         "images": {
             "normal_image": {
-                "path": "assets/images/item_shield_troll.png"
+                "path": "assets/images/item_shield.png"
             }
         },
         "misc": {
@@ -89,7 +89,7 @@
     "#button_6": {
         "images": {
             "normal_image": {
-                "path": "assets/images/item_earthquake_new.png"
+                "path": "assets/images/item_earthquake.png"
             }
         },
         "misc": {
