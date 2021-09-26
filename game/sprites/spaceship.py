@@ -103,12 +103,12 @@ class Spaceship(pygame.sprite.Sprite):
                 ),
                 Bullet(
                     self.bullet_image, pygame.Vector2(
-                        self.rect.centerx, self.rect.centery + 250),
+                        self.rect.centerx, self.rect.centery + 270),
                     -SPACESHIP_BULLET_SPEED, 0
                 ),
                 Bullet(
                     self.bullet_image, pygame.Vector2(
-                        self.rect.centerx, self.rect.centery - 250),
+                        self.rect.centerx, self.rect.centery - 270),
                     -SPACESHIP_BULLET_SPEED, 0
                 )
             ]
