@@ -5,6 +5,7 @@ Policecar: https://opengameart.org/content/2d-car-pack-0
 laserbeam animation (with reference to): https://www.youtube.com/watch?v=wCNqadvtVZ0
 health bottle: https://pngtree.com/freepng/cartoon-game-red-magic-potion-bottle_5773129.html
 spaceship: https://www.pngegg.com/en/png-zogku
+star: https://opengameart.org/content/star
 
 Music
 All: dova syndrome https://dova-s.jp/
