@@ -47,7 +47,7 @@ class Shop:
             pygame.Rect((663, 475), (160, 47)),
             pygame.Rect((1142, 475), (160, 47)),
         ]
-        self.price = ["1", "2","3", "4", "5", "6"]
+        self.price = ["1", "2", "3", "4", "5", "6"]
         self.button_text = [
             "Heal Potion",
             'Shield',
@@ -60,11 +60,11 @@ class Shop:
             '+1 life',
             '+3 shield (30s)',
             '5s invincibility',
-            'time slows down for 5s',
+            'Time slows down for 5s',
             'Attack the boss?',
             'Annihilation',
         ]
-        self.button_text_effect = [f'   {t}' for t in self.button_text_effect]  # append 3 spaces in front
+        self.button_text_effect = [f'   {t}' for t in self.button_text_effect]
         self.buttons = [
             pygame_gui.elements.UIButton(
                 relative_rect=self.button_positions[i],
@@ -87,7 +87,7 @@ class Shop:
         ]
         self.confirm_screen = pygame_gui.UIManager(
             (SCREEN_WIDTH, SCREEN_HEIGHT), 'shop_display_theme.json'
-        ) 
+        )
         self.confirm_screen.preload_fonts(
             [
                 {
@@ -212,7 +212,6 @@ class Shop:
     def _hide(self):
         for button in self.display_buttons:
             button.hide()
-
 
     def checkcoins(self):
         for i in range(6):
