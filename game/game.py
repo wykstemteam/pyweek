@@ -417,7 +417,7 @@ class Game:
             t = self.clock.get_time()
             if previous_pause:
                 self.update(0.001, window)
-                previous_pause = False
+                previou s_pause = False
             else:
                 self.update(t / 1000, window)
             if ret:  # pressed return
