@@ -8,10 +8,9 @@ import pygame_gui
 from game.assets_manager import assets_manager
 from game.constants import *
 from game.screen_shake_manager import ScreenShakeManager
+from game.settings import get_audio_controls
+from game.shop import Shop
 from game.sprites import *
-from game.sprites.hp_manager import HPManager
-from game.sprites.coin_gui import CoinGUI
-from game.sprites.inventory import Inventory
 
 
 class Scenes(Enum):
@@ -23,7 +22,7 @@ class Game:
     def __init__(self) -> None:
         self.clock = pygame.time.Clock()
 
-        self.cur_scene = Scenes.SPACE
+        self.cur_scene = Scenes.CITY
 
         # objects in all scenes
         # ================================================================================================
@@ -35,7 +34,10 @@ class Game:
         self.arrow = Arrow(assets_manager.images['arrow'], self.player)
         self.inventory = Inventory(
             [
-                assets_manager.images[f'{item_name}_inventory'] for item_name in ('item_blank', 'item_healpotion', 'item_shield', 'item_star', 'item_clock', 'item_missile', 'item_earthquake')
+                assets_manager.images[f'{item_name}_inventory'] for item_name in (
+                    'item_blank', 'item_healpotion', 'item_shield', 'item_star', 'item_clock',
+                    'item_missile', 'item_earthquake'
+                )
             ], self
         )
 
@@ -44,8 +46,7 @@ class Game:
         self.score_manager = ScoreManager()
 
         # self.screen_shake_manager.shaking = True
-        self.fade_in_manager = FadeInManager(
-            assets_manager.images['gradient_line'])
+        self.fade_in_manager = FadeInManager(assets_manager.images['gradient_line'])
         self.fade_in_manager.start_fade_in()
 
         # Health_bar
@@ -60,53 +61,22 @@ class Game:
         self.difficulty = 1
 
         # game_screen
-        self.game_screen = pygame_gui.UIManager(
-            (SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
+        self.game_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
         self.pause_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(
-                (SCREEN_WIDTH - 100 - 10, 10), (100, 50)),
+            relative_rect=pygame.Rect((SCREEN_WIDTH - 100 - 10, 10), (100, 50)),
             text='Pause',
             manager=self.game_screen
         )
 
         # pause_screen
-        self.pause_screen = pygame_gui.UIManager(
-            (SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
+        self.pause_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
         self.return_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(
-                (SCREEN_WIDTH - 100 - 10, 10), (100, 50)),
+            relative_rect=pygame.Rect((SCREEN_WIDTH - 100 - 10, 10), (100, 50)),
             text='Return',
             manager=self.pause_screen
         )
         self.pause = False
-        self.music_label = pygame_gui.elements.UILabel(
-            relative_rect=pygame.Rect(
-                (SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 - 25), (400, 10)
-            ),
-            text='Music Volume',
-            manager=self.pause_screen
-        )
-        self.music_slider = pygame_gui.elements.UIHorizontalSlider(
-            relative_rect=pygame.Rect(
-                (SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 - 15), (400, 30)
-            ),
-            start_value=assets_manager.music_volume,
-            value_range=(0.0, 1),
-            manager=self.pause_screen
-        )
-        self.sound_label = pygame_gui.elements.UILabel(
-            relative_rect=pygame.Rect(
-                (SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 + 20), (400, 10)
-            ),
-            text='Sound Volume',
-            manager=self.pause_screen
-        )
-        self.sound_slider = pygame_gui.elements.UIHorizontalSlider(
-            relative_rect=pygame.Rect(
-                (SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 + 30), (400, 30)
-            ),
-            start_value=assets_manager.sound_volume,
-            value_range=(0.0, 1),
+        self.music_label, self.music_slider, self.sound_label, self.sound_slider = get_audio_controls(
             manager=self.pause_screen
         )
         self.exit_button = pygame_gui.elements.UIButton(
@@ -118,8 +88,7 @@ class Game:
         )
 
         # lose_screen
-        self.lose_screen = pygame_gui.UIManager(
-            (SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
+        self.lose_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
         self.restart_button = pygame_gui.elements.UIButton(
             relative_rect=pygame.Rect(
                 (SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT // 2 + 100), (100, 50)
@@ -129,8 +98,7 @@ class Game:
         )
         # TODO: Maybe edit it to become like exit_button
         self.return_title_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(
-                (SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT // 2), (100, 50)),
+            relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT // 2), (100, 50)),
             text='Return',
             manager=self.lose_screen
         )
@@ -175,7 +143,7 @@ class Game:
         # ================================================================================================
         self.spaceship = Spaceship(self.player_collision_group)
         self.ufo = UFO(self.player_collision_group)
-        self.comets = []
+        self.comets = CometManager(self.player_collision_group)
 
         self.set_scene_music()
 
@@ -194,7 +162,7 @@ class Game:
         self.stage2 = False
         self.dimming = False
         self.darken_alpha = 0
-        self.coin_manager.reached_checkpoint = False
+        self.coin_manager.__init__(self.player_collision_group)
         self.player.inputtable = True
         self.player.vx = -BACKGROUND_VELOCITY
         self.player.vy = 0.0
@@ -202,6 +170,7 @@ class Game:
         self.player.real_y = SCREEN_HEIGHT / 2
         self.spaceship.activated = False
         self.ufo.activated = False
+        self.comets.kill()
         if self.cur_scene == Scenes.CITY:
             self.policecar.activated = True
             for road in self.roads:
@@ -211,7 +180,6 @@ class Game:
             self.obstacle_manager.reached_checkpoint = False
             self.bomber.__init__(self.player_collision_group)
             self.beach_rect.topleft = (0, 0)
-        self.comets = [c for c in self.comets if c.remaining_time > 100000]
 
     def event_process(self, window: pygame.Surface):
         for event in pygame.event.get():
@@ -219,8 +187,8 @@ class Game:
                 exit()
 
             if (
-                    event.type == pygame.USEREVENT and self.pause
-                    and event.user_type == pygame_gui.UI_HORIZONTAL_SLIDER_MOVED
+                event.type == pygame.USEREVENT and self.pause
+                and event.user_type == pygame_gui.UI_HORIZONTAL_SLIDER_MOVED
             ):
                 if event.ui_element == self.music_slider:
                     assets_manager.set_music_volume(event.value)
@@ -259,12 +227,11 @@ class Game:
                     if ITEM_BULLET_TIME_DURATION - self.bullet_time_t <= 1:
                         self.rate = -math.sqrt(
                             (ITEM_BULLET_TIME_DURATION - self.bullet_time_t) *
-                            (1 - BULLET_TIME_RATE) ** 2
+                            (1 - BULLET_TIME_RATE)**2
                         ) + 1
                     else:
                         self.rate = (1 - BULLET_TIME_RATE) * (
-                            (1 - self.bullet_time_t /
-                             (ITEM_BULLET_TIME_DURATION - 1)) ** 2
+                            (1 - self.bullet_time_t / (ITEM_BULLET_TIME_DURATION - 1))**2
                         ) + BULLET_TIME_RATE
                     t *= self.rate
 
@@ -335,11 +302,10 @@ class Game:
                 self.buildings.update(t)
                 self.policecar.update(t)
                 if self.distance_manager.dist_to_next_country > 0:
-                    if self.distance_manager.dist_to_next_country > 150:
+                    if self.distance_manager.dist_to_next_country > 30:
                         self.bomber.random_activate(self.difficulty)
-                self.bomber.aim(self.player.rect.centerx,
-                                self.player.rect.centery)
-                self.bomber.update(t)
+                self.bomber.aim(self.player.rect.centerx, self.player.rect.centery)
+                self.bomber.update(t, self.difficulty)
                 self.obstacle_manager.update(t)
 
         # objects in scene.SPACE:
@@ -351,21 +317,19 @@ class Game:
                     if not self.ufo.activated:
                         self.spaceship.random_activate(self.difficulty)
 
-                    if (self.distance_manager.dist_to_next_country > 30
-                            and self.spaceship.activated and self.spaceship.x == 1000
-                            and not self.spaceship.is_charge and not self.spaceship.is_shoot
-                            and self.spaceship.activated_dur >= 10.0
-                            and random.randint(0, 1000) <= self.difficulty):
+                    if (
+                        self.distance_manager.dist_to_next_country > 30 and self.spaceship.activated
+                        and self.spaceship.x == 1000 and not self.spaceship.is_charge
+                        and not self.spaceship.is_shoot and self.spaceship.activated_dur >= 10.0
+                        and random.randint(0, 1000) <= self.difficulty
+                    ):
                         self.spaceship.is_charge = True
 
-                    if random.randint(0, 500) <= self.difficulty:
-                        self.comets.append(Comet(self.player_collision_group))
+                    self.comets.add(self.difficulty)
 
                 self.spaceship.update(t)
-                self.ufo.update(t)
-                for c in self.comets:
-                    c.update(t, self.difficulty)
-                self.comets = [c for c in self.comets if c.remaining_time > 0]
+                self.ufo.update(t, self.difficulty)
+                self.comets.update(t, self.difficulty)
 
         # gui
         self.game_screen.update(t)
@@ -379,8 +343,7 @@ class Game:
         if self.cur_scene == Scenes.CITY:
             self.roads.draw(window)
         if self.cur_scene == Scenes.SPACE:
-            window.blit(
-                assets_manager.images['space_background1'], pygame.Rect(0, -200, 0, 0))
+            window.blit(assets_manager.images['space_background1'], pygame.Rect(0, -200, 0, 0))
 
         # objects on the ground:
         self.coin_manager.draw(window)
@@ -403,19 +366,15 @@ class Game:
         elif self.cur_scene == Scenes.SPACE:
             self.spaceship.draw(window)
             self.ufo.draw(window)
-            for c in self.comets:
-                c.draw(window)
+            self.comets.draw(window)
 
         # gui
         if self.pause:
-            window.blit(
-                assets_manager.images['darken'], pygame.Rect(0, 0, 0, 0))
+            window.blit(assets_manager.images['darken'], pygame.Rect(0, 0, 0, 0))
             self.pause_screen.draw_ui(window)
         elif self.lose:
-            window.blit(
-                assets_manager.images['darken'], pygame.Rect(0, 0, 0, 0))
-            window.blit(
-                assets_manager.images['GameOver'], pygame.Rect(0, 0, 0, 0))
+            window.blit(assets_manager.images['darken'], pygame.Rect(0, 0, 0, 0))
+            window.blit(assets_manager.images['GameOver'], pygame.Rect(0, 0, 0, 0))
             self.lose_screen.draw_ui(window)
         else:
             self.game_screen.draw_ui(window)
@@ -429,7 +388,7 @@ class Game:
             darken_image.fill((0, 0, 0))
             darken_image.set_alpha(self.darken_alpha)
             window.blit(darken_image, pygame.Rect(0, 0, 0, 0))
-            self.darken_alpha = min(self.darken_alpha + 2, 255)
+            self.darken_alpha = min(self.darken_alpha + 3, 255)
             if self.darken_alpha == 255:
                 self.stage2 = True
 
@@ -443,11 +402,11 @@ class Game:
     def player_collision(self) -> None:
         for obj in self.player_collision_group:
             if (
-                    self.distance_manager.dist_to_next_country == 0
-                    and type(obj) not in (Coin, Obstacle)
+                self.distance_manager.dist_to_next_country == 0
+                and type(obj) not in (Coin, Obstacle)
             ):
                 continue
-            if type(obj) == Spaceship:
+            if type(obj) in (Spaceship, Comet):
                 obj.collision_player(self.player)
             if self.player.rect.colliderect(obj.rect):
                 if type(obj) == PoliceCar and not PLAYER_INVIN:

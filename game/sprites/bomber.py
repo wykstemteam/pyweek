@@ -38,7 +38,7 @@ class Bomber(pygame.sprite.Sprite):
     def aim(self, px: float, py: float) -> None:
         self.dir = np.arctan2(self.rect.centery - py, px - self.rect.centerx)
 
-    def shoot(self) -> None:
+    def shoot(self, difficulty) -> None:
         if self.shoot_cooldown <= 0:
             new_bullet = Bullet(
                 self.bullet_image, self.rect.center, BOMBER_BULLET_SPEED * np.cos(self.dir),
@@ -46,7 +46,7 @@ class Bomber(pygame.sprite.Sprite):
             )
             self.bullets.add(new_bullet)
             self.player_collision_group.add(new_bullet)
-            self.shoot_cooldown = BOMBER_SHOOT_COOLDOWN
+            self.shoot_cooldown = BOMBER_SHOOT_COOLDOWN / difficulty
 
     def random_activate(self, difficulty):
         if self.activated or difficulty == 1:
@@ -54,11 +54,11 @@ class Bomber(pygame.sprite.Sprite):
         if random.randint(0, 1000) <= difficulty:
             self.activated = True
 
-    def update(self, t: float) -> None:
+    def update(self, t: float, difficulty) -> None:
         if self.activated:
-            self.x += 2
+            self.x += 5
             self.shoot_cooldown -= t
-            self.shoot()
+            self.shoot(difficulty)
             if self.x >= SCREEN_WIDTH:
                 self.activated = False
                 self.x = -400

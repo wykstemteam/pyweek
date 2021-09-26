@@ -19,8 +19,8 @@ class LaserManager:
         self.reached_checkpoint = False
 
     def add(self) -> None:
-        pos = random.randint(BUILDING_HEIGHT, SCREEN_HEIGHT - LASER_HEIGHT)
-        new_laser = Laser(pos)
+        pos = random.randint(BUILDING_HEIGHT+ LASER_HEIGHT/2, SCREEN_HEIGHT - LASER_HEIGHT/2)
+        new_laser = Laser((SCREEN_WIDTH/2, pos))
         self.lasers.add(new_laser)
         new_missiles = MissileAircraft(assets_manager.images['missile_for_aircraft'], pos)
         self.missiles.add(new_missiles)
@@ -40,8 +40,8 @@ class LaserManager:
         if self.t - self.last_laser_shoot >= LASER_COOLDOWN:
             self.last_laser_shoot = self.t
             self.lasers.empty()
-            for i in range(self.amounts):
-                self.add()  # FIXME: ??? if don't use iterator then use _ instead of i
+            for _ in range(self.amounts):
+                self.add()
         self.lasers.update(t)
         self.missiles.update(t)
 
