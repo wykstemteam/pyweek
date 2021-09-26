@@ -61,6 +61,9 @@ class Game:
         self.coins = 0
         self.coin_gui = CoinGUI((1200, 36), self)
 
+        # difficulty
+        self.difficulty = 1
+
         # game_screen
         self.game_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
         self.pause_button = pygame_gui.elements.UIButton(
@@ -174,6 +177,7 @@ class Game:
         assets_manager.play_music("8bitaggressive1")
 
     def reset(self):
+        self.difficulty *= 2
         self.distance_manager.dist_to_next_country = INITIAL_DISTANCE_TO_NEXT_COUNTRY
         self.stage1_countdown = 7
         self.stage2 = False
@@ -185,6 +189,8 @@ class Game:
         self.player.vy = 0.0
         self.player.real_x = SCREEN_WIDTH / 2
         self.player.real_y = SCREEN_HEIGHT / 2
+        self.spaceship.activated = False
+        self.ufo.activated = False
         if self.cur_scene == Scenes.CITY:
             self.policecar.activated = True
             for road in self.roads:
@@ -315,7 +321,7 @@ class Game:
                 self.policecar.update(t)
                 if self.distance_manager.dist_to_next_country > 0:
                     if self.distance_manager.dist_to_next_country > 150:
-                        self.bomber.random_activate()
+                        self.bomber.random_activate(self.difficulty)
                 self.bomber.aim(self.player.rect.centerx, self.player.rect.centery)
                 self.bomber.update(t)
                 self.obstacle_manager.update(t)
@@ -325,15 +331,15 @@ class Game:
             if not self.lose and not self.pause:
                 if self.distance_manager.dist_to_next_country > 30:
                     if not self.spaceship.activated:
-                        self.ufo.random_activate()
+                        self.ufo.random_activate(self.difficulty)
                     if not self.ufo.activated:
-                        self.spaceship.random_activate()
+                        self.spaceship.random_activate(self.difficulty)
 
                     if (self.distance_manager.dist_to_next_country > 30
                             and self.spaceship.activated and self.spaceship.x == 1000
                             and not self.spaceship.is_charge and not self.spaceship.is_shoot
                             and self.spaceship.activated_dur >= 10.0
-                            and random.randint(0, 1000) <= 1):
+                            and random.randint(0, 1000) <= self.difficulty):
                         self.spaceship.is_charge = True
                 self.spaceship.update(t)
                 self.ufo.update(t)
