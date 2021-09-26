@@ -9,11 +9,8 @@ from game.assets_manager import assets_manager
 from game.constants import *
 from game.screen_shake_manager import ScreenShakeManager
 from game.settings import get_audio_controls
+from game.shop import Shop
 from game.sprites import *
-from game.sprites.coin_gui import CoinGUI
-from game.sprites.hp_manager import HPManager
-from game.sprites.inventory import Inventory
-from game.sprites.comet_manager import CometManager
 
 
 class Scenes(Enum):
