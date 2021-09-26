@@ -119,7 +119,8 @@ class Player(pygame.sprite.Sprite):
         elif keys[pygame.K_2]:
             self.holding = 2
         left_button_pressed = pygame.mouse.get_pressed(num_buttons=3)[0]
-        if left_button_pressed and self.inputtable and not (mx >= 1390 and my <= 60 and mx <= 1490 and my >= 10):
+        # Make sure mouse is not on the pause button
+        if left_button_pressed and self.inputtable and not (1390 <= mx <= 1490 and 10 <= my <= 60):
             if self.items[self.holding] == 1:
                 if self.hp < 4:
                     assets_manager.play_sound("heal")
