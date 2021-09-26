@@ -222,7 +222,7 @@ class Player(pygame.sprite.Sprite):
 
         assets_manager.play_sound("explosion")
         self.invincibility_after_damage = INVINCIBILITY_AFTER_DAMAGE
-        self.hp -= 1
+        self.hp = max(self.hp - 1, 0)
         self.blink_cooldown = PLAYER_BLINK_COOLDOWN
         return True
 
