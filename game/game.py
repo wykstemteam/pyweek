@@ -121,16 +121,15 @@ class Game:
         self.beach_image = assets_manager.images['beach_full']
         self.beach_rect = pygame.Rect(0, 0, 0, 0)
 
-        # objects in scene.SHOP
-        # ================================================================================================
-
         # objects in scene.SPACE
         # ================================================================================================
-        self.spaceship = Spaceship(self.player_collision_group)
-        self.ufo = UFO(self.player_collision_group)
+        self.spaceship = Spaceship(self.player_collision_group, self)
+        self.ufo = UFO(self.player_collision_group, self)
         self.comets = CometManager(self.player_collision_group)
         self.missile_collision_group.add(self.ufo)
         self.missile_collision_group.add(self.spaceship)
+        self.space_temp_deactivated_enemies = False
+        self.space_temp_deactivated_enemies_t = SPACE_ENEMIES_DEACTIVATE_DURATION
 
         self.set_scene_music()
         self.play_quote()
@@ -326,6 +325,10 @@ class Game:
             self.spaceship.update(t)
             self.ufo.update(t, self.difficulty)
             self.comets.update(t, self.difficulty)
+            if self.space_temp_deactivated_enemies:
+                self.space_temp_deactivated_enemies_t -= t
+                if self.space_temp_deactivated_enemies_t <= 0:
+                    self.space_temp_deactivated_enemies = False
 
         # gui
         self.game_screen.update(t)

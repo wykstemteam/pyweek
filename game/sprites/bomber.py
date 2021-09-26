@@ -59,7 +59,7 @@ class Bomber(pygame.sprite.Sprite):
 
     def update(self, t: float, difficulty) -> None:
         if self.temp_deactivated:
-            self.x -= max(0, self.x - 200 * t)
+            self.x = max(SCREEN_WIDTH, self.x + 400 * t)
             self.image = self.animation[self.frame]
             self.rect = self.animation[self.frame].get_rect()
             self.rect.topleft = (self.x, (SCREEN_HEIGHT / 2) - (self.image.get_height() / 2))
