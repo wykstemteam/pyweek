@@ -80,8 +80,9 @@ class Game:
         )
         self.exit_button = pygame_gui.elements.UIButton(
             relative_rect=pygame.Rect(
-                (SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2 + 75), (200, 50)
+                (SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2 + 80), (200, 50)
             ),
+            object_id='#exit_button',
             text='Exit to Menu',
             manager=self.pause_screen
         )

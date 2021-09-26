@@ -39,7 +39,9 @@ def get_audio_controls(
 def settings(window: pygame.Surface) -> None:
     settings_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
     return_button = pygame_gui.elements.UIButton(
-        relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 110, SCREEN_HEIGHT // 2 + 75), (220, 50)), text='Return to Menu', manager=settings_screen
+        relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 110, SCREEN_HEIGHT // 2 + 80), (220, 50)),
+        text='Return to Menu',
+        manager=settings_screen
     )
     music_label, music_slider, sound_label, sound_slider = get_audio_controls(settings_screen)
 
