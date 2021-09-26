@@ -1,3 +1,5 @@
+from typing import Tuple
+
 import pygame
 import pygame_gui
 
@@ -6,16 +8,42 @@ from game.constants import *
 from game.settings import settings
 from game.sprites import *
 
-title_font = pygame.font.SysFont('Castellar', 60, True)
+title_font = pygame.font.SysFont('Corbel', 60, True)
 instruction_font = pygame.font.SysFont('Comic Sans MS', 30)
+instruction_height = instruction_font.render("test", True, (0, 0, 0)).get_height()
+
+instructions = [
+    'WASD to move',
+    '1 and 2 to select item in inventory',
+    'Left click mouse to use item',
+    'Press any key to start',
+]
 
 
-def instruction(text: str):
-    return instruction_font.render(text, False, (255, 255, 255))
+def blit_outlined_text(
+    window: pygame.Surface,
+    font: pygame.font.SysFont,
+    text: str,
+    outline_size: int,
+    outline_color: Tuple[int, int, int],
+    color: Tuple[int, int, int],
+    x: int,
+    y: int,
+    center: bool = False
+) -> None:
+    outline = font.render(text, True, outline_color)
+    actual = font.render(text, True, color)
+    if center:
+        x -= actual.get_width() // 2
+    window.blit(outline, (x - outline_size, y - outline_size))
+    window.blit(outline, (x - outline_size, y + outline_size))
+    window.blit(outline, (x + outline_size, y - outline_size))
+    window.blit(outline, (x + outline_size, y + outline_size))
+    window.blit(actual, (x, y))
 
 
 def menu(window: pygame.Surface):
-    assets_manager.play_music("boys_summer_vacation")
+    assets_manager.play_music("sunrise")
     assets_manager.play_sound("hi")
     screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
     settings_button = pygame_gui.elements.UIButton(
@@ -31,13 +59,6 @@ def menu(window: pygame.Surface):
         Road(assets_manager.images['road'], 0),
         Road(assets_manager.images['road'], SCREEN_WIDTH),
     )
-    title = title_font.render('Rock: The Impostor', False, (255, 255, 0))
-    instructions = [
-        instruction('WASD to move'),
-        instruction('1 and 2 to select item in inventory'),
-        instruction('Left click mouse to use item'),
-        instruction('Press any key to start'),
-    ]
     police_car = assets_manager.images['policecar']
     bomber = assets_manager.animations['bomber'][0]
     motorbike = assets_manager.images['motorbike']
@@ -61,7 +82,6 @@ def menu(window: pygame.Surface):
         window.fill((0, 0, 0))
         buildings.draw(window)
         roads.draw(window)
-        window.blit(title, (SCREEN_WIDTH // 2 - title.get_width() // 2, 0))
         window.blit(
             police_car, (
                 50, BUILDING_HEIGHT +
@@ -80,12 +100,27 @@ def menu(window: pygame.Surface):
                 (SCREEN_HEIGHT - BUILDING_HEIGHT) // 2 - motorbike.get_height() // 2
             )
         )
+        blit_outlined_text(
+            window=window,
+            font=title_font,
+            text="Rock: The Criminal",
+            outline_size=2,
+            outline_color=(0, 0, 0),
+            color=(255, 255, 0),
+            x=SCREEN_WIDTH // 2,
+            y=10,
+            center=True
+        )
         for i in range(len(instructions)):
-            window.blit(
-                instructions[i], (
-                    20, SCREEN_HEIGHT - 50 - instructions[i].get_height() *
-                    (len(instructions) - i - 1)
-                )
+            blit_outlined_text(
+                window=window,
+                font=instruction_font,
+                text=instructions[i],
+                outline_size=1,
+                outline_color=(0, 0, 0),
+                color=(255, 255, 255),
+                x=20,
+                y=SCREEN_HEIGHT - 50 - instruction_height * (len(instructions) - i - 1)
             )
         screen.draw_ui(window)
 
