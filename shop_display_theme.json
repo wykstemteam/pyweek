@@ -132,13 +132,20 @@
             "shape_corner_radius": "18"
         }
     },
+    "#button_confirm":
+    {
+      "misc": {
+          "tool_tip_delay": "0"
+      }
+    },
     "tool_tip": {
         "misc": {
-            "rect_width": "250"
+            "rect_width": "320"
         }
     },
     "tool_tip.text_box": {
         "colours": {
+            "normal_text": "#000000",
             "dark_bg": "#6c757d"
         },
         "misc": {

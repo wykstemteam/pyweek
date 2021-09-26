@@ -51,7 +51,7 @@ class Bomber(pygame.sprite.Sprite):
     def random_activate(self, difficulty):
         if self.activated or difficulty == 1:
             return
-        if random.randint(0, 1000) <= min(4, difficulty):
+        if random.randint(0, 10000) <= min(4, difficulty):
             self.activated = True
 
     def update(self, t: float, difficulty) -> None:

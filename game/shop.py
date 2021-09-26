@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 
 class Shop:
     confirm_button = assets_manager.images['confirm_button']
-    main_menu = assets_manager.images['main_menu_final_final']  # TODO: Rename
+    main_menu = assets_manager.images['main_menu']  # TODO: Rename
     darken = assets_manager.images['darken']
 
     def __init__(self, game: "Game") -> None:
@@ -33,7 +33,7 @@ class Shop:
             pygame.Rect((212, 97), (104, 110)),
             pygame.Rect((691, 98), (104, 110)),
             pygame.Rect((1172, 97), (104, 110)),
-            pygame.Rect((212, 351), (104, 110)),
+            pygame.Rect((209, 351), (104, 110)),
             pygame.Rect((691, 351), (104, 110)),
             pygame.Rect((1172, 351), (104, 110)),
         ]
@@ -55,7 +55,7 @@ class Shop:
             'Gravitation',
         ]
         self.button_text_effect = [
-            '+1 life',
+            '+1 life, instantly used if currently damaged',
             '+3 shield (30s)',
             '5s invincibility',
             'Time slows down for 5s',
@@ -123,6 +123,11 @@ class Shop:
         self.button_confirm = pygame_gui.elements.UIButton(
             relative_rect=pygame.Rect((555, 301), (200, 60)),
             text='Confirm',
+            tool_tip_text="<font face=fira_code color=#8e1b1b size=6>"
+                "<b><u>WARNING:</u></b>"
+                "<br><br>"
+                "<font color=#000000 size=5><i>If your inventory is full, your current selected item will be overwritten.</i></font>",
+            object_id = "#button_confirm",
             manager=self.confirm_screen
         )
         self.button_cancel = pygame_gui.elements.UIButton(
@@ -166,8 +171,19 @@ class Shop:
                             if button == self.button_confirm:
                                 assets_manager.play_sound("select2")
                                 self.game.coins -= int(self.price_count)
-                                print(f'bought{self.button_number+1}')
-                                self.game.player.items[self.game.player.holding
+                                if self.button_number == 0 and self.game.player.hp < 4:
+                                    self.game.player.hp += 1
+                                    #potion sound
+                                elif self.game.player.items[self.game.player.holding] != 0:
+                                    if self.game.player.items[3 - self.game.player.holding] == 0:
+                                        self.game.player.holding = 3 - self.game.player.holding
+                                    else:
+                                        #warning message
+                                        pass
+                                    self.game.player.items[self.game.player.holding
+                                                       ] = self.button_number + 1
+                                else:
+                                    self.game.player.items[self.game.player.holding
                                                        ] = self.button_number + 1
                             self._hide()
                             for i in range(6):
@@ -175,13 +191,11 @@ class Shop:
                             confirmation = False
                         elif button in self.price_tag_button and not confirmation:
                             assets_manager.play_sound("select1")
-                            print(f'selected{self.button_number+1}')
                             self.button_number = self.price_tag_button.index(button)
                             for i in range(6):
                                 self.price_tag_button[i].disable()
                             self.display_buttons[self.button_number].show()
                             self.price_count = self.price[self.button_number]
-                            print(self.price_count)
                             confirmation = True
 
                 self.shop_screen.process_events(event)
@@ -198,7 +212,7 @@ class Shop:
             self.coin_gui.draw(window)
             self.hp_manager.update(t / 1000)
             self.hp_manager.draw(window)
-            self.game.player.update(0)
+            self.game.player.update(0, 0)
             self.inventory.draw(window)
             self.checkcoins()
 
@@ -221,3 +235,5 @@ class Shop:
                 self.price_tag_button[i].disable()
             else:
                 self.price_tag_button[i].enable()
+
+    

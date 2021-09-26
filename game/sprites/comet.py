@@ -28,16 +28,21 @@ class Comet(pygame.sprite.Sprite):
             (self.x - 15 + 70 * np.cos(self.dir),
              self.y - 15 + 70 * np.sin(self.dir)), (30, 30)
         )
-        self.remaining_time = 30.0
         self.explode = None
         self.laser = None
+        self.first_inbound = False
 
     def hitbox_inbounds(self):
         return (self.hitbox.bottom <= SCREEN_HEIGHT + 20 and self.hitbox.top >= -20 and
                 self.hitbox.right <= SCREEN_WIDTH + 20 and self.hitbox.left >= -20)
 
+    def hitbox_outbounds_2nd_time(self):
+        return not (self.hitbox.bottom <= SCREEN_HEIGHT + 200 and self.hitbox.top >= -200 and
+                self.hitbox.right <= SCREEN_WIDTH + 200 and self.hitbox.left >= -200)
+
     def update(self, t: float, difficulty) -> None:
-        if self.hitbox_inbounds():
+        if self.hitbox_inbounds() or self.first_inbound:
+            self.first_inbound = True
             if not self.laser:
                 self.laser = Laser(self.hitbox.center, self.dir)
             self.laser.update(t)
@@ -55,8 +60,7 @@ class Comet(pygame.sprite.Sprite):
                     )
                     self.rect = self.image.get_rect(
                         center=self.image.get_rect(center=(self.x, self.y)).center)
-                    self.remaining_time -= t
-                    if self.remaining_time <= 0:
+                    if self.hitbox_outbounds_2nd_time():
                         self.kill()
                 elif not self.explode.update(t):
                     self.kill()
@@ -69,7 +73,8 @@ class Comet(pygame.sprite.Sprite):
             )
 
     def draw(self, window: pygame.Surface) -> None:
-        if self.hitbox_inbounds():
+        if self.hitbox_inbounds() or self.first_inbound:
+            self.first_inbound = True
             if not self.laser:
                 self.laser = Laser(self.hitbox.center, self.dir)
                 self.laser.update(0)
