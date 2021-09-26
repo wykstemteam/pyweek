@@ -53,22 +53,24 @@ class Bomber(pygame.sprite.Sprite):
     def random_activate(self, difficulty):
         if self.activated or difficulty == 1:
             return
-        print(random.randint(0, 3000))
+        # print(random.randint(0, 3000))
         if random.randint(0, 3000) <= min(4, difficulty):
             self.activated = True
 
     def update(self, t: float, difficulty) -> None:
-        if self.frame >= len(self.animation):
-            self.frame = 0
+        # if self.frame >= len(self.animation):
+        #     self.frame = 0
 
         if self.temp_deactivated:
-            self.x = max(SCREEN_WIDTH, self.x + 400 * t)
+            self.x = min(SCREEN_WIDTH, self.x + 800 * t)
             self.image = self.animation[self.frame]
             self.rect = self.animation[self.frame].get_rect()
             self.rect.topleft = (self.x, (SCREEN_HEIGHT / 2) - (self.image.get_height() / 2))
             self.shadow_rect = self.rect.copy()
             self.shadow_rect.topleft = self.shadow_rect.topleft + pygame.Vector2(-15, 15)
             self.frame += 1
+            if self.frame >= len(self.animation):
+                self.frame = 0
             self.bullets.update(t)
             self.temp_activated_t -= t
             if self.temp_activated_t <= 0:
