@@ -99,10 +99,10 @@ class Spaceship(pygame.sprite.Sprite):
 
             self.shoot_cooldown = SPACESHIP_SHOOT_COOLDOWN
 
-    def random_activate(self):
+    def random_activate(self, difficulty):
         if self.activated:
             return
-        if random.randint(0, 1000) <= 1:
+        if random.randint(0, 1000) <= difficulty:
             self.activated = True
             self.activated_dur = random.uniform(30.0, 50.0)
 
