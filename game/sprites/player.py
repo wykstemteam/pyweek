@@ -120,6 +120,10 @@ class Player(pygame.sprite.Sprite):
             for i in range(6):
                 if keys[pygame.K_KP_1 + i]:
                     self.items[self.holding] = i + 1
+            if keys[pygame.K_c]:
+                self.add_coin()
+                assets_manager.play_sound("coin")
+
 
         if keys[pygame.K_1]:
             self.holding = 1
