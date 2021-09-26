@@ -15,6 +15,8 @@ def main() -> None:
     highscore = 0
     if not os.path.isfile('highscore.txt'):
         open("highscore.txt", "x")
+        with open("highscore.txt", 'w') as f:
+            f.write('0')
     else:
         with open("highscore.txt", 'r') as f:
             highscore = int(f.read())
