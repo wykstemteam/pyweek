@@ -35,5 +35,11 @@
             "shape": "rounded_rectangle",
             "shape_corner_radius": "10"
         }
+    },
+    "#exit_button": {
+        "colours": {
+            "normal_bg": "#e43d40",
+            "hovered_bg": "#e23034"
+        }
     }
 }
