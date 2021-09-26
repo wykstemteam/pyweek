@@ -438,7 +438,12 @@ class Game:
                     obj.player_hit(self.player)
                 elif self.cur_scene == Scenes.CITY:
                     if type(obj) == PoliceCar:
-                        self.trigger_lose()
+                        if self.player.is_invincible() or self.player.shield.activate:
+                            if self.player.shield.activate:
+                                self.player.shield.activate = False
+                                self.player.invincibility_after_damage = INVINCIBILITY_AFTER_DAMAGE
+                        else:
+                            self.trigger_lose()
                     elif type(obj) == Obstacle:
                         self.player.resolve_collision(obj)
 
