@@ -175,7 +175,13 @@ class Game:
         self.ufo = UFO(self.player_collision_group)
         self.spaceship.activated = True
 
-        assets_manager.play_music("8bitaggressive1")
+        self.set_scene_music()
+
+    def set_scene_music(self) -> None:
+        if self.cur_scene == Scenes.CITY:
+            assets_manager.play_music("8bitaggressive")
+        elif self.cur_scene == Scenes.SPACE:
+            assets_manager.play_music("galaxy")
 
     def reset(self):
         self.difficulty *= 2
@@ -260,13 +266,13 @@ class Game:
             if self.stage2:
                 assets_manager.play_music("mid_afternoon_mood")
                 self.shop_scene.appear(window)
-                assets_manager.play_music('8bitaggressive1')
                 # leaving shop
                 self.clock.tick(60)
                 # resetting things
                 self.cur_scene = random.choice(list(Scenes))
                 # self.cur_scene = Scenes.CITY
                 self.reset()
+                self.set_scene_music()
 
                 # ==========================================
             elif self.stage1_countdown <= 0:
