@@ -82,8 +82,6 @@ class Bomber(pygame.sprite.Sprite):
                 self.activated = False
                 self.x = -400
 
-        if self.frame >= len(self.animation):
-            self.frame = 0
 
         self.image = self.animation[self.frame]
         self.rect = self.animation[self.frame].get_rect()
@@ -91,6 +89,8 @@ class Bomber(pygame.sprite.Sprite):
         self.shadow_rect = self.rect.copy()
         self.shadow_rect.topleft = self.shadow_rect.topleft + pygame.Vector2(-15, 15)
         self.frame += 1
+        if self.frame >= len(self.animation):
+            self.frame = 0
         self.bullets.update(t)
 
     def draw(self, window: pygame.Surface) -> None:
