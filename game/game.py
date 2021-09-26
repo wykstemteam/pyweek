@@ -177,7 +177,7 @@ class Game:
                 road.stop_moving = False
             self.laser_manager.reached_checkpoint = False
             self.buildings.__init__()
-            self.obstacle_manager.reached_checkpoint = False
+            self.obstacle_manager.__init__(self.player_collision_group)
             self.bomber.__init__(self.player_collision_group)
             self.beach_rect.topleft = (0, 0)
 
