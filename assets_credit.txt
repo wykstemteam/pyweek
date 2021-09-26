@@ -1,6 +1,10 @@
 Images
 bomber B-17: https://opengameart.org/content/top-down-planes-sprites-pack
 Space background: https://opengameart.org/content/space-backgrounds-1
+Red spaceship: https://opengameart.org/content/large-spaceship
+MotorCycle : https://www.iconspng.com/image/30199/racing-bike-top-down-for-games
+Missile : https://freepikpsd.com/missile-sprite-png/322806/
+
 Policecar: https://opengameart.org/content/2d-car-pack-0
 laserbeam animation (with reference to): https://www.youtube.com/watch?v=wCNqadvtVZ0
 health bottle: https://pngtree.com/freepng/cartoon-game-red-magic-potion-bottle_5773129.html
