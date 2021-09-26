@@ -386,8 +386,14 @@ class Game:
                 f'Score: {self.score}', True, (255, 255, 255)
             )
             score_rect = score_image.get_rect()
-            score_rect.center = (SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
+            score_rect.center = (SCREEN_WIDTH/2, SCREEN_HEIGHT/2-10)
             window.blit(score_image, score_rect)
+            round_image = font.render(
+                f'Rounds survived: {self.round_counter.rounds_survived}', True, (255, 255, 255)
+            )
+            round_rect = score_image.get_rect()
+            round_rect.center = (SCREEN_WIDTH/2, SCREEN_HEIGHT/2+40)
+            window.blit(round_image, round_rect)
 
         else:
             self.game_screen.draw_ui(window)

@@ -20,7 +20,7 @@ class DistanceManager(pygame.sprite.Sprite):
     def update(self, t: float) -> None:
         self.dist += -BACKGROUND_VELOCITY * t / 100 * DIST_SPD
         if self.last_dist < int(self.dist):
-            self.game.add_dist(int(self.dist) - self.last_dist)
+            self.game.add_dist_score(int(self.dist) - self.last_dist)
             self.last_dist = int(self.dist)
         self.dist_to_next_country -= -BACKGROUND_VELOCITY * t / 100 * DIST_SPD
         self.dist_to_next_country = max(0.0, self.dist_to_next_country)
