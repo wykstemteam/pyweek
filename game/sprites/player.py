@@ -245,3 +245,4 @@ class Player(pygame.sprite.Sprite):
 
     def add_coin(self):
         self.game.coins += 1
+        self.game.score_manager.score += 100

@@ -261,6 +261,8 @@ class Game:
                 self.laser_manager.reached_checkpoint = True
                 self.buildings.reached_checkpoint = True
                 self.obstacle_manager.reached_checkpoint = True
+                self.score_manager.reached_checkpoint = True
+                self.score_manager.checkpoint_count += 1
                 self.policecar.activated = False
                 self.bomber.activated = False
                 self.ufo.activated = False
@@ -437,5 +439,12 @@ class Game:
 
             if SHOW_FPS:
                 print(f'fps = {0 if t == 0 else 1000 / t}')
+                print('\n')
+                print('distance = ')
                 print(self.distance_manager.dist)
+                print('\n')
+                print('score = ')
                 print(self.score_manager.score)
+                print('\n')
+                print('highscore = ')
+                print(self.score_manager.highscore)
