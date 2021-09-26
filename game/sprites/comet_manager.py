@@ -15,7 +15,7 @@ class CometManager:
         self.reached_checkpoint = False
 
     def add(self, difficulty):
-        if random.randint(0, 1000) <= min(5, difficulty):
+        if random.randint(0, 1000) <= min(5, difficulty) and len(self.comets) <= MAX_COMETS:
             new_comet = Comet()
             self.player_collision_group.add(new_comet)
             self.comets.add(new_comet)

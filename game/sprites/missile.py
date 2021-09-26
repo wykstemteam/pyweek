@@ -47,3 +47,4 @@ class Missile(pygame.sprite.Sprite):  # TODO: Maybe rename dir
         if not self.explode:
             self.image = None
             self.explode = Explode(self.rect.center)
+            assets_manager.play_sound("explosion")
