@@ -130,25 +130,30 @@ class Player(pygame.sprite.Sprite):
         elif keys[pygame.K_2]:
             self.holding = 2
         left_button_pressed = pygame.mouse.get_pressed(num_buttons=3)[0]
-        if left_button_pressed:
+        if left_button_pressed and self.inputtable:
             if self.items[self.holding] == 1:
-                # FIXME: play some sound effect maybe
                 if self.hp < 4:
+                    # FIXME: play some sound effect maybe
                     self.hp += 1
+                    self.items[self.holding] = 0
             elif self.items[self.holding] == 2:  # shield
                 self.shield.turn_on()
+                self.items[self.holding] = 0
             elif self.items[self.holding] == 3:  # invincible
                 self.become_item_invincible()
+                self.items[self.holding] = 0
             elif self.items[self.holding] == 4:  # bullet time
                 self.game.bullet_time = True
                 self.game.bullet_time_t = ITEM_BULLET_TIME_DURATION
+                self.items[self.holding] = 0
             elif self.items[self.holding] == 5:
                 self.vx -= np.cos(self.dir) * 100
                 self.vy += np.sin(self.dir) * 100
                 self.shoot_missile()
+                self.items[self.holding] = 0
             elif self.items[self.holding] == 6:  # earthquake
                 self.game.start_earthquake()
-            self.items[self.holding] = 0
+                self.items[self.holding] = 0
 
         self.missiles.update(t)
 

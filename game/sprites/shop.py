@@ -138,12 +138,12 @@ class Shop:
             text='Cancel',
             manager=self.confirm_screen
         )
-        self.button_number = 0
+        self.button_number: int = 0
         self.price_count = 0
         self.game = game
         self.running = False
         self.coin_gui = CoinGUI((960, 36), self.game)
-        self.hp_manager = HPManager((120, 25), self.game)
+        self.hp_manager = HPManager((380, 25), self.game)
         self.hp_manager.at_shop = True
         self.inventory = Inventory(
             [
@@ -171,6 +171,7 @@ class Shop:
                             if button == self.button_confirm:
                                 assets_manager.play_sound("select2")
                                 self.game.coins -= int(self.price_count)
+                                print(f'bought{self.button_number+1}')
                                 self.game.player.items[self.game.player.holding] = self.button_number+1
                             self._hide()
                             for i in range(6):
@@ -178,6 +179,7 @@ class Shop:
                             confirmation = False
                         elif button in self.price_tag_button:
                             assets_manager.play_sound("select1")
+                            print(f'selected{self.button_number+1}')
                             self.button_number = self.price_tag_button.index(button)
                             for i in range(6):
                                 self.price_tag_button[i].disable()
