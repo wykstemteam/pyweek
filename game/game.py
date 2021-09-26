@@ -9,6 +9,7 @@ from game.assets_manager import assets_manager
 from game.constants import *
 from game.screen_shake_manager import ScreenShakeManager
 from game.sprites import *
+from game.sprites.hp_manager import HPManager
 from game.sprites.coin_gui import CoinGUI
 from game.sprites.inventory import Inventory
 
@@ -34,26 +35,20 @@ class Game:
         self.arrow = Arrow(assets_manager.images['arrow'], self.player)
         self.inventory = Inventory(
             [
-                assets_manager.images['item_healpotion'],
-                assets_manager.images['item_shield'],
-                assets_manager.images['item_star'],
-                assets_manager.images['item_clock'],
-                assets_manager.images['item_missile'],
-                assets_manager.images['item_earthquake'],
-            ]
+                assets_manager.images[f'{item_name}_inventory'] for item_name in ('item_blank', 'item_healpotion', 'item_shield', 'item_star', 'item_clock', 'item_missile', 'item_earthquake')
+            ], self
         )
-        self.inventory.add(0)
-        self.inventory.add(3)
 
         self.distance_manager = DistanceManager()
         self.screen_shake_manager = ScreenShakeManager()
 
         # self.screen_shake_manager.shaking = True
-        self.fade_in_manager = FadeInManager(assets_manager.images['gradient_line'])
+        self.fade_in_manager = FadeInManager(
+            assets_manager.images['gradient_line'])
         self.fade_in_manager.start_fade_in()
 
         # Health_bar
-        self.health_bar_image = assets_manager.images['HP4']
+        self.hp_manager = HPManager((10, 10), self)
 
         # coins
         self.coin_manager = CoinManager(self.player_collision_group)
@@ -64,17 +59,21 @@ class Game:
         self.difficulty = 1
 
         # game_screen
-        self.game_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
+        self.game_screen = pygame_gui.UIManager(
+            (SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
         self.pause_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect((SCREEN_WIDTH - 100 - 10, 10), (100, 50)),
+            relative_rect=pygame.Rect(
+                (SCREEN_WIDTH - 100 - 10, 10), (100, 50)),
             text='Pause',
             manager=self.game_screen
         )
 
         # pause_screen
-        self.pause_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
+        self.pause_screen = pygame_gui.UIManager(
+            (SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
         self.return_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect((SCREEN_WIDTH - 100 - 10, 10), (100, 50)),
+            relative_rect=pygame.Rect(
+                (SCREEN_WIDTH - 100 - 10, 10), (100, 50)),
             text='Return',
             manager=self.pause_screen
         )
@@ -118,7 +117,8 @@ class Game:
         )
 
         # lose_screen
-        self.lose_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
+        self.lose_screen = pygame_gui.UIManager(
+            (SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
         self.restart_button = pygame_gui.elements.UIButton(
             relative_rect=pygame.Rect(
                 (SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT // 2 + 100), (100, 50)
@@ -127,7 +127,8 @@ class Game:
             manager=self.lose_screen
         )
         self.return_title_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT // 2), (100, 50)),
+            relative_rect=pygame.Rect(
+                (SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT // 2), (100, 50)),
             text='Return',
             manager=self.lose_screen
         )
@@ -141,7 +142,8 @@ class Game:
         self.earthquake = False
 
         # entering shop
-        self.stage1_countdown = 7  # deactivate everything for .. seconds
+        # deactivate everything for .. seconds
+        self.stage1_countdown = DEACTIVATE_DURATION
         self.stage2 = False  # player at right?
         self.dimming = False
         self.darken_alpha = 0
@@ -173,12 +175,18 @@ class Game:
         self.ufo = UFO(self.player_collision_group)
         self.comets = []
 
-        assets_manager.play_music("8bitaggressive1")
+        self.set_scene_music()
+
+    def set_scene_music(self) -> None:
+        if self.cur_scene == Scenes.CITY:
+            assets_manager.play_music("8bitaggressive")
+        elif self.cur_scene == Scenes.SPACE:
+            assets_manager.play_music("galaxy")
 
     def reset(self):
         self.difficulty *= 2
         self.distance_manager.dist_to_next_country = INITIAL_DISTANCE_TO_NEXT_COUNTRY
-        self.stage1_countdown = 7
+        self.stage1_countdown = DEACTIVATE_DURATION
         self.stage2 = False
         self.dimming = False
         self.darken_alpha = 0
@@ -250,7 +258,8 @@ class Game:
                         ) + 1
                     else:
                         self.rate = (1 - BULLET_TIME_RATE) * (
-                                (1 - self.bullet_time_t / (ITEM_BULLET_TIME_DURATION - 1)) ** 2
+                            (1 - self.bullet_time_t /
+                             (ITEM_BULLET_TIME_DURATION - 1)) ** 2
                         ) + BULLET_TIME_RATE
                     t *= self.rate
 
@@ -258,13 +267,13 @@ class Game:
             if self.stage2:
                 assets_manager.play_music("mid_afternoon_mood")
                 self.shop_scene.appear(window)
-                assets_manager.play_music('8bitaggressive1')
                 # leaving shop
                 self.clock.tick(60)
                 # resetting things
                 self.cur_scene = random.choice(list(Scenes))
                 # self.cur_scene = Scenes.CITY
                 self.reset()
+                self.set_scene_music()
 
                 # ==========================================
             elif self.stage1_countdown <= 0:
@@ -288,7 +297,6 @@ class Game:
                 self.stage1_countdown -= t
 
             self.player.hp = max(self.player.hp, 0)
-            self.health_bar_image = assets_manager.images[f"HP{self.player.hp}"]
 
             self.fade_in_manager.update(t)
             self.player.update(t if not self.bullet_time else t / self.rate)
@@ -297,6 +305,7 @@ class Game:
             self.arrow.update(self.player)
             self.distance_manager.update(t)
             self.coin_gui.update(t)
+            self.hp_manager.update(t)
 
             if self.player.hp <= 0:
                 if not PLAYER_INVIN:
@@ -322,7 +331,8 @@ class Game:
                 if self.distance_manager.dist_to_next_country > 0:
                     if self.distance_manager.dist_to_next_country > 150:
                         self.bomber.random_activate(self.difficulty)
-                self.bomber.aim(self.player.rect.centerx, self.player.rect.centery)
+                self.bomber.aim(self.player.rect.centerx,
+                                self.player.rect.centery)
                 self.bomber.update(t)
                 self.obstacle_manager.update(t)
 
@@ -363,7 +373,8 @@ class Game:
         if self.cur_scene == Scenes.CITY:
             self.roads.draw(window)
         if self.cur_scene == Scenes.SPACE:
-            window.blit(assets_manager.images['space_background1'], pygame.Rect(0, -200, 0, 0))
+            window.blit(
+                assets_manager.images['space_background1'], pygame.Rect(0, -200, 0, 0))
 
         # objects on the ground:
         self.coin_manager.draw(window)
@@ -390,18 +401,21 @@ class Game:
                 c.draw(window)
 
         # gui
-        window.blit(self.health_bar_image, pygame.Rect((10, 10), (400, 100)))
         if self.pause:
-            window.blit(assets_manager.images['darken'], pygame.Rect(0, 0, 0, 0))
+            window.blit(
+                assets_manager.images['darken'], pygame.Rect(0, 0, 0, 0))
             self.pause_screen.draw_ui(window)
         elif self.lose:
-            window.blit(assets_manager.images['darken'], pygame.Rect(0, 0, 0, 0))
-            window.blit(assets_manager.images['GameOver'], pygame.Rect(0, 0, 0, 0))
+            window.blit(
+                assets_manager.images['darken'], pygame.Rect(0, 0, 0, 0))
+            window.blit(
+                assets_manager.images['GameOver'], pygame.Rect(0, 0, 0, 0))
             self.lose_screen.draw_ui(window)
         else:
             self.game_screen.draw_ui(window)
         self.distance_manager.draw(window)
         self.coin_gui.draw(window)
+        self.hp_manager.draw(window)
         self.inventory.draw(window)
 
         if self.dimming:

@@ -120,31 +120,40 @@ class Player(pygame.sprite.Sprite):
             for i in range(6):
                 if keys[pygame.K_KP_1 + i]:
                     self.items[self.holding] = i + 1
+            if keys[pygame.K_c]:
+                self.add_coin()
+                assets_manager.play_sound("coin")
+
 
         if keys[pygame.K_1]:
             self.holding = 1
         elif keys[pygame.K_2]:
             self.holding = 2
         left_button_pressed = pygame.mouse.get_pressed(num_buttons=3)[0]
-        if left_button_pressed:
+        if left_button_pressed and self.inputtable:
             if self.items[self.holding] == 1:
-                # FIXME: play some sound effect maybe
                 if self.hp < 4:
+                    # FIXME: play some sound effect maybe
                     self.hp += 1
+                    self.items[self.holding] = 0
             elif self.items[self.holding] == 2:  # shield
                 self.shield.turn_on()
+                self.items[self.holding] = 0
             elif self.items[self.holding] == 3:  # invincible
                 self.become_item_invincible()
+                self.items[self.holding] = 0
             elif self.items[self.holding] == 4:  # bullet time
                 self.game.bullet_time = True
                 self.game.bullet_time_t = ITEM_BULLET_TIME_DURATION
+                self.items[self.holding] = 0
             elif self.items[self.holding] == 5:
                 self.vx -= np.cos(self.dir) * 100
                 self.vy += np.sin(self.dir) * 100
                 self.shoot_missile()
+                self.items[self.holding] = 0
             elif self.items[self.holding] == 6:  # earthquake
                 self.game.start_earthquake()
-            self.items[self.holding] = 0
+                self.items[self.holding] = 0
 
         self.missiles.update(t)
 
@@ -222,7 +231,7 @@ class Player(pygame.sprite.Sprite):
 
         assets_manager.play_sound("explosion")
         self.invincibility_after_damage = INVINCIBILITY_AFTER_DAMAGE
-        self.hp -= 1
+        self.hp = max(self.hp - 1, 0)
         self.blink_cooldown = PLAYER_BLINK_COOLDOWN
         return True
 

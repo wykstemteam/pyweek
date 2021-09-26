@@ -14,7 +14,7 @@ class DistanceManager(pygame.sprite.Sprite):
         self.dist_to_next_country = INITIAL_DISTANCE_TO_NEXT_COUNTRY
         self.update(0)
         self.rect = Rect(0, 0, 0, 0)
-        self.rect.topleft = (500, 20)
+        self.rect.topleft = (420, 20)
 
     def update(self, t: float) -> None:
         self.dist += -BACKGROUND_VELOCITY * t / 100 * DIST_SPD

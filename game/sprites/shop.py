@@ -6,6 +6,8 @@ import pygame_gui
 from game.assets_manager import assets_manager
 from game.constants import *
 from game.sprites.coin_gui import CoinGUI
+from game.sprites.hp_manager import HPManager
+from game.sprites.inventory import Inventory
 
 if TYPE_CHECKING:
     from game.game import Game
@@ -15,7 +17,7 @@ class Shop:
     confirm_button = assets_manager.images['confirm_button']
     main_menu = assets_manager.images['main_menu_final']
     darken = assets_manager.images['darken']
-
+    
     def __init__(self, game: "Game") -> None:
         self.shop_screen = pygame_gui.UIManager(
             (SCREEN_WIDTH, SCREEN_HEIGHT), 'shop_display_theme.json'
@@ -45,7 +47,7 @@ class Shop:
             pygame.Rect((663, 475), (160, 47)),
             pygame.Rect((1142, 475), (160, 47)),
         ]
-        self.price = ["$10", "$15", "$20", "$25", "$30", "$35"]
+        self.price = ["1", "2", "3", "4", "5", "6"]
         self.button_text = [
             "Heal Potion",
             'Shield',
@@ -58,11 +60,11 @@ class Shop:
             '+1 life',
             '+3 shield (30s)',
             '5s invincibility',
-            'time slows down for 5s',
+            'Time slows down for 5s',
             'Attack the boss?',
             'Annihilation',
         ]
-        self.button_text_effect = [f'   {t}' for t in self.button_text_effect]  # append 3 spaces in front
+        self.button_text_effect = [f'   {t}' for t in self.button_text_effect]
         self.buttons = [
             pygame_gui.elements.UIButton(
                 relative_rect=self.button_positions[i],
@@ -75,10 +77,15 @@ class Shop:
                 manager=self.shop_screen,
             ) for i in range(6)
         ]
+        self.button_exit = pygame_gui.elements.UIButton(
+            relative_rect=pygame.Rect((43, 40), (74, 43)),
+            text='Exit',
+            manager=self.shop_screen,
+        )
         self.price_tag_button = [
             pygame_gui.elements.UIButton(
                 relative_rect=self.price_tag_position[i],
-                text=self.price[i],
+                text="$"+self.price[i],
                 object_id="price_tag",
                 manager=self.shop_screen,
             ) for i in range(6)
@@ -131,42 +138,54 @@ class Shop:
             text='Cancel',
             manager=self.confirm_screen
         )
+        self.button_number: int = 0
+        self.price_count = 0
         self.game = game
         self.running = False
         self.coin_gui = CoinGUI((960, 36), self.game)
+        self.hp_manager = HPManager((380, 25), self.game)
+        self.hp_manager.at_shop = True
+        self.inventory = Inventory(
+            [
+                assets_manager.images[f'{item_name}_shop'] for item_name in ('item_blank', 'item_healpotion', 'item_shield', 'item_star', 'item_clock', 'item_missile', 'item_earthquake')
+            ], self.game
+        )
+        self.inventory.at_shop = True
 
     def appear(self, window: pygame.Surface) -> None:
         clock = pygame.time.Clock()
         self.running = True
         confirmation = False
-
         while self.running:
             t = clock.get_time()
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     exit()
-
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_p:
-                        print("Shop closed")
-                        self.running = False
                 elif event.type == pygame.USEREVENT:
                     if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                         button = event.ui_element
-                        if button in (self.button_cancel, self.button_confirm):
+                        if button == self.button_exit:
+                            self.running = False
+                        elif button in (self.button_cancel, self.button_confirm):
                             if button == self.button_confirm:
                                 assets_manager.play_sound("select2")
+                                self.game.coins -= int(self.price_count)
+                                print(f'bought{self.button_number+1}')
+                                self.game.player.items[self.game.player.holding] = self.button_number+1
                             self._hide()
                             for i in range(6):
                                 self.price_tag_button[i].enable()
                             confirmation = False
                         elif button in self.price_tag_button:
                             assets_manager.play_sound("select1")
-                            button_number = self.price_tag_button.index(button)
+                            print(f'selected{self.button_number+1}')
+                            self.button_number = self.price_tag_button.index(button)
                             for i in range(6):
                                 self.price_tag_button[i].disable()
-                            self.display_buttons[button_number].show()
+                            self.display_buttons[self.button_number].show()
+                            self.price_count = self.price[self.button_number]
+                            print(self.price_count)
                             confirmation = True
 
                 self.shop_screen.process_events(event)
@@ -181,6 +200,11 @@ class Shop:
             self.shop_screen.draw_ui(window)
             self.coin_gui.update(t/1000)
             self.coin_gui.draw(window)
+            self.hp_manager.update(t/1000)
+            self.hp_manager.draw(window)
+            self.game.player.update(0)
+            self.inventory.draw(window)
+            self.checkcoins()
 
             if confirmation:  # have thing selected
                 window.blit(self.darken, (0, 0))
@@ -194,3 +218,11 @@ class Shop:
     def _hide(self):
         for button in self.display_buttons:
             button.hide()
+
+    def checkcoins(self):
+        for i in range(6):
+            if self.game.coins < int(self.price[i]):
+                self.price_tag_button[i].disable()
+            else:
+                self.price_tag_button[i].enable()
+
