@@ -122,7 +122,11 @@ class Spaceship(pygame.sprite.Sprite):
             self.x = min(1600, self.x + 5)
             self.activated_dur = 0.0
             self.is_shoot = False
+            self.ls_img = assets_manager.images['ls_shoot_none']
+            self.ls_frame = 0.0
             self.is_charge = False
+            self.lc_img = assets_manager.images['lc_charge_none']
+            self.lc_frame = 0.0
         else:
             self.activated_dur -= t
             if self.activated_dur <= 0:
