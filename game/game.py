@@ -108,11 +108,11 @@ class Game:
             value_range=(0.0, 1),
             manager=self.pause_screen
         )
-        self.restart_button2 = pygame_gui.elements.UIButton(
+        self.exit_button = pygame_gui.elements.UIButton(
             relative_rect=pygame.Rect(
-                (SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT // 2 + 100), (100, 50)
+                (SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2 + 75), (200, 50)
             ),
-            text='Menu',
+            text='Exit to Menu',
             manager=self.pause_screen
         )
 
@@ -126,6 +126,7 @@ class Game:
             text='Restart',
             manager=self.lose_screen
         )
+        # TODO: Maybe edit it to become like exit_button
         self.return_title_button = pygame_gui.elements.UIButton(
             relative_rect=pygame.Rect(
                 (SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT // 2), (100, 50)),
@@ -228,7 +229,7 @@ class Game:
                     break  # Otherwise will click both pause and return buttons
                 elif self.pause and event.ui_element == self.return_button:
                     self.pause = False
-                elif self.pause and event.ui_element == self.restart_button2:
+                elif self.pause and event.ui_element == self.exit_button:
                     return True
                 elif self.lose:
                     if event.ui_element == self.restart_button:
