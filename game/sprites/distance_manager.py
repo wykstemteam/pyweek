@@ -6,7 +6,7 @@ from game.constants import *
 
 class DistanceManager(pygame.sprite.Sprite):
     # TODO: Maybe consider another font
-    font = pygame.font.SysFont('Comic Sans MS', 40)
+    font = pygame.font.SysFont('arial', 40)
 
     def __init__(self, game) -> None:
         super().__init__()
