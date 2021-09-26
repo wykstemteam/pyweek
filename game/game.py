@@ -153,7 +153,7 @@ class Game:
 
     def reset(self):
         self.difficulty *= 2
-        self.distance_manager.dist_to_next_country = INITIAL_DISTANCE_TO_NEXT_COUNTRY
+        self.distance_manager.dist_to_next_country = INITIAL_DISTANCE_TO_NEXT_COUNTRY * (1 + (np.log2(self.difficulty) / 5))
         self.stage1_countdown = DEACTIVATE_DURATION
         self.stage2 = False
         self.dimming = False
