@@ -15,7 +15,7 @@ instruction_height = instruction_font.render("test", True, (0, 0, 0)).get_height
 instructions = [
     'Move: WASD',
     'Select item in inventory: 1 and 2',
-    'Use item: Mouse left click',
+    'Use item: mouse left click',
     'Press any key to start',
 ]
 
@@ -43,7 +43,7 @@ def blit_outlined_text(
 
 
 def menu(window: pygame.Surface):
-    assets_manager.play_music("sunrise")
+    assets_manager.play_music("tanukichis_adventure")
     assets_manager.play_sound("hi")
     screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
     settings_button = pygame_gui.elements.UIButton(

@@ -22,7 +22,7 @@ class Game:
     def __init__(self) -> None:
         self.clock = pygame.time.Clock()
 
-        self.cur_scene = Scenes.SPACE
+        self.cur_scene = Scenes.CITY
 
         # objects in all scenes
         # ================================================================================================
@@ -35,13 +35,8 @@ class Game:
         self.inventory = Inventory(
             [
                 assets_manager.images[f'{item_name}_inventory'] for item_name in (
-                    'item_blank',
-                    'item_healpotion',
-                    'item_shield',
-                    'item_star',
-                    'item_clock',
-                    'item_missile',
-                    'item_earthquake'
+                    'item_blank', 'item_healpotion', 'item_shield', 'item_star', 'item_clock',
+                    'item_missile', 'item_earthquake'
                 )
             ], self
         )
@@ -132,6 +127,13 @@ class Game:
         self.comets = CometManager(self.player_collision_group)
 
         self.set_scene_music()
+        self.play_quote()
+
+    def play_quote(self) -> None:
+        if self.cur_scene == Scenes.CITY:
+            assets_manager.play_sound("long_road")
+        elif self.cur_scene == Scenes.SPACE:
+            assets_manager.play_sound("crazy_universe")
 
     def set_scene_music(self) -> None:
         if self.cur_scene == Scenes.CITY:
@@ -168,6 +170,9 @@ class Game:
             self.bomber.__init__(self.player_collision_group)
             self.beach_rect.topleft = (0, 0)
 
+        self.set_scene_music()
+        self.play_quote()
+
     def event_process(self, window: pygame.Surface):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -186,7 +191,6 @@ class Game:
             self.lose_screen.process_events(event)
 
     def update(self, t: float, window: pygame.Surface) -> None:
-
         # objects in all scenes:
         if not self.lose:
             if self.bullet_time:
@@ -199,11 +203,11 @@ class Game:
                     if ITEM_BULLET_TIME_DURATION - self.bullet_time_t <= 1:
                         self.rate = -math.sqrt(
                             (ITEM_BULLET_TIME_DURATION - self.bullet_time_t) *
-                            (1 - BULLET_TIME_RATE) ** 2
+                            (1 - BULLET_TIME_RATE)**2
                         ) + 1
                     else:
                         self.rate = (1 - BULLET_TIME_RATE) * (
-                                (1 - self.bullet_time_t / (ITEM_BULLET_TIME_DURATION - 1)) ** 2
+                            (1 - self.bullet_time_t / (ITEM_BULLET_TIME_DURATION - 1))**2
                         ) + BULLET_TIME_RATE
                     t *= self.rate
 
@@ -217,7 +221,6 @@ class Game:
                 self.cur_scene = random.choice(list(Scenes))
                 # self.cur_scene = Scenes.CITY
                 self.reset()
-                self.set_scene_music()
 
                 # ==========================================
             elif self.stage1_countdown <= 0:
@@ -287,7 +290,7 @@ class Game:
                 self.buildings.update(t)
                 self.policecar.update(t)
                 if self.distance_manager.dist_to_next_country > 0:
-                    if self.distance_manager.dist_to_next_country > 30:
+                    if self.distance_manager.dist_to_next_country > 50:
                         self.bomber.random_activate(self.difficulty)
                 self.bomber.aim(self.player.rect.centerx, self.player.rect.centery)
                 self.bomber.update(t, self.difficulty)
@@ -303,10 +306,10 @@ class Game:
                         self.spaceship.random_activate(self.difficulty)
 
                     if (
-                            self.distance_manager.dist_to_next_country > 30 and self.spaceship.activated
-                            and self.spaceship.x == 1000 and not self.spaceship.is_charge
-                            and not self.spaceship.is_shoot and self.spaceship.activated_dur >= 10.0
-                            and random.randint(0, 1000) <= self.difficulty
+                        self.distance_manager.dist_to_next_country > 30 and self.spaceship.activated
+                        and self.spaceship.x == 1000 and not self.spaceship.is_charge
+                        and not self.spaceship.is_shoot and self.spaceship.activated_dur >= 10.0
+                        and random.randint(0, 1000) <= self.difficulty
                     ):
                         self.spaceship.is_charge = True
 
@@ -378,13 +381,14 @@ class Game:
     def trigger_lose(self) -> None:
         if not self.lose and not PLAYER_INVIN:
             assets_manager.play_music("ensolarado")
+            assets_manager.play_sound("die")
             self.lose = True
 
     def player_collision(self) -> None:
         for obj in self.player_collision_group:
             if (
-                    self.distance_manager.dist_to_next_country == 0
-                    and type(obj) not in (Coin, Obstacle)
+                self.distance_manager.dist_to_next_country == 0
+                and type(obj) not in (Coin, Obstacle)
             ):
                 continue
             if self.cur_scene == Scenes.SPACE and type(obj) in (Spaceship, Comet):

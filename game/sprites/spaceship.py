@@ -169,6 +169,5 @@ class Spaceship(pygame.sprite.Sprite):
                 and player.rect.colliderect(pygame.Rect(0, 220, 1500, 200))
                 and not self.earthquake
         ):
-            print(self.earthquake)
             player.hit()
 
