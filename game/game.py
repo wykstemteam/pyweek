@@ -127,6 +127,13 @@ class Game:
         self.comets = CometManager(self.player_collision_group)
 
         self.set_scene_music()
+        self.play_quote()
+
+    def play_quote(self) -> None:
+        if self.cur_scene == Scenes.CITY:
+            assets_manager.play_sound("long_road")
+        elif self.cur_scene == Scenes.SPACE:
+            assets_manager.play_sound("crazy_universe")
 
     def set_scene_music(self) -> None:
         if self.cur_scene == Scenes.CITY:
@@ -163,6 +170,9 @@ class Game:
             self.bomber.__init__(self.player_collision_group)
             self.beach_rect.topleft = (0, 0)
 
+        self.set_scene_music()
+        self.play_quote()
+
     def event_process(self, window: pygame.Surface):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -181,7 +191,6 @@ class Game:
             self.lose_screen.process_events(event)
 
     def update(self, t: float, window: pygame.Surface) -> None:
-
         # objects in all scenes:
         if not self.lose:
             if self.bullet_time:
@@ -212,7 +221,6 @@ class Game:
                 self.cur_scene = random.choice(list(Scenes))
                 # self.cur_scene = Scenes.CITY
                 self.reset()
-                self.set_scene_music()
 
                 # ==========================================
             elif self.stage1_countdown <= 0:
