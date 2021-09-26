@@ -302,6 +302,7 @@ class Game:
                 if self.earthquake_time <= 0:
                     self.earthquake = False
                     self.screen_shake_manager.shaking = False
+                    self.spaceship.earthquake = False
                 else:
                     self.spaceship.earthquake = True
                     for obj in self.player_collision_group:

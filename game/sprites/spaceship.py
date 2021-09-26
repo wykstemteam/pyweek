@@ -162,7 +162,6 @@ class Spaceship(pygame.sprite.Sprite):
         window.blit(self.image, self.rect)
         for bullet in self.bullets:
             bullet.draw(window)
-        self.earthquake = False
 
     def collision_player(self, player: Player):
         if (
@@ -170,5 +169,6 @@ class Spaceship(pygame.sprite.Sprite):
                 and player.rect.colliderect(pygame.Rect(0, 220, 1500, 200))
                 and not self.earthquake
         ):
+            print(self.earthquake)
             player.hit()
 
