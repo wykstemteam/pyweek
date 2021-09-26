@@ -366,7 +366,7 @@ class Game:
         # gui
         if self.lose:
             window.blit(assets_manager.images['darken'], pygame.Rect(0, 0, 0, 0))
-            window.blit(assets_manager.images['GameOver'], pygame.Rect(0, 0, 0, 0))
+            window.blit(assets_manager.images['GameOver'], pygame.Rect(0, 50, 0, 0))
             self.lose_screen.draw_ui(window)
         else:
             self.game_screen.draw_ui(window)
