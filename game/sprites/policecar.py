@@ -45,6 +45,8 @@ class PoliceCar(pygame.sprite.Sprite):
         self.player_collision_group.add(self)
 
         self.activated = True
+        self.temp_deactivated = False
+        self.temp_activated_t = POLICECAR_DEACTIVATE_DURATION
 
     def shoot(self, bullet_speed):
         new_bullet = Bullet(self.bullet_image, self.rect.center, bullet_speed, 0)
@@ -62,7 +64,7 @@ class PoliceCar(pygame.sprite.Sprite):
             self.rect.centery += speed * t
 
     def update(self, t):
-        if self.activated:
+        if self.activated and not self.temp_deactivated:
             self.rect.left = min(20, self.rect.left + 20 * t)
             self.shadow_rect = self.rect.copy()
             self.shadow_rect.topleft = self.shadow_rect.topleft + pygame.Vector2(-5, 5)
@@ -72,6 +74,16 @@ class PoliceCar(pygame.sprite.Sprite):
             self.shadow_rect = self.rect.copy()
             self.shadow_rect.topleft = self.shadow_rect.topleft + pygame.Vector2(-5, 5)
             self.bullets.update(t)
+            return
+
+        if self.temp_deactivated:
+            self.rect.right = max(0, self.rect.right - 20 * t)
+            self.shadow_rect = self.rect.copy()
+            self.shadow_rect.topleft = self.shadow_rect.topleft + pygame.Vector2(-5, 5)
+            self.bullets.update(t)
+            self.temp_activated_t -= t
+            if self.temp_activated_t <= 0:
+                self.temp_deactivated = False
             return
 
         if self.state == PoliceCar.State.RANDOM:
@@ -134,6 +146,8 @@ class PoliceCar(pygame.sprite.Sprite):
     def kill(self) -> None:
         self.bullets.empty()
 
-    def player_hit(self, player):  # should be called when collided by someone
-        # animation
-        pass
+    def missile_hit(self, missile):
+        self.temp_deactivated = True
+        self.temp_activated_t = POLICECAR_DEACTIVATE_DURATION
+        missile.hit()
+

@@ -156,3 +156,7 @@ class UFO(pygame.sprite.Sprite):
         window.blit(self.image, self.rect)
         for bullet in self.bullets:
             bullet.draw(window)
+
+    def missile_hit(self, missile):
+        self.activated = False
+        missile.hit()

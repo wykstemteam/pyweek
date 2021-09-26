@@ -34,6 +34,8 @@ class Bomber(pygame.sprite.Sprite):
 
         self.dir = 0.0
         self.activated = False
+        self.temp_deactivated = False
+        self.temp_activated_t = BOMBER_DEACTIVATE_DURATION
 
     def aim(self, px: float, py: float) -> None:
         self.dir = np.arctan2(self.rect.centery - py, px - self.rect.centerx)
@@ -56,6 +58,16 @@ class Bomber(pygame.sprite.Sprite):
             self.activated = True
 
     def update(self, t: float, difficulty) -> None:
+        if self.temp_deactivated:
+            self.rect.right = max(0, self.rect.right - 100 * t)
+            self.shadow_rect = self.rect.copy()
+            self.shadow_rect.topleft = self.shadow_rect.topleft + pygame.Vector2(-5, 5)
+            self.bullets.update(t)
+            self.temp_activated_t -= t
+            if self.temp_activated_t <= 0:
+                self.temp_deactivated = False
+            return
+
         if self.activated:
             self.x += 4
             self.shoot_cooldown -= t
@@ -80,3 +92,8 @@ class Bomber(pygame.sprite.Sprite):
         window.blit(self.image, self.rect)
         for bullet in self.bullets:
             bullet.draw(window)
+
+    def missile_hit(self, missile):
+        self.temp_deactivated = True
+        self.temp_activated_t = POLICECAR_DEACTIVATE_DURATION
+        missile.hit()

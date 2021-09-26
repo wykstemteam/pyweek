@@ -30,6 +30,7 @@ class Game:
             assets_manager.images['motorbike'], SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2, self
         )
         self.player_collision_group = pygame.sprite.Group()
+        self.missile_collision_group = pygame.sprite.Group()
         self.laser_manager = LaserManager(self.player_collision_group)
         self.arrow = Arrow(assets_manager.images['arrow'], self.player)
         self.inventory = Inventory(
@@ -112,6 +113,8 @@ class Game:
             assets_manager.images['bullet'], self.player_collision_group
         )
         self.bomber = Bomber(self.player_collision_group)
+        self.missile_collision_group.add(self.policecar)
+        self.missile_collision_group.add(self.bomber)
         self.buildings = BuildingManager()
         self.obstacle_manager = ObstacleManager(self.player_collision_group)
         self.beach_image = assets_manager.images['beach_full']
@@ -125,6 +128,8 @@ class Game:
         self.spaceship = Spaceship(self.player_collision_group)
         self.ufo = UFO(self.player_collision_group)
         self.comets = CometManager(self.player_collision_group)
+        self.missile_collision_group.add(self.ufo)
+        self.missile_collision_group.add(self.spaceship)
 
         self.set_scene_music()
         self.play_quote()
@@ -250,6 +255,7 @@ class Game:
             self.fade_in_manager.update(t)
             self.player.update(t if not self.bullet_time else t / self.rate, self.cur_scene)
             self.player_collision()
+            self.missile_collision()
             if self.cur_scene == Scenes.CITY and self.player.real_y < BUILDING_HEIGHT:
                 self.player.real_y = BUILDING_HEIGHT
                 self.player.vy = 0
@@ -403,6 +409,12 @@ class Game:
                         self.trigger_lose()
                     elif type(obj) == Obstacle:
                         self.player.resolve_collision(obj)
+
+    def missile_collision(self) -> None:
+        for obj in self.missile_collision_group:
+            for missile in self.player.missiles:
+                if missile.rect.colliderect(obj.rect):
+                    obj.missile_hit(missile)
 
     def kill_bullets(self):
         for obj in self.player_collision_group:

@@ -102,7 +102,7 @@ class Player(pygame.sprite.Sprite):
                     self.acc(PLAYER_ACC, 0)
                 if keys[pygame.K_a]:
                     self.acc(-PLAYER_ACC, 0)
-        else:  # touches right border
+        elif self.inputtable:  # touches right border
             self.real_x = SCREEN_WIDTH - PLAYER_WIDTH
             self.vx = -BACKGROUND_VELOCITY
 
