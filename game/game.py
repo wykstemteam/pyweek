@@ -22,7 +22,7 @@ class Game:
     def __init__(self) -> None:
         self.clock = pygame.time.Clock()
 
-        self.cur_scene = Scenes.CITY
+        self.cur_scene = Scenes.SPACE
 
         # objects in all scenes
         # ================================================================================================
