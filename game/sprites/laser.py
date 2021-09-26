@@ -14,7 +14,9 @@ class Laser(pygame.sprite.Sprite):
         self.image.set_alpha(0)
         pos = Vector2(pos)
         dx, dy = 0, 0
-        if abs(dir) >= 3.14159/2:
+        if dir == 0:
+            pass
+        elif abs(dir) >= 3.14159/2:
             dx = SCREEN_WIDTH/2 - pos.x
             dy = dx * np.tan(dir)
         else:

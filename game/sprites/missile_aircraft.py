@@ -11,7 +11,7 @@ class MissileAircraft(pygame.sprite.Sprite):
 
         self.image = image
         self.rect = self.image.get_rect()
-        self.rect.topleft = (-MISSILE_AIRCRAFT_WIDTH, pos)
+        self.rect.center = (-MISSILE_AIRCRAFT_WIDTH, pos)
         self.explode = None
         self.t = 0.0
 
