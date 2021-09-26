@@ -52,14 +52,14 @@ class Shop:
             'Superstar',
             'Bullet Time',
             'Missile',
-            'Gravitation',
+            'Earthquake',
         ]
         self.button_text_effect = [
-            '+1 life, instantly used if currently damaged',
-            '+3 shield (30s)',
-            '5s invincibility',
-            'Time slows down for 5s',
-            'Attack the boss?',
+            '+1 hp, instantly used if currently damaged',
+            '+3 shield (15s)',
+            '10s invincibility',
+            'Time slows down for 15s',
+            'Attack enemies',
             'Annihilation',
         ]
         self.button_text_effect = [f'   {t}' for t in self.button_text_effect]
