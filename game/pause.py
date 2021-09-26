@@ -1,8 +1,8 @@
 import pygame
 import pygame_gui
 
-from game.constants import *
 from game.assets_manager import assets_manager
+from game.constants import *
 from game.settings import get_audio_controls
 
 
@@ -10,18 +10,14 @@ def run(window: pygame.Surface):
     previous_screen = window.copy()
     pause_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
     pause = True
-    music_label, music_slider, sound_label, sound_slider = get_audio_controls(
-        manager=pause_screen
-    )
+    music_label, music_slider, sound_label, sound_slider = get_audio_controls(manager=pause_screen)
     continue_button = pygame_gui.elements.UIButton(
-        relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 170, SCREEN_HEIGHT // 2 + 80), (130, 50)),
+        relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 172, SCREEN_HEIGHT // 2 + 80), (130, 50)),
         text='Continue',
         manager=pause_screen
     )
     exit_button = pygame_gui.elements.UIButton(
-        relative_rect=pygame.Rect(
-            (SCREEN_WIDTH // 2 - 30, SCREEN_HEIGHT // 2 + 80), (200, 50)
-        ),
+        relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 28, SCREEN_HEIGHT // 2 + 80), (200, 50)),
         object_id='#exit_button',
         text='Exit to Menu',
         manager=pause_screen
@@ -54,6 +50,3 @@ def run(window: pygame.Surface):
         pygame.display.flip()
 
         cock.tick(60)
-
-
-
