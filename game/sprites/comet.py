@@ -1,3 +1,4 @@
+from game.sprites.laser import Laser
 import random
 
 import numpy as np
@@ -26,25 +27,29 @@ class Comet(pygame.sprite.Sprite):
         )
         self.remaining_time = 30.0
         self.explode = None
+        self.laser = Laser(self.rect.center, self.dir)
 
     def update(self, t: float, difficulty) -> None:
-        if not self.explode:
-            self.x += t * np.cos(self.dir) * 200 * min(5, difficulty)
-            self.y += t * np.sin(self.dir) * 200 * min(5, difficulty)
-            self.hitbox = pygame.Rect(
-                (self.x - 15 + 70 * np.cos(self.dir), self.y - 15 + 70 * np.sin(self.dir)), (30, 30)
-            )
-            self.image = pygame.transform.rotate(
-                assets_manager.images['comet'], ((np.pi - self.dir) * 360) / (2 * np.pi)
-            )
-            self.rect = self.image.get_rect(center=self.image.get_rect(center=(self.x, self.y)).center)
-            self.remaining_time -= t
-            if self.remaining_time <= 0:
+        self.laser.update(t)
+        if self.laser.t > LASERREMAINTIME:
+            if not self.explode:
+                self.x += t * np.cos(self.dir) * 200 * min(5, difficulty)
+                self.y += t * np.sin(self.dir) * 200 * min(5, difficulty)
+                self.hitbox = pygame.Rect(
+                    (self.x - 15 + 70 * np.cos(self.dir), self.y - 15 + 70 * np.sin(self.dir)), (30, 30)
+                )
+                self.image = pygame.transform.rotate(
+                    assets_manager.images['comet'], ((np.pi - self.dir) * 360) / (2 * np.pi)
+                )
+                self.rect = self.image.get_rect(center=self.image.get_rect(center=(self.x, self.y)).center)
+                self.remaining_time -= t
+                if self.remaining_time <= 0:
+                    self.kill()
+            elif not self.explode.update(t):
                 self.kill()
-        elif not self.explode.update(t):
-            self.kill()
 
     def draw(self, window: pygame.Surface) -> None:
+        self.laser.draw(window)
         if self.image:
             window.blit(self.image, self.rect)
             # pygame.draw.rect(window, (255, 255, 255), self.hitbox)
