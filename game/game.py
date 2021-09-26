@@ -69,18 +69,18 @@ class Game:
 
         # pause_screen
         self.pause_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
-        self.return_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect((SCREEN_WIDTH - 100 - 10, 10), (100, 50)),
-            text='Return',
-            manager=self.pause_screen
-        )
         self.pause = False
         self.music_label, self.music_slider, self.sound_label, self.sound_slider = get_audio_controls(
             manager=self.pause_screen
         )
+        self.continue_button = pygame_gui.elements.UIButton(
+            relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 170, SCREEN_HEIGHT // 2 + 80), (130, 50)),
+            text='Continue',
+            manager=self.pause_screen
+        )
         self.exit_button = pygame_gui.elements.UIButton(
             relative_rect=pygame.Rect(
-                (SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2 + 80), (200, 50)
+                (SCREEN_WIDTH // 2 - 30, SCREEN_HEIGHT // 2 + 80), (200, 50)
             ),
             object_id='#exit_button',
             text='Exit to Menu',
@@ -197,7 +197,7 @@ class Game:
                 if not self.pause and not self.lose and event.ui_element == self.pause_button:
                     self.pause = True
                     break  # Otherwise will click both pause and return buttons
-                elif self.pause and event.ui_element == self.return_button:
+                elif self.pause and event.ui_element == self.continue_button:
                     self.pause = False
                 elif self.pause and event.ui_element == self.exit_button:
                     return True
