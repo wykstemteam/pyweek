@@ -1,9 +1,10 @@
 Images
 bomber B-17: https://opengameart.org/content/top-down-planes-sprites-pack
 Space background: https://opengameart.org/content/space-backgrounds-1
-Red spaceship: https://opengameart.org/content/large-spaceship
 Policecar: https://opengameart.org/content/2d-car-pack-0
 laserbeam animation (with reference to): https://www.youtube.com/watch?v=wCNqadvtVZ0
+health bottle: https://pngtree.com/freepng/cartoon-game-red-magic-potion-bottle_5773129.html
+spaceship: https://www.pngegg.com/en/png-zogku
 
 Music
 All: dova syndrome https://dova-s.jp/
