@@ -193,7 +193,7 @@ class Game:
             elif event.type == pygame.USEREVENT and event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                 if self.lose:
                     if event.ui_element == self.restart_button:
-                        self.__init__()  # Reinitialize
+                        self.__init__(self.highscore)  # Reinitialize
                     elif event.ui_element == self.exit_button:
                         return True  # Stop gaming
                 elif event.ui_element == self.pause_button:
