@@ -229,6 +229,7 @@ class Game:
             # shop
             if self.stage2:
                 assets_manager.play_music("mid_afternoon_mood")
+                self.add_scene_score()
                 self.shop_scene.appear(window)
                 # leaving shop
                 self.clock.tick(60)
@@ -449,12 +450,15 @@ class Game:
         self.earthquake = True
         self.earthquake_time = ITEM_EARTHQUAKE_DURATION
 
-    def add_coin(self):
+    def add_coin_score(self):
         self.coins += 1
         self.score += int(np.log2(2*self.difficulty)) * COIN_SCORE_MULT
 
-    def add_dist(self, dist):
+    def add_dist_score(self, dist):
         self.score += int(np.log2(2*self.difficulty)) * DIST_SCORE_MULT * dist
+
+    def add_scene_score(self):
+        self.score += int(np.log2(2*self.difficulty)) * SCENE_SCORE_MULT
 
     def run(self, window) -> None:
         previous_pause = False
