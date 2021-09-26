@@ -24,6 +24,8 @@ class Shield(pygame.sprite.Sprite):
                 self.rect.center = pos
             else:
                 self.activate = False
+        else:
+            self.shield_hp = 0
 
     def turn_on(self) -> None:
         self.activate = True

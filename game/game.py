@@ -156,6 +156,8 @@ class Game:
         self.dimming = False
         self.darken_alpha = 0
         self.coin_manager.__init__(self.player_collision_group)
+        self.player.item_invincible = False
+        self.player.shield.activate = False
         self.player.inputtable = True
         self.player.vx = -BACKGROUND_VELOCITY
         self.player.vy = 0.0
