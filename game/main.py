@@ -9,7 +9,7 @@ from game.game import Game
 from game.menu import menu
 
 window = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("Rock: The Criminal")
+pygame.display.set_caption(GAME_TITLE)
 
 def main() -> None:
     highscore = 0

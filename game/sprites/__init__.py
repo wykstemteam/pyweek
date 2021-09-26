@@ -22,6 +22,7 @@ from .obstacle_manager import ObstacleManager
 from .player import Player
 from .policecar import PoliceCar
 from .road import Road
+from .round_counter import RoundCounter
 from .shield import Shield
 from .spaceship import Spaceship
 from .ufo import UFO
@@ -30,5 +31,5 @@ __all__ = [
     'Arrow', 'Bomber', 'Building', 'BuildingManager', 'Bullet', 'MissileAircraft', 'Comet', 'Coin',
     'CoinGUI', 'CoinManager', 'Comet', 'CometManager', 'DistanceManager', 'Explode',
     'FadeInManager', 'HPManager', 'Inventory', 'LaserManager', 'Laser', 'Missile', 'Obstacle',
-    'ObstacleManager', 'Player', 'PoliceCar', 'Road', 'Shield', 'Spaceship', 'UFO'
+    'ObstacleManager', 'Player', 'PoliceCar', 'Road', 'RoundCounter', 'Shield', 'Spaceship', 'UFO'
 ]

@@ -1,5 +1,5 @@
-from typing import Tuple
 import json
+from typing import Tuple
 
 import pygame
 import pygame_gui

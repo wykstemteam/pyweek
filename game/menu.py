@@ -105,7 +105,7 @@ def menu(window: pygame.Surface, highscore):
         blit_outlined_text(
             window=window,
             font=title_font,
-            text="Rock: The Criminal",
+            text=GAME_TITLE,
             outline_size=2,
             outline_color=(0, 0, 0),
             color=(255, 255, 0),

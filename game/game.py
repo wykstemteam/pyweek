@@ -12,7 +12,6 @@ from game.pause import pause
 from game.screen_shake_manager import ScreenShakeManager
 from game.shop import Shop
 from game.sprites import *
-from game.sprites.round_counter import RoundCounter
 
 font = pygame.font.Font(FONT_PATH, 40)
 
