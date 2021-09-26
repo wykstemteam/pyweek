@@ -122,20 +122,24 @@ class Player(pygame.sprite.Sprite):
         if left_button_pressed and self.inputtable and not (mx >= 1390 and my <= 60 and mx <= 1490 and my >= 10):
             if self.items[self.holding] == 1:
                 if self.hp < 4:
-                    # FIXME: play some sound effect maybe
+                    assets_manager.play_sound("heal")
                     self.hp += 1
                     self.items[self.holding] = 0
             elif self.items[self.holding] == 2:  # shield
+                assets_manager.play_sound("shield_equip")
                 self.shield.turn_on()
                 self.items[self.holding] = 0
             elif self.items[self.holding] == 3:  # invincible
+                assets_manager.play_sound("star")
                 self.become_item_invincible()
                 self.items[self.holding] = 0
             elif self.items[self.holding] == 4:  # bullet time
+                assets_manager.play_sound("slow_motion")
                 self.game.bullet_time = True
                 self.game.bullet_time_t = ITEM_BULLET_TIME_DURATION
                 self.items[self.holding] = 0
             elif self.items[self.holding] == 5:
+                assets_manager.play_sound("launch_missile")
                 self.vx -= np.cos(self.dir) * 100
                 self.vy += np.sin(self.dir) * 100
                 self.shoot_missile()
