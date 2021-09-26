@@ -45,7 +45,7 @@ class Shop:
             pygame.Rect((663, 475), (160, 47)),
             pygame.Rect((1142, 475), (160, 47)),
         ]
-        self.price = ["$10", "$15", "$20", "$25", "$30", "$35"]
+        self.price = ["10", "15", "20", "25", "30", "35"]
         self.button_text = [
             "Heal Potion",
             'Shield',
@@ -78,14 +78,14 @@ class Shop:
         self.price_tag_button = [
             pygame_gui.elements.UIButton(
                 relative_rect=self.price_tag_position[i],
-                text=self.price[i],
+                text="$"+self.price[i],
                 object_id="price_tag",
                 manager=self.shop_screen,
             ) for i in range(6)
         ]
         self.confirm_screen = pygame_gui.UIManager(
             (SCREEN_WIDTH, SCREEN_HEIGHT), 'shop_display_theme.json'
-        )
+        ) 
         self.confirm_screen.preload_fonts(
             [
                 {
@@ -139,7 +139,6 @@ class Shop:
         clock = pygame.time.Clock()
         self.running = True
         confirmation = False
-
         while self.running:
             t = clock.get_time()
 
@@ -181,6 +180,7 @@ class Shop:
             self.shop_screen.draw_ui(window)
             self.coin_gui.update(t/1000)
             self.coin_gui.draw(window)
+            self.checkcoins()
 
             if confirmation:  # have thing selected
                 window.blit(self.darken, (0, 0))
@@ -194,3 +194,10 @@ class Shop:
     def _hide(self):
         for button in self.display_buttons:
             button.hide()
+
+
+    def checkcoins(self):
+        for i in range(6):
+            if self.game.coins < int(self.price[i]):
+                self.price_tag_button[i].disable()
+
