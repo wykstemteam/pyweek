@@ -70,7 +70,7 @@ class UFO(pygame.sprite.Sprite):
                         UFO_BULLET_SPEED * np.sin(self.rotate_rad + (i * 2 * np.pi / 16))
                     )
                 )
-        elif self.bullet_pattern == 2:  # double spiral
+        elif self.bullet_pattern == 3:  # double spiral
             for i in range(1, 16, 2):
                 new_bullet.append(
                     self.bullet(
@@ -85,7 +85,7 @@ class UFO(pygame.sprite.Sprite):
                         UFO_BULLET_SPEED * np.sin(np.pi - (self.rotate_rad + (i * 2 * np.pi / 16)))
                     )
                 )
-        elif self.bullet_pattern == 3:  # sun
+        elif self.bullet_pattern == 2:  # sun
             if self.circle_flag:
                 self.circle_flag = False
                 for i in range(1, 32, 2):
@@ -122,7 +122,7 @@ class UFO(pygame.sprite.Sprite):
             self.activated = True
             self.activated_dur = random.uniform(30.0, 50.0)
 
-    def update(self, t: float) -> None:
+    def update(self, t: float, difficulty) -> None:
         if not self.activated:
             self.cenx = min(2050, self.cenx + 5)
             self.activated_dur = 0.0
@@ -143,6 +143,8 @@ class UFO(pygame.sprite.Sprite):
 
         if self.pattern_dur <= 0.0:
             self.bullet_pattern = random.randint(0, 3)
+            if difficulty < 4:
+                self.bullet_pattern = random.randint(0, 2)
             self.pattern_dur = random.uniform(5, 10)
 
         self.shoot_cooldown -= t

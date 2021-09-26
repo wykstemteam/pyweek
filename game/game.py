@@ -336,7 +336,7 @@ class Game:
                         self.bomber.random_activate(self.difficulty)
                 self.bomber.aim(self.player.rect.centerx,
                                 self.player.rect.centery)
-                self.bomber.update(t)
+                self.bomber.update(t, self.difficulty)
                 self.obstacle_manager.update(t)
 
         # objects in scene.SPACE:
@@ -358,7 +358,7 @@ class Game:
                     self.comets.add(self.difficulty)
 
                 self.spaceship.update(t)
-                self.ufo.update(t)
+                self.ufo.update(t, self.difficulty)
                 self.comets.update(t, self.difficulty)
 
         # gui
