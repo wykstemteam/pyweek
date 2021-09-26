@@ -51,7 +51,8 @@ class Game:
         self.screen_shake_manager = ScreenShakeManager()
 
         # self.screen_shake_manager.shaking = True
-        self.fade_in_manager = FadeInManager(assets_manager.images['gradient_line'])
+        self.fade_in_manager = FadeInManager(
+            assets_manager.images['gradient_line'])
         self.fade_in_manager.start_fade_in()
 
         # Health_bar
@@ -66,15 +67,18 @@ class Game:
         self.difficulty = INITIAL_DIFFICULTY
 
         # game_screen
-        self.game_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
+        self.game_screen = pygame_gui.UIManager(
+            (SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
         self.pause_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect((SCREEN_WIDTH - 100 - 10, 10), (100, 50)),
+            relative_rect=pygame.Rect(
+                (SCREEN_WIDTH - 100 - 10, 10), (100, 50)),
             text='Pause',
             manager=self.game_screen
         )
 
         # lose_screen
-        self.lose_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
+        self.lose_screen = pygame_gui.UIManager(
+            (SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
         self.restart_button = pygame_gui.elements.UIButton(
             relative_rect=pygame.Rect(
                 (SCREEN_WIDTH // 2 - 172, SCREEN_HEIGHT // 2 + 75), (130, 50)
@@ -83,7 +87,8 @@ class Game:
             manager=self.lose_screen
         )
         self.exit_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 28, SCREEN_HEIGHT // 2 + 75), (200, 50)),
+            relative_rect=pygame.Rect(
+                (SCREEN_WIDTH // 2 - 28, SCREEN_HEIGHT // 2 + 75), (200, 50)),
             text='Exit to Menu',
             manager=self.lose_screen
         )
@@ -222,7 +227,8 @@ class Game:
                         ) + 1
                     else:
                         self.rate = (1 - BULLET_TIME_RATE) * (
-                            (1 - self.bullet_time_t / (ITEM_BULLET_TIME_DURATION - 1))**2
+                            (1 - self.bullet_time_t /
+                             (ITEM_BULLET_TIME_DURATION - 1))**2
                         ) + BULLET_TIME_RATE
                     t *= self.rate
 
@@ -262,7 +268,8 @@ class Game:
             self.player.hp = max(self.player.hp, 0)
 
             self.fade_in_manager.update(t)
-            self.player.update(t if not self.bullet_time else t / self.rate, self.cur_scene)
+            self.player.update(
+                t if not self.bullet_time else t / self.rate, self.cur_scene)
             self.player_collision()
             self.missile_collision()
             if self.cur_scene == Scenes.CITY and self.player.real_y < BUILDING_HEIGHT:
@@ -349,7 +356,8 @@ class Game:
         if self.cur_scene == Scenes.CITY:
             self.roads.draw(window)
         if self.cur_scene == Scenes.SPACE:
-            window.blit(assets_manager.images['space_background1'], pygame.Rect(0, -200, 0, 0))
+            window.blit(
+                assets_manager.images['space_background1'], pygame.Rect(0, -200, 0, 0))
 
         # objects on the ground:
         self.coin_manager.draw(window)
@@ -376,25 +384,23 @@ class Game:
 
         # gui
         if self.lose:
-            window.blit(assets_manager.images['darken'], pygame.Rect(0, 0, 0, 0))
-            window.blit(assets_manager.images['GameOver'], pygame.Rect(0, 0, 0, 0))
+            window.blit(
+                assets_manager.images['darken'], pygame.Rect(0, 0, 0, 0))
+            window.blit(
+                assets_manager.images['GameOver'], pygame.Rect(0, 0, 0, 0))
             self.lose_screen.draw_ui(window)
             score_image = font.render(
                 f'Score: {self.score} (Highest: {self.highscore})', True, (255, 255, 255)
             )
             score_rect = score_image.get_rect()
-            score_rect.center = (SCREEN_WIDTH / 2 - 90, SCREEN_HEIGHT / 2 - 10)
+            score_rect.center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 10)
             window.blit(score_image, score_rect)
             round_image = font.render(
-                f'Rounds survived: {self.round_counter.rounds_survived}', True, (255, 255, 255)
+                f'Rounds survived: {self.round_counter.rounds_survived}', True, (
+                    255, 255, 255)
             )
             round_rect = score_rect.move(0, 50)
             window.blit(round_image, round_rect)
-            hint_image = font.render(
-                f'Press "Exit to Menu" to save highscore', True, (255, 255, 255)
-            )
-            hint_rect = score_rect.move(0, 170)
-            window.blit(hint_image, hint_rect)
 
         else:
             self.game_screen.draw_ui(window)
@@ -469,7 +475,8 @@ class Game:
         self.highscore = max(self.highscore, self.score)
 
     def add_dist_score(self, dist):
-        self.score += int(np.log2(2 * self.difficulty)) * DIST_SCORE_MULT * dist
+        self.score += int(np.log2(2 * self.difficulty)) * \
+            DIST_SCORE_MULT * dist
         self.highscore = max(self.highscore, self.score)
 
     def add_scene_score(self):
