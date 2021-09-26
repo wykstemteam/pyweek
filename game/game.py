@@ -23,7 +23,7 @@ class Game:
     def __init__(self) -> None:
         self.clock = pygame.time.Clock()
 
-        self.cur_scene = Scenes.CITY
+        self.cur_scene = Scenes.SPACE
 
         # objects in all scenes
         # ================================================================================================
@@ -174,7 +174,7 @@ class Game:
         # ================================================================================================
         self.spaceship = Spaceship(self.player_collision_group)
         self.ufo = UFO(self.player_collision_group)
-        self.spaceship.activated = True
+        self.comets = []
 
         self.set_scene_music()
 
@@ -208,6 +208,7 @@ class Game:
             self.obstacle_manager.reached_checkpoint = False
             self.bomber.__init__(self.player_collision_group)
             self.beach_rect.topleft = (0, 0)
+        self.comets = [c for c in self.comets if c.remaining_time > 100000]
 
     def event_process(self, window: pygame.Surface):
         for event in pygame.event.get():
@@ -242,6 +243,7 @@ class Game:
             self.lose_screen.process_events(event)
 
     def update(self, t: float, window: pygame.Surface) -> None:
+
         # objects in all scenes:
         if not self.lose and not self.pause:
             if self.bullet_time:
@@ -351,8 +353,15 @@ class Game:
                             and self.spaceship.activated_dur >= 10.0
                             and random.randint(0, 1000) <= self.difficulty):
                         self.spaceship.is_charge = True
+
+                    if random.randint(0, 500) <= self.difficulty:
+                        self.comets.append(Comet(self.player_collision_group))
+
                 self.spaceship.update(t)
                 self.ufo.update(t)
+                for c in self.comets:
+                    c.update(t, self.difficulty)
+                self.comets = [c for c in self.comets if c.remaining_time > 0]
 
         # gui
         self.game_screen.update(t)
@@ -390,6 +399,8 @@ class Game:
         elif self.cur_scene == Scenes.SPACE:
             self.spaceship.draw(window)
             self.ufo.draw(window)
+            for c in self.comets:
+                c.draw(window)
 
         # gui
         if self.pause:
