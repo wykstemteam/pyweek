@@ -117,13 +117,14 @@ class Player(pygame.sprite.Sprite):
                 self.add_coin()
                 assets_manager.play_sound("coin")
 
-
+        mx = pygame.mouse.get_pos()[0]
+        my = pygame.mouse.get_pos()[1]
         if keys[pygame.K_1]:
             self.holding = 1
         elif keys[pygame.K_2]:
             self.holding = 2
         left_button_pressed = pygame.mouse.get_pressed(num_buttons=3)[0]
-        if left_button_pressed and self.inputtable:
+        if left_button_pressed and self.inputtable and not (mx >= 1390 and my <= 60 and mx <= 1490 and my >= 10):
             if self.items[self.holding] == 1:
                 if self.hp < 4:
                     # FIXME: play some sound effect maybe
