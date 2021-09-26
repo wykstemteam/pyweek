@@ -167,6 +167,7 @@ class Game:
         self.player.real_y = SCREEN_HEIGHT / 2
         self.spaceship.activated = False
         self.ufo.activated = False
+        self.comets.kill()
         if self.cur_scene == Scenes.CITY:
             self.policecar.activated = True
             for road in self.roads:
@@ -176,7 +177,6 @@ class Game:
             self.obstacle_manager.reached_checkpoint = False
             self.bomber.__init__(self.player_collision_group)
             self.beach_rect.topleft = (0, 0)
-        self.comets.kill()
 
     def event_process(self, window: pygame.Surface):
         for event in pygame.event.get():
