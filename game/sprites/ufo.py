@@ -1,3 +1,4 @@
+from math import log2
 import random
 from typing import List
 
@@ -68,23 +69,29 @@ class UFO(pygame.sprite.Sprite):
             for i in range(1, 16, 2):
                 new_bullet.append(
                     self.bullet(
-                        UFO_BULLET_SPEED * np.cos(self.rotate_rad + (i * 2 * np.pi / 16)),
-                        UFO_BULLET_SPEED * np.sin(self.rotate_rad + (i * 2 * np.pi / 16))
+                        UFO_BULLET_SPEED *
+                        np.cos(self.rotate_rad + (i * 2 * np.pi / 16)),
+                        UFO_BULLET_SPEED *
+                        np.sin(self.rotate_rad + (i * 2 * np.pi / 16))
                     )
                 )
         elif self.bullet_pattern == 3:  # double spiral
             for i in range(1, 16, 2):
                 new_bullet.append(
                     self.bullet(
-                        UFO_BULLET_SPEED * np.cos(self.rotate_rad + (i * 2 * np.pi / 16)),
-                        UFO_BULLET_SPEED * np.sin(self.rotate_rad + (i * 2 * np.pi / 16))
+                        UFO_BULLET_SPEED *
+                        np.cos(self.rotate_rad + (i * 2 * np.pi / 16)),
+                        UFO_BULLET_SPEED *
+                        np.sin(self.rotate_rad + (i * 2 * np.pi / 16))
                     )
                 )
             for i in range(1, 16, 2):
                 new_bullet.append(
                     self.bullet(
-                        UFO_BULLET_SPEED * np.cos(np.pi - (self.rotate_rad + (i * 2 * np.pi / 16))),
-                        UFO_BULLET_SPEED * np.sin(np.pi - (self.rotate_rad + (i * 2 * np.pi / 16)))
+                        UFO_BULLET_SPEED *
+                        np.cos(np.pi - (self.rotate_rad + (i * 2 * np.pi / 16))),
+                        UFO_BULLET_SPEED *
+                        np.sin(np.pi - (self.rotate_rad + (i * 2 * np.pi / 16)))
                     )
                 )
         elif self.bullet_pattern == 2:  # sun
@@ -108,11 +115,12 @@ class UFO(pygame.sprite.Sprite):
                     )
         return new_bullet
 
-    def shoot(self) -> None:
+    def shoot(self, difficulty) -> None:
         if self.shoot_cooldown > 0:
             return
 
-        self.shoot_cooldown = UFO_SHOOT_COOLDOWN
+        self.shoot_cooldown = UFO_SHOOT_COOLDOWN * \
+            (1-0.1*(5-min(log2(difficulty*2), 5)))
         for bullet in self.get_bullet_pattern():
             self.bullets.add(bullet)
             self.player_collision_group.add(bullet)
@@ -138,7 +146,8 @@ class UFO(pygame.sprite.Sprite):
         if self.rotate_deg <= -360:
             self.rotate_deg = 0.0
         self.rotate_rad = (self.rotate_deg / 360.0) * 2 * np.pi
-        self.image = pygame.transform.rotate(assets_manager.images['UFO'], self.rotate_deg)
+        self.image = pygame.transform.rotate(
+            assets_manager.images['UFO'], self.rotate_deg)
         self.rect = self.image.get_rect(
             center=self.image.get_rect(center=(self.cenx, self.ceny)).center
         )
@@ -151,7 +160,7 @@ class UFO(pygame.sprite.Sprite):
 
         self.shoot_cooldown -= t
         self.pattern_dur -= t
-        self.shoot()
+        self.shoot(difficulty)
         self.bullets.update(t)
 
     def draw(self, window: pygame.Surface) -> None:

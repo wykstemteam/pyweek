@@ -1,3 +1,4 @@
+from math import log2
 import random
 from typing import List
 
@@ -58,57 +59,68 @@ class Spaceship(pygame.sprite.Sprite):
         if self.bullet_pattern == 0:
             return [
                 Bullet(
-                    self.bullet_image, pygame.Vector2(SCREEN_WIDTH, self.rect.centery - 300),
+                    self.bullet_image, pygame.Vector2(
+                        SCREEN_WIDTH, self.rect.centery - 300),
                     -SPACESHIP_BULLET_SPEED, 0
                 ),
                 Bullet(
-                    self.bullet_image, pygame.Vector2(SCREEN_WIDTH, self.rect.centery - 200),
+                    self.bullet_image, pygame.Vector2(
+                        SCREEN_WIDTH, self.rect.centery - 200),
                     -SPACESHIP_BULLET_SPEED, 0
                 ),
                 Bullet(
-                    self.bullet_image, pygame.Vector2(SCREEN_WIDTH, self.rect.centery - 100),
+                    self.bullet_image, pygame.Vector2(
+                        SCREEN_WIDTH, self.rect.centery - 100),
                     -SPACESHIP_BULLET_SPEED, 0
                 ),
                 Bullet(
-                    self.bullet_image, pygame.Vector2(SCREEN_WIDTH, self.rect.centery + 100),
+                    self.bullet_image, pygame.Vector2(
+                        SCREEN_WIDTH, self.rect.centery + 100),
                     -SPACESHIP_BULLET_SPEED, 0
                 ),
                 Bullet(
-                    self.bullet_image, pygame.Vector2(SCREEN_WIDTH, self.rect.centery + 200),
+                    self.bullet_image, pygame.Vector2(
+                        SCREEN_WIDTH, self.rect.centery + 200),
                     -SPACESHIP_BULLET_SPEED, 0
                 ),
                 Bullet(
-                    self.bullet_image, pygame.Vector2(SCREEN_WIDTH, self.rect.centery + 300),
+                    self.bullet_image, pygame.Vector2(
+                        SCREEN_WIDTH, self.rect.centery + 300),
                     -SPACESHIP_BULLET_SPEED, 0
                 )
             ]
         elif self.bullet_pattern == 1:
             return [
                 Bullet(
-                    self.bullet_image, pygame.Vector2(self.rect.centerx, self.rect.centery - 150),
+                    self.bullet_image, pygame.Vector2(
+                        self.rect.centerx, self.rect.centery - 150),
                     -SPACESHIP_BULLET_SPEED, 0
                 ),
                 Bullet(
-                    self.bullet_image, pygame.Vector2(self.rect.centerx, self.rect.centery + 150),
+                    self.bullet_image, pygame.Vector2(
+                        self.rect.centerx, self.rect.centery + 150),
                     -SPACESHIP_BULLET_SPEED, 0
                 ),
                 Bullet(
-                    self.bullet_image, pygame.Vector2(self.rect.centerx, self.rect.centery + 250),
+                    self.bullet_image, pygame.Vector2(
+                        self.rect.centerx, self.rect.centery + 250),
                     -SPACESHIP_BULLET_SPEED, 0
                 ),
                 Bullet(
-                    self.bullet_image, pygame.Vector2(self.rect.centerx, self.rect.centery - 250),
+                    self.bullet_image, pygame.Vector2(
+                        self.rect.centerx, self.rect.centery - 250),
                     -SPACESHIP_BULLET_SPEED, 0
                 )
             ]
 
-    def shoot(self) -> None:
+    def shoot(self, difficulty) -> None:
         if self.shoot_cooldown <= 0:
             for bullet in self.get_bullet_pattern():
                 self.bullets.add(bullet)
                 self.player_collision_group.add(bullet)
 
-            self.shoot_cooldown = SPACESHIP_SHOOT_COOLDOWN
+            self.shoot_cooldown = SPACESHIP_SHOOT_COOLDOWN * \
+                (1-0.1*(5-min(log2(difficulty*2), 5)))
 
     def random_activate(self, difficulty):
         if self.activated or self.game.space_temp_deactivated_enemies:
@@ -117,7 +129,7 @@ class Spaceship(pygame.sprite.Sprite):
             self.activated = True
             self.activated_dur = random.uniform(30.0, 50.0)
 
-    def update(self, t: float) -> None:
+    def update(self, t: float, difficulty) -> None:
         if not self.activated:
             self.x = min(1600, self.x + 5)
             self.activated_dur = 0.0
@@ -160,7 +172,7 @@ class Spaceship(pygame.sprite.Sprite):
         self.pattern_dur -= t
 
         if self.activated:
-            self.shoot()
+            self.shoot(difficulty)
         self.bullets.update(t)
 
     def draw(self, window: pygame.Surface) -> None:
