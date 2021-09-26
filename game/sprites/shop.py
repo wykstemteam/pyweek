@@ -107,16 +107,17 @@ class Shop:
             ) for i in range(6)
         ]
         for i in range(6):
-            self.display_buttons[i].normal_image = pygame.transform.scale(
-                self.display_buttons[i].normal_image, (145, 150)
+            button = self.display_buttons[i]
+            button.normal_image = pygame.transform.scale(
+                button.normal_image, (145, 150)
             )
-            self.display_buttons[i].hovered_image = pygame.transform.scale(
-                self.display_buttons[i].hovered_image, (145, 150)
+            button.hovered_image = pygame.transform.scale(
+                button.hovered_image, (145, 150)
             )
-            self.display_buttons[i].selected_image = pygame.transform.scale(
-                self.display_buttons[i].selected_image, (145, 150)
+            button.selected_image = pygame.transform.scale(
+                button.selected_image, (145, 150)
             )
-            self.display_buttons[i].rebuild()
+            button.rebuild()
         self._hide()
 
         self.button_confirm = pygame_gui.elements.UIButton(
