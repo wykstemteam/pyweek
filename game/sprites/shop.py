@@ -5,6 +5,7 @@ import pygame_gui
 
 from game.assets_manager import assets_manager
 from game.constants import *
+from game.sprites.coin_gui import CoinGUI
 
 if TYPE_CHECKING:
     from game.game import Game
@@ -131,8 +132,8 @@ class Shop:
             manager=self.confirm_screen
         )
         self.game = game
-        self.coins = self.game.coins
         self.running = False
+        self.coin_gui = CoinGUI((960, 36), self.game)
 
     def appear(self, window: pygame.Surface) -> None:
         clock = pygame.time.Clock()
@@ -178,6 +179,8 @@ class Shop:
 
             window.blit(self.main_menu, (0, 0))  # draws background
             self.shop_screen.draw_ui(window)
+            self.coin_gui.update(t/1000)
+            self.coin_gui.draw(window)
 
             if confirmation:  # have thing selected
                 window.blit(self.darken, (0, 0))
