@@ -274,7 +274,7 @@ class Game:
             self.player.hp = max(self.player.hp, 0)
 
             self.fade_in_manager.update(t)
-            self.player.update(t if not self.bullet_time else t / self.rate)
+            self.player.update(t if not self.bullet_time else t / self.rate, self.cur_scene)
             self.player_collision()
             self.coin_manager.update(t)
             self.arrow.update(self.player)
