@@ -84,6 +84,9 @@ class AssetsManager:
         self.images['UFO_bullet'] = pygame.transform.scale(
             self.images['UFO_bullet'], (UFO_BULLET_WIDTH, UFO_BULLET_HEIGHT)
         )
+        self.images['comet'] = pygame.transform.scale(
+            self.images['comet'], (200, 60)
+        )
 
         for i in range(1, 4):
             self.images[f'obstacle{i}'] = pygame.transform.scale(

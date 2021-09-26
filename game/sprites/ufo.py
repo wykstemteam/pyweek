@@ -142,7 +142,7 @@ class UFO(pygame.sprite.Sprite):
         )
 
         if self.pattern_dur <= 0.0:
-            self.bullet_pattern = random.randint(1, 3)
+            self.bullet_pattern = random.randint(0, 3)
             self.pattern_dur = random.uniform(5, 10)
 
         self.shoot_cooldown -= t
