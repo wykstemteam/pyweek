@@ -234,7 +234,7 @@ class Game:
                 self.player.inputtable = False
                 for road in self.roads:
                     road.stop_moving = True
-                self.player.vx = -BACKGROUND_VELOCITY * 2.5
+                self.player.vx = -BACKGROUND_VELOCITY * 3
                 if self.player.rect.left >= SCREEN_WIDTH:
                     self.dimming = True
                     pygame.mixer.music.fadeout(3000)
@@ -381,7 +381,7 @@ class Game:
             darken_image.fill((0, 0, 0))
             darken_image.set_alpha(self.darken_alpha)
             window.blit(darken_image, pygame.Rect(0, 0, 0, 0))
-            self.darken_alpha = min(self.darken_alpha + 3, 255)
+            self.darken_alpha = min(self.darken_alpha + 4, 255)
             if self.darken_alpha == 255:
                 self.stage2 = True
 
