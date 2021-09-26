@@ -5,8 +5,10 @@ Red spaceship: https://opengameart.org/content/large-spaceship
 Policecar: https://opengameart.org/content/2d-car-pack-0
 laserbeam animation (with reference to): https://www.youtube.com/watch?v=wCNqadvtVZ0
 
-All music: dova syndrome https://dova-s.jp/
+Music
+All: dova syndrome https://dova-s.jp/
 except galaxy: TAM Music Factory https://www.tam-music.com/
 
-All sound effects: zapsplat https://www.zapsplat.com/
+Sound Effects
+All: zapsplat https://www.zapsplat.com/
 except explosion: mixkit https://mixkit.co/
