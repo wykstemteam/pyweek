@@ -5,10 +5,11 @@ import pygame
 
 from game.assets_manager import assets_manager
 from game.constants import *
+from game.sprites.explode import Explode
 
 
 class Comet(pygame.sprite.Sprite):
-    def __init__(self, player_collision_group: pygame.sprite.Group) -> None:
+    def __init__(self) -> None:
         super().__init__()
         self.dir = random.uniform(-np.pi, np.pi)
         self.x = random.uniform(0.0, float(SCREEN_WIDTH))
@@ -24,19 +25,36 @@ class Comet(pygame.sprite.Sprite):
             (self.x - 15 + 70 * np.cos(self.dir), self.y - 15 + 70 * np.sin(self.dir)), (30, 30)
         )
         self.remaining_time = 30.0
+        self.explode = None
 
     def update(self, t: float, difficulty) -> None:
-        self.x += t * np.cos(self.dir) * 200 * min(5, difficulty)
-        self.y += t * np.sin(self.dir) * 200 * min(5, difficulty)
-        self.hitbox = pygame.Rect(
-            (self.x - 15 + 70 * np.cos(self.dir), self.y - 15 + 70 * np.sin(self.dir)), (30, 30)
-        )
-        self.image = pygame.transform.rotate(
-            assets_manager.images['comet'], ((np.pi - self.dir) * 360) / (2 * np.pi)
-        )
-        self.rect = self.image.get_rect(center=self.image.get_rect(center=(self.x, self.y)).center)
-        self.remaining_time -= t
+        if not self.explode:
+            self.x += t * np.cos(self.dir) * 200 * min(5, difficulty)
+            self.y += t * np.sin(self.dir) * 200 * min(5, difficulty)
+            self.hitbox = pygame.Rect(
+                (self.x - 15 + 70 * np.cos(self.dir), self.y - 15 + 70 * np.sin(self.dir)), (30, 30)
+            )
+            self.image = pygame.transform.rotate(
+                assets_manager.images['comet'], ((np.pi - self.dir) * 360) / (2 * np.pi)
+            )
+            self.rect = self.image.get_rect(center=self.image.get_rect(center=(self.x, self.y)).center)
+            self.remaining_time -= t
+            if self.remaining_time <= 0:
+                self.kill()
+        elif not self.explode.update(t):
+            self.kill()
 
     def draw(self, window: pygame.Surface) -> None:
-        window.blit(self.image, self.rect)
-        pygame.draw.rect(window, (255, 255, 255), self.hitbox)
+        if self.image:
+            window.blit(self.image, self.rect)
+            # pygame.draw.rect(window, (255, 255, 255), self.hitbox)
+        elif self.explode and self.explode.image:
+            window.blit(self.explode.image, self.explode.rect)
+
+    def collision_player(self, player):
+        if player.rect.colliderect(self.hitbox):
+            if not self.explode:
+                if player.hit():
+                    self.image = None
+                    self.explode = Explode(self.rect.center)
+        

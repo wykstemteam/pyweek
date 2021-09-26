@@ -12,6 +12,7 @@ from game.sprites import *
 from game.sprites.hp_manager import HPManager
 from game.sprites.coin_gui import CoinGUI
 from game.sprites.inventory import Inventory
+from game.sprites.comet_manager import CometManager
 
 
 class Scenes(Enum):
@@ -174,7 +175,7 @@ class Game:
         # ================================================================================================
         self.spaceship = Spaceship(self.player_collision_group)
         self.ufo = UFO(self.player_collision_group)
-        self.comets = []
+        self.comets = CometManager(self.player_collision_group)
 
         self.set_scene_music()
 
@@ -208,7 +209,7 @@ class Game:
             self.obstacle_manager.reached_checkpoint = False
             self.bomber.__init__(self.player_collision_group)
             self.beach_rect.topleft = (0, 0)
-        self.comets = [c for c in self.comets if c.remaining_time > 100000]
+        self.comets.kill()
 
     def event_process(self, window: pygame.Surface):
         for event in pygame.event.get():
@@ -354,14 +355,11 @@ class Game:
                             and random.randint(0, 1000) <= self.difficulty):
                         self.spaceship.is_charge = True
 
-                    if random.randint(0, 500) <= self.difficulty:
-                        self.comets.append(Comet(self.player_collision_group))
+                    self.comets.add(self.difficulty)
 
                 self.spaceship.update(t)
                 self.ufo.update(t)
-                for c in self.comets:
-                    c.update(t, self.difficulty)
-                self.comets = [c for c in self.comets if c.remaining_time > 0]
+                self.comets.update(t, self.difficulty)
 
         # gui
         self.game_screen.update(t)
@@ -399,8 +397,7 @@ class Game:
         elif self.cur_scene == Scenes.SPACE:
             self.spaceship.draw(window)
             self.ufo.draw(window)
-            for c in self.comets:
-                c.draw(window)
+            self.comets.draw(window)
 
         # gui
         if self.pause:
@@ -443,7 +440,7 @@ class Game:
                     and type(obj) not in (Coin, Obstacle)
             ):
                 continue
-            if type(obj) == Spaceship:
+            if type(obj) in (Spaceship, Comet):
                 obj.collision_player(self.player)
             if self.player.rect.colliderect(obj.rect):
                 if type(obj) == PoliceCar and not PLAYER_INVIN:
