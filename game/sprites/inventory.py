@@ -18,7 +18,7 @@ class Inventory:
     def draw(self, window: pygame.Surface) -> None:
         for i in range(2):
             pygame.draw.rect(
-                window, (255, 255, 255),
+                window, 0xFF0000 if self.game.player.holding == i+1 else 0xFFFFFF,
                 _get_location(i),
                 INVENTORY_BOX_THICKNESS,
             )
