@@ -59,9 +59,13 @@ class Bomber(pygame.sprite.Sprite):
 
     def update(self, t: float, difficulty) -> None:
         if self.temp_deactivated:
-            self.rect.right = max(0, self.rect.right - 100 * t)
+            self.x -= max(0, self.x - 200 * t)
+            self.image = self.animation[self.frame]
+            self.rect = self.animation[self.frame].get_rect()
+            self.rect.topleft = (self.x, (SCREEN_HEIGHT / 2) - (self.image.get_height() / 2))
             self.shadow_rect = self.rect.copy()
-            self.shadow_rect.topleft = self.shadow_rect.topleft + pygame.Vector2(-5, 5)
+            self.shadow_rect.topleft = self.shadow_rect.topleft + pygame.Vector2(-15, 15)
+            self.frame += 1
             self.bullets.update(t)
             self.temp_activated_t -= t
             if self.temp_activated_t <= 0:
@@ -69,7 +73,7 @@ class Bomber(pygame.sprite.Sprite):
             return
 
         if self.activated:
-            self.x += 4
+            self.x += 200 * t
             self.shoot_cooldown -= t
             self.shoot(difficulty)
             if self.x >= SCREEN_WIDTH:
@@ -94,6 +98,7 @@ class Bomber(pygame.sprite.Sprite):
             bullet.draw(window)
 
     def missile_hit(self, missile):
-        self.temp_deactivated = True
-        self.temp_activated_t = POLICECAR_DEACTIVATE_DURATION
-        missile.hit()
+        if not self.temp_deactivated and self.activated:
+            self.temp_deactivated = True
+            self.temp_activated_t = POLICECAR_DEACTIVATE_DURATION
+            missile.hit()

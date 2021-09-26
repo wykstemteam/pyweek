@@ -158,5 +158,6 @@ class UFO(pygame.sprite.Sprite):
             bullet.draw(window)
 
     def missile_hit(self, missile):
-        self.activated = False
-        missile.hit()
+        if self.activated:
+            self.activated = False
+            missile.hit()

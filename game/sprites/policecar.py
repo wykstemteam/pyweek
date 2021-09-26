@@ -147,7 +147,8 @@ class PoliceCar(pygame.sprite.Sprite):
         self.bullets.empty()
 
     def missile_hit(self, missile):
-        self.temp_deactivated = True
-        self.temp_activated_t = POLICECAR_DEACTIVATE_DURATION
-        missile.hit()
+        if not self.temp_deactivated and self.activated:
+            self.temp_deactivated = True
+            self.temp_activated_t = POLICECAR_DEACTIVATE_DURATION
+            missile.hit()
 
