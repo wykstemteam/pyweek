@@ -35,13 +35,8 @@ class Game:
         self.inventory = Inventory(
             [
                 assets_manager.images[f'{item_name}_inventory'] for item_name in (
-                    'item_blank',
-                    'item_healpotion',
-                    'item_shield',
-                    'item_star',
-                    'item_clock',
-                    'item_missile',
-                    'item_earthquake'
+                    'item_blank', 'item_healpotion', 'item_shield', 'item_star', 'item_clock',
+                    'item_missile', 'item_earthquake'
                 )
             ], self
         )
@@ -199,11 +194,11 @@ class Game:
                     if ITEM_BULLET_TIME_DURATION - self.bullet_time_t <= 1:
                         self.rate = -math.sqrt(
                             (ITEM_BULLET_TIME_DURATION - self.bullet_time_t) *
-                            (1 - BULLET_TIME_RATE) ** 2
+                            (1 - BULLET_TIME_RATE)**2
                         ) + 1
                     else:
                         self.rate = (1 - BULLET_TIME_RATE) * (
-                                (1 - self.bullet_time_t / (ITEM_BULLET_TIME_DURATION - 1)) ** 2
+                            (1 - self.bullet_time_t / (ITEM_BULLET_TIME_DURATION - 1))**2
                         ) + BULLET_TIME_RATE
                     t *= self.rate
 
@@ -303,10 +298,10 @@ class Game:
                         self.spaceship.random_activate(self.difficulty)
 
                     if (
-                            self.distance_manager.dist_to_next_country > 30 and self.spaceship.activated
-                            and self.spaceship.x == 1000 and not self.spaceship.is_charge
-                            and not self.spaceship.is_shoot and self.spaceship.activated_dur >= 10.0
-                            and random.randint(0, 1000) <= self.difficulty
+                        self.distance_manager.dist_to_next_country > 30 and self.spaceship.activated
+                        and self.spaceship.x == 1000 and not self.spaceship.is_charge
+                        and not self.spaceship.is_shoot and self.spaceship.activated_dur >= 10.0
+                        and random.randint(0, 1000) <= self.difficulty
                     ):
                         self.spaceship.is_charge = True
 
@@ -378,13 +373,14 @@ class Game:
     def trigger_lose(self) -> None:
         if not self.lose and not PLAYER_INVIN:
             assets_manager.play_music("ensolarado")
+            assets_manager.play_sound("die")
             self.lose = True
 
     def player_collision(self) -> None:
         for obj in self.player_collision_group:
             if (
-                    self.distance_manager.dist_to_next_country == 0
-                    and type(obj) not in (Coin, Obstacle)
+                self.distance_manager.dist_to_next_country == 0
+                and type(obj) not in (Coin, Obstacle)
             ):
                 continue
             if self.cur_scene == Scenes.SPACE and type(obj) in (Spaceship, Comet):
