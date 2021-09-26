@@ -9,6 +9,7 @@ from game.assets_manager import assets_manager
 from game.constants import *
 from game.screen_shake_manager import ScreenShakeManager
 from game.sprites import *
+from game.sprites.hp_manager import HPManager
 from game.sprites.coin_gui import CoinGUI
 from game.sprites.inventory import Inventory
 
@@ -53,7 +54,7 @@ class Game:
         self.fade_in_manager.start_fade_in()
 
         # Health_bar
-        self.health_bar_image = assets_manager.images['HP4']
+        self.hp_manager = HPManager((10, 10), self)
 
         # coins
         self.coin_manager = CoinManager(self.player_collision_group)
@@ -281,7 +282,6 @@ class Game:
                 self.stage1_countdown -= t
 
             self.player.hp = max(self.player.hp, 0)
-            self.health_bar_image = assets_manager.images[f"HP{self.player.hp}"]
 
             self.fade_in_manager.update(t)
             self.player.update(t if not self.bullet_time else t / self.rate)
@@ -290,6 +290,7 @@ class Game:
             self.arrow.update(self.player)
             self.distance_manager.update(t)
             self.coin_gui.update(t)
+            self.hp_manager.update(t)
 
             if self.player.hp <= 0:
                 if not PLAYER_INVIN:
@@ -374,7 +375,6 @@ class Game:
             self.ufo.draw(window)
 
         # gui
-        window.blit(self.health_bar_image, pygame.Rect((10, 10), (400, 100)))
         if self.pause:
             window.blit(assets_manager.images['darken'], pygame.Rect(0, 0, 0, 0))
             self.pause_screen.draw_ui(window)
@@ -386,6 +386,7 @@ class Game:
             self.game_screen.draw_ui(window)
         self.distance_manager.draw(window)
         self.coin_gui.draw(window)
+        self.hp_manager.draw(window)
         self.inventory.draw(window)
 
         if self.dimming:

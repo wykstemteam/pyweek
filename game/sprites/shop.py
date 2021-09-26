@@ -1,3 +1,4 @@
+from game.sprites.hp_manager import HPManager
 from typing import TYPE_CHECKING
 
 import pygame
@@ -134,6 +135,7 @@ class Shop:
         self.game = game
         self.running = False
         self.coin_gui = CoinGUI((960, 36), self.game)
+        self.hp_manager = HPManager((20, 0), self.game)
 
     def appear(self, window: pygame.Surface) -> None:
         clock = pygame.time.Clock()
@@ -181,6 +183,8 @@ class Shop:
             self.shop_screen.draw_ui(window)
             self.coin_gui.update(t/1000)
             self.coin_gui.draw(window)
+            self.hp_manager.update(t/1000)
+            self.hp_manager.draw(window)
 
             if confirmation:  # have thing selected
                 window.blit(self.darken, (0, 0))
