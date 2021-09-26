@@ -51,6 +51,8 @@ class AssetsManager:
         self.images['arrow'] = pygame.transform.scale(self.images['arrow'], (80, 100))
         for i in range(5):
             self.images[f'HP{i}'] = pygame.transform.scale(self.images[f'HP{i}'], (400, 100))
+        for i in range(5):
+            self.images[f'HP{i}_shop'] = pygame.transform.scale(self.images[f'HP{i}'], (240, 60))
 
         # enemy
         self.images['bullet'] = pygame.transform.scale(

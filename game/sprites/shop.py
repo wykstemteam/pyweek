@@ -135,7 +135,8 @@ class Shop:
         self.game = game
         self.running = False
         self.coin_gui = CoinGUI((960, 36), self.game)
-        self.hp_manager = HPManager((20, 0), self.game)
+        self.hp_manager = HPManager((40, 25), self.game)
+        self.hp_manager.at_shop = True
 
     def appear(self, window: pygame.Surface) -> None:
         clock = pygame.time.Clock()

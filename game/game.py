@@ -142,7 +142,7 @@ class Game:
         self.earthquake = False
 
         # entering shop
-        self.stage1_countdown = 7  # deactivate everything for .. seconds
+        self.stage1_countdown = DEACTIVATE_DURATION  # deactivate everything for .. seconds
         self.stage2 = False  # player at right?
         self.dimming = False
         self.darken_alpha = 0
@@ -179,7 +179,7 @@ class Game:
     def reset(self):
         self.difficulty *= 2
         self.distance_manager.dist_to_next_country = INITIAL_DISTANCE_TO_NEXT_COUNTRY
-        self.stage1_countdown = 7
+        self.stage1_countdown = DEACTIVATE_DURATION
         self.stage2 = False
         self.dimming = False
         self.darken_alpha = 0

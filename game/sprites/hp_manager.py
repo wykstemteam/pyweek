@@ -11,9 +11,13 @@ class HPManager(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.topleft = pos
         self.game = game
+        self.at_shop = False
 
     def update(self, t: float):
-        self.image = assets_manager.images[f'HP{self.game.player.hp}']
+        if self.at_shop:
+            self.image = assets_manager.images[f'HP{self.game.player.hp}_shop']
+        else:
+            self.image = assets_manager.images[f'HP{self.game.player.hp}']
 
     def draw(self, window: pygame.Surface):
         window.blit(self.image, self.rect)
