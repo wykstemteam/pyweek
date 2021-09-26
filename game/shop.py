@@ -56,10 +56,10 @@ class Shop:
         ]
         self.button_text_effect = [
             'Restores 1 HP, instantly used if currently damaged',
-            f'Shield that blocks 3 hits for {SHIELD_REMAIN_TIME}s',
+            f'Shields 3 hits for {SHIELD_REMAIN_TIME}s',
             f'{ITEM_INVINCIBILITY_TIME}s invincibility',
-            f'Time slows down for {ITEM_BULLET_TIME_DURATION}s',
-            'Attack enemies',
+            f'Slows time down for {ITEM_BULLET_TIME_DURATION}s',
+            'Attacks enemies',
             'Annihilation',
         ]
         self.button_text_effect = [f'   {t}' for t in self.button_text_effect]
