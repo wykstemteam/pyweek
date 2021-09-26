@@ -52,10 +52,10 @@ class Shop:
             'Superstar',
             'Bullet Time',
             'Missile',
-            'Gravitation',
+            'Earthquake',
         ]
         self.button_text_effect = [
-            '+1 life, instantly used if currently damaged',
+            'Restores 1 HP, instantly used if currently damaged',
             f'Shield that blocks 3 hits for {SHIELD_REMAIN_TIME}s',
             f'{ITEM_INVINCIBILITY_TIME}s invincibility',
             f'Time slows down for {ITEM_BULLET_TIME_DURATION}s',
