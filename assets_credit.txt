@@ -1,28 +1,28 @@
 Images
-bomber B-17: https://opengameart.org/content/top-down-planes-sprites-pack
+Bomber B-17: https://opengameart.org/content/top-down-planes-sprites-pack
 Space background: https://opengameart.org/content/space-backgrounds-1
 Red spaceship: https://opengameart.org/content/large-spaceship
 MotorCycle : https://www.iconspng.com/image/30199/racing-bike-top-down-for-games
-enemy Missile : https://freepikpsd.com/missile-sprite-png/322806/
-player Missile: https://opengameart.org/content/missile-0
-item missile: https://www.flaticon.com/free-icon/missile_2590308
-obstacle1: https://www.pikpng.com/transpng/ToTbbw/
-obstacle2: https://www.cleanpng.com/png-traffic-sign-road-royalty-free-construction-sign-4526422/
-obstacle3: https://creazilla.com/nodes/61279-road-sign-clipart?tag_id=1847
+Enemy missile : https://freepikpsd.com/missile-sprite-png/322806/
+Player missile: https://opengameart.org/content/missile-0
+Item missile: https://www.flaticon.com/free-icon/missile_2590308
+Obstacle1: https://www.pikpng.com/transpng/ToTbbw/
+Obstacle2: https://www.cleanpng.com/png-traffic-sign-road-royalty-free-construction-sign-4526422/
+Obstacle3: https://creazilla.com/nodes/61279-road-sign-clipart?tag_id=1847
 
-Policecar: https://opengameart.org/content/2d-car-pack-0
-laserbeam animation (with reference to): https://www.youtube.com/watch?v=wCNqadvtVZ0
-explosion animation: https://www.pinterest.com/pin/317714948716758797/
-coins: https://opengameart.org/content/spinning-pixel-coin-0
-health bottle: https://pngtree.com/freepng/cartoon-game-red-magic-potion-bottle_5773129.html
-spaceship: https://www.pngegg.com/en/png-zogku
-star: https://opengameart.org/content/star
+Police Car: https://opengameart.org/content/2d-car-pack-0
+Laserbeam animation (with reference to): https://www.youtube.com/watch?v=wCNqadvtVZ0
+Explosion animation: https://www.pinterest.com/pin/317714948716758797/
+Coins: https://opengameart.org/content/spinning-pixel-coin-0
+Health bottle: https://pngtree.com/freepng/cartoon-game-red-magic-potion-bottle_5773129.html
+Spaceship: https://www.pngegg.com/en/png-zogku
+Star: https://opengameart.org/content/star
 
 Music
-All: dova syndrome https://dova-s.jp/
-except galaxy: TAM Music Factory https://www.tam-music.com/
+All: DOVA-SYNDROME https://dova-s.jp/
+Except galaxy: TAM Music Factory https://www.tam-music.com/
 
 Sound Effects
 All: zapsplat https://www.zapsplat.com/
-except explosion: mixkit https://mixkit.co/
-and Xi Jin Ping quotes: winnie XJP 音源 https://drive.google.com/file/d/1l-YUWLVSo14XqL3JPD1nBEnEpFUx_FeF/view?usp=sharing
+Except explosion: mixkit https://mixkit.co/
+And Xi Jin Ping quotes: winnie XJP 音源 https://drive.google.com/file/d/1l-YUWLVSo14XqL3JPD1nBEnEpFUx_FeF/view?usp=sharing

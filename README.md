@@ -11,7 +11,7 @@ Use `WASD` to drive the motorcycle.
 <br>
 Use keys `1` and `2` to select inventory slots.
 <br>
-Left click anywhere to use the item in the selected inventory slot.
+Mouse left click anywhere to use the item in the selected inventory slot.
 <br>
 For the missile item, left click in the direction you want it to shoot.
 
