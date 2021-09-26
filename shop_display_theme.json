@@ -146,7 +146,7 @@
     "tool_tip.text_box": {
         "colours": {
             "normal_text": "#000000",
-            "dark_bg": "#6c757d"
+            "dark_bg": "#bfbfbf"
         },
         "misc": {
             "shape": "rounded_rectangle",
