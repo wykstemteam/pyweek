@@ -114,6 +114,11 @@ class AssetsManager:
                 self.images[item_name],
                 (ITEM_WIDTH, ITEM_HEIGHT)
             )
+        for item_name in ('item_blank', 'item_healpotion', 'item_shield', 'item_star', 'item_clock', 'item_missile', 'item_earthquake'):
+            self.images[f'{item_name}_shop'] = pygame.transform.scale(
+                self.images[item_name],
+                (ITEM_WIDTH_SHOP, ITEM_HEIGHT_SHOP)
+            )
 
     def init_animations(self) -> None:
         for dirname in os.listdir(os.path.join('assets', 'animations')):

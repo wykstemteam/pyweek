@@ -1,4 +1,3 @@
-from game.sprites.hp_manager import HPManager
 from typing import TYPE_CHECKING
 
 import pygame
@@ -7,6 +6,8 @@ import pygame_gui
 from game.assets_manager import assets_manager
 from game.constants import *
 from game.sprites.coin_gui import CoinGUI
+from game.sprites.hp_manager import HPManager
+from game.sprites.inventory import Inventory
 
 if TYPE_CHECKING:
     from game.game import Game
@@ -138,6 +139,12 @@ class Shop:
         self.coin_gui = CoinGUI((960, 36), self.game)
         self.hp_manager = HPManager((40, 25), self.game)
         self.hp_manager.at_shop = True
+        self.inventory = Inventory(
+            [
+                assets_manager.images[f'{item_name}_shop'] for item_name in ('item_blank', 'item_healpotion', 'item_shield', 'item_star', 'item_clock', 'item_missile', 'item_earthquake')
+            ], self.game
+        )
+        self.inventory.at_shop = True
 
     def appear(self, window: pygame.Surface) -> None:
         clock = pygame.time.Clock()
@@ -189,6 +196,8 @@ class Shop:
             self.coin_gui.draw(window)
             self.hp_manager.update(t/1000)
             self.hp_manager.draw(window)
+            self.game.player.update(0)
+            self.inventory.draw(window)
             self.checkcoins()
 
             if confirmation:  # have thing selected
