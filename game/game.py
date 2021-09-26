@@ -23,7 +23,7 @@ class Scenes(Enum):
 
 
 class Game:
-    def __init__(self) -> None:
+    def __init__(self, highscore: int) -> None:
         self.clock = pygame.time.Clock()
 
         self.cur_scene = Scenes.CITY
@@ -136,6 +136,7 @@ class Game:
         self.set_scene_music()
         self.play_quote()
         self.score: int = 0
+        self.highscore: int = highscore
 
     def play_quote(self) -> None:
         if not assets_manager.play_quotes:
@@ -288,6 +289,7 @@ class Game:
                     self.spaceship.earthquake = False
                 else:
                     self.spaceship.earthquake = True
+                    self.laser_manager.kill()
                     for obj in self.player_collision_group:
                         if type(obj) not in (PoliceCar, Bomber, Spaceship, UFO, Coin):
                             obj.kill()
@@ -374,7 +376,7 @@ class Game:
             window.blit(assets_manager.images['darken'], pygame.Rect(0, 0, 0, 0))
             window.blit(assets_manager.images['GameOver'], pygame.Rect(0, 0, 0, 0))
             self.lose_screen.draw_ui(window)
-            score_image = font.render(f'Score: {self.score}', True, (255, 255, 255))
+            score_image = font.render(f'Score: {self.score} (Highest: {self.highscore})', True, (255, 255, 255))
             score_rect = score_image.get_rect()
             score_rect.center = (SCREEN_WIDTH / 2 - 90, SCREEN_HEIGHT / 2 - 10)
             window.blit(score_image, score_rect)
@@ -449,14 +451,17 @@ class Game:
     def add_coin_score(self):
         self.coins += 1
         self.score += int(np.log2(2 * self.difficulty)) * COIN_SCORE_MULT
+        self.highscore = max(self.highscore, self.score)
 
     def add_dist_score(self, dist):
         self.score += int(np.log2(2 * self.difficulty)) * DIST_SCORE_MULT * dist
+        self.highscore = max(self.highscore, self.score)
 
     def add_scene_score(self):
         self.score += int(np.log2(2 * self.difficulty)) * SCENE_SCORE_MULT
+        self.highscore = max(self.highscore, self.score)
 
-    def run(self, window) -> None:
+    def run(self, window) -> int:
         previous_pause = False
         while True:
             ret = self.event_process(window)
@@ -467,7 +472,7 @@ class Game:
             else:
                 self.update(t / 1000, window)
             if ret:  # pressed return
-                return
+                return self.highscore
             if ret is not None:  # pressed resume
                 previous_pause = True
             self.draw(window)
