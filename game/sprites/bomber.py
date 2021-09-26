@@ -46,17 +46,17 @@ class Bomber(pygame.sprite.Sprite):
             )
             self.bullets.add(new_bullet)
             self.player_collision_group.add(new_bullet)
-            self.shoot_cooldown = BOMBER_SHOOT_COOLDOWN / difficulty
+            self.shoot_cooldown = BOMBER_SHOOT_COOLDOWN / min(2, 1 + difficulty / 10)
 
     def random_activate(self, difficulty):
         if self.activated or difficulty == 1:
             return
-        if random.randint(0, 1000) <= difficulty:
+        if random.randint(0, 10000) <= min(4, difficulty):
             self.activated = True
 
     def update(self, t: float, difficulty) -> None:
         if self.activated:
-            self.x += 5
+            self.x += 4
             self.shoot_cooldown -= t
             self.shoot(difficulty)
             if self.x >= SCREEN_WIDTH:
