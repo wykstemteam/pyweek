@@ -325,7 +325,7 @@ class Game:
 
                 self.comets.add(self.difficulty)
 
-            self.spaceship.update(t)
+            self.spaceship.update(t, self.difficulty)
             self.ufo.update(t, self.difficulty)
             self.comets.update(t, self.difficulty)
             if self.space_temp_deactivated_enemies:
