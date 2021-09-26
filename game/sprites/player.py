@@ -109,17 +109,6 @@ class Player(pygame.sprite.Sprite):
                 self.rect.left = SCREEN_WIDTH
                 self.vx = -BACKGROUND_VELOCITY
 
-        if scene == 1 and self.real_y < BUILDING_HEIGHT:
-            self.real_y = BUILDING_HEIGHT
-            self.vy = 0
-        if self.real_y + PLAYER_HEIGHT > SCREEN_HEIGHT:
-            self.real_y = SCREEN_HEIGHT - PLAYER_HEIGHT
-            self.vy = 0
-
-        if self.real_y < 0:
-            self.real_y = 0
-            self.vy = 0
-
         if FREE_ITEMS:
             for i in range(6):
                 if keys[pygame.K_KP_1 + i]:
