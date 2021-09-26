@@ -191,7 +191,7 @@ class Game:
             self.laser_manager.reached_checkpoint = False
             self.buildings.__init__()
             self.obstacle_manager.reached_checkpoint = False
-            self.bomber.__init__()
+            self.bomber.__init__(self.player_collision_group)
             self.beach_rect.topleft = (0, 0)
 
     def event_process(self, window: pygame.Surface):
@@ -227,7 +227,6 @@ class Game:
             self.lose_screen.process_events(event)
 
     def update(self, t: float, window: pygame.Surface) -> None:
-        print(t)
         # objects in all scenes:
         if not self.lose and not self.pause:
             if self.bullet_time:
