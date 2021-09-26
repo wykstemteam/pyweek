@@ -5,10 +5,10 @@ from enum import Enum
 import pygame
 import pygame_gui
 
+import game.pause
 from game.assets_manager import assets_manager
 from game.constants import *
 from game.screen_shake_manager import ScreenShakeManager
-from game.settings import get_audio_controls
 from game.shop import Shop
 from game.sprites import *
 
@@ -35,8 +35,13 @@ class Game:
         self.inventory = Inventory(
             [
                 assets_manager.images[f'{item_name}_inventory'] for item_name in (
-                    'item_blank', 'item_healpotion', 'item_shield', 'item_star', 'item_clock',
-                    'item_missile', 'item_earthquake'
+                    'item_blank',
+                    'item_healpotion',
+                    'item_shield',
+                    'item_star',
+                    'item_clock',
+                    'item_missile',
+                    'item_earthquake'
                 )
             ], self
         )
@@ -66,26 +71,6 @@ class Game:
             relative_rect=pygame.Rect((SCREEN_WIDTH - 100 - 10, 10), (100, 50)),
             text='Pause',
             manager=self.game_screen
-        )
-
-        # pause_screen
-        self.pause_screen = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT), "menu_theme.json")
-        self.pause = False
-        self.music_label, self.music_slider, self.sound_label, self.sound_slider = get_audio_controls(
-            manager=self.pause_screen
-        )
-        self.continue_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(
-                (SCREEN_WIDTH // 2 - 170, SCREEN_HEIGHT // 2 + 80), (130, 50)
-            ),
-            text='Continue',
-            manager=self.pause_screen
-        )
-        self.exit_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect((SCREEN_WIDTH // 2 - 30, SCREEN_HEIGHT // 2 + 80), (200, 50)),
-            object_id='#exit_button',
-            text='Exit to Menu',
-            manager=self.pause_screen
         )
 
         # lose_screen
@@ -188,37 +173,22 @@ class Game:
             if event.type == pygame.QUIT:
                 exit()
 
-            if (
-                event.type == pygame.USEREVENT and self.pause
-                and event.user_type == pygame_gui.UI_HORIZONTAL_SLIDER_MOVED
-            ):
-                if event.ui_element == self.music_slider:
-                    assets_manager.set_music_volume(event.value)
-                elif event.ui_element == self.sound_slider:
-                    assets_manager.set_sound_volume(event.value)
-
             if event.type == pygame.USEREVENT and event.user_type == pygame_gui.UI_BUTTON_PRESSED:
-                if not self.pause and not self.lose and event.ui_element == self.pause_button:
-                    self.pause = True
-                    break  # Otherwise will click both pause and return buttons
-                elif self.pause and event.ui_element == self.continue_button:
-                    self.pause = False
-                elif self.pause and event.ui_element == self.exit_button:
-                    return True
-                elif self.lose:
+                if not self.lose and event.ui_element == self.pause_button:
+                    return game.pause.run(window)
+                if self.lose:
                     if event.ui_element == self.restart_button:
                         self.__init__()  # Reinitialize
                     elif event.ui_element == self.return_title_button:
                         return True  # Stop gaming
 
             self.game_screen.process_events(event)
-            self.pause_screen.process_events(event)
             self.lose_screen.process_events(event)
 
     def update(self, t: float, window: pygame.Surface) -> None:
 
         # objects in all scenes:
-        if not self.lose and not self.pause:
+        if not self.lose:
             if self.bullet_time:
                 self.bullet_time_t -= t
                 if self.bullet_time_t <= 0:
@@ -229,11 +199,11 @@ class Game:
                     if ITEM_BULLET_TIME_DURATION - self.bullet_time_t <= 1:
                         self.rate = -math.sqrt(
                             (ITEM_BULLET_TIME_DURATION - self.bullet_time_t) *
-                            (1 - BULLET_TIME_RATE)**2
+                            (1 - BULLET_TIME_RATE) ** 2
                         ) + 1
                     else:
                         self.rate = (1 - BULLET_TIME_RATE) * (
-                            (1 - self.bullet_time_t / (ITEM_BULLET_TIME_DURATION - 1))**2
+                                (1 - self.bullet_time_t / (ITEM_BULLET_TIME_DURATION - 1)) ** 2
                         ) + BULLET_TIME_RATE
                     t *= self.rate
 
@@ -311,7 +281,7 @@ class Game:
 
         # objects in scene.CITY:
         if self.cur_scene == Scenes.CITY:
-            if not self.lose and not self.pause:
+            if not self.lose:
                 self.laser_manager.update(t)
                 self.roads.update(t)
                 self.buildings.update(t)
@@ -325,7 +295,7 @@ class Game:
 
         # objects in scene.SPACE:
         if self.cur_scene == Scenes.SPACE:
-            if not self.lose and not self.pause:
+            if not self.lose:
                 if self.distance_manager.dist_to_next_country > 30:
                     if not self.spaceship.activated:
                         self.ufo.random_activate(self.difficulty)
@@ -333,10 +303,10 @@ class Game:
                         self.spaceship.random_activate(self.difficulty)
 
                     if (
-                        self.distance_manager.dist_to_next_country > 30 and self.spaceship.activated
-                        and self.spaceship.x == 1000 and not self.spaceship.is_charge
-                        and not self.spaceship.is_shoot and self.spaceship.activated_dur >= 10.0
-                        and random.randint(0, 1000) <= self.difficulty
+                            self.distance_manager.dist_to_next_country > 30 and self.spaceship.activated
+                            and self.spaceship.x == 1000 and not self.spaceship.is_charge
+                            and not self.spaceship.is_shoot and self.spaceship.activated_dur >= 10.0
+                            and random.randint(0, 1000) <= self.difficulty
                     ):
                         self.spaceship.is_charge = True
 
@@ -348,7 +318,6 @@ class Game:
 
         # gui
         self.game_screen.update(t)
-        self.pause_screen.update(t)
         self.lose_screen.update(t)
 
     def draw(self, window: pygame.Surface) -> None:
@@ -384,10 +353,7 @@ class Game:
             self.comets.draw(window)
 
         # gui
-        if self.pause:
-            window.blit(assets_manager.images['darken'], pygame.Rect(0, 0, 0, 0))
-            self.pause_screen.draw_ui(window)
-        elif self.lose:
+        if self.lose:
             window.blit(assets_manager.images['darken'], pygame.Rect(0, 0, 0, 0))
             window.blit(assets_manager.images['GameOver'], pygame.Rect(0, 0, 0, 0))
             self.lose_screen.draw_ui(window)
@@ -410,15 +376,15 @@ class Game:
         self.screen_shake_manager.shake(window)
 
     def trigger_lose(self) -> None:
-        if not self.lose and not self.pause and not PLAYER_INVIN:
+        if not self.lose and not PLAYER_INVIN:
             assets_manager.play_music("ensolarado")
             self.lose = True
 
     def player_collision(self) -> None:
         for obj in self.player_collision_group:
             if (
-                self.distance_manager.dist_to_next_country == 0
-                and type(obj) not in (Coin, Obstacle)
+                    self.distance_manager.dist_to_next_country == 0
+                    and type(obj) not in (Coin, Obstacle)
             ):
                 continue
             if self.cur_scene == Scenes.SPACE and type(obj) in (Spaceship, Comet):
@@ -445,13 +411,19 @@ class Game:
         self.earthquake_time = ITEM_EARTHQUAKE_DURATION
 
     def run(self, window) -> None:
+        previous_pause = False
         while True:
+            ret = self.event_process(window)
             t = self.clock.get_time()
-
-            if self.event_process(window):  # Returns True if stop gaming
+            if previous_pause:
+                self.update(0.001, window)
+                previous_pause = False
+            else:
+                self.update(t / 1000, window)
+            if ret:  # pressed return
                 return
-
-            self.update(t / 1000, window)
+            if ret is not None:  # pressed resume
+                previous_pause = True
             self.draw(window)
             pygame.display.flip()
             self.clock.tick(60)
