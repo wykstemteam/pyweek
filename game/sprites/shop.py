@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 
 class Shop:
     confirm_button = assets_manager.images['confirm_button']
-    main_menu = assets_manager.images['main_menu_final']
+    main_menu = assets_manager.images['main_menu_final_final']
     darken = assets_manager.images['darken']
     
     def __init__(self, game: "Game") -> None:
@@ -78,7 +78,7 @@ class Shop:
             ) for i in range(6)
         ]
         self.button_exit = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect((43, 40), (74, 43)),
+            relative_rect=pygame.Rect((53, 40), (74, 43)),
             text='Exit',
             manager=self.shop_screen,
         )
