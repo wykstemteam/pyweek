@@ -7,6 +7,7 @@ from .comet import Comet
 from .coin import Coin
 from .coin_manager import CoinManager
 from .distance_manager import DistanceManager
+from .score_manager import ScoreManager
 from .explode import Explode
 from .fade_in_manager import FadeInManager
 from .laser import Laser
@@ -25,7 +26,7 @@ from .ufo import UFO
 
 __all__ = [
     'Arrow', 'Bomber', 'Building', 'BuildingManager', 'Bullet', 'MissileAircraft', 'Comet', 'Coin',
-    'CoinManager', 'DistanceManager', 'Explode', 'FadeInManager', 'LaserManager', 'Laser',
+    'CoinManager', 'DistanceManager', 'ScoreManager', 'Explode', 'FadeInManager', 'LaserManager', 'Laser',
     'Missile', 'Obstacle', 'ObstacleManager', 'Player', 'PoliceCar', 'Road', 'Shield', 'Shop',
     'Spaceship', 'UFO'
 ]

@@ -41,6 +41,7 @@ class Game:
 
         self.distance_manager = DistanceManager()
         self.screen_shake_manager = ScreenShakeManager()
+        self.score_manager = ScoreManager()
 
         # self.screen_shake_manager.shaking = True
         self.fade_in_manager = FadeInManager(
@@ -187,6 +188,8 @@ class Game:
     def reset(self):
         self.difficulty *= 2
         self.distance_manager.dist_to_next_country = INITIAL_DISTANCE_TO_NEXT_COUNTRY
+        self.score_manager.highscore = max(0.0, self.score_manager.score)
+        self.score_manager.score = 0
         self.stage1_countdown = DEACTIVATE_DURATION
         self.stage2 = False
         self.dimming = False
@@ -306,6 +309,7 @@ class Game:
             self.coin_manager.update(t)
             self.arrow.update(self.player)
             self.distance_manager.update(t)
+            self.score_manager.update(t)
             self.coin_gui.update(t)
             self.hp_manager.update(t)
 
@@ -474,3 +478,5 @@ class Game:
 
             if SHOW_FPS:
                 print(f'fps = {0 if t == 0 else 1000 / t}')
+                print(self.distance_manager.dist)
+                print(self.score_manager.score)
