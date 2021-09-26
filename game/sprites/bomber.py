@@ -59,9 +59,7 @@ class Bomber(pygame.sprite.Sprite):
 
     def update(self, t: float, difficulty) -> None:
         if self.temp_deactivated:
-            if self.frame >= len(self.animation):
-                self.frame = 0
-            self.x -= max(0, self.x - 200 * t)
+            self.x = max(SCREEN_WIDTH, self.x + 400 * t)
             self.image = self.animation[self.frame]
             self.rect = self.animation[self.frame].get_rect()
             self.rect.topleft = (self.x, (SCREEN_HEIGHT / 2) - (self.image.get_height() / 2))
@@ -82,8 +80,6 @@ class Bomber(pygame.sprite.Sprite):
                 self.activated = False
                 self.x = -400
 
-        if self.frame >= len(self.animation):
-            self.frame = 0
 
         self.image = self.animation[self.frame]
         self.rect = self.animation[self.frame].get_rect()
@@ -91,6 +87,8 @@ class Bomber(pygame.sprite.Sprite):
         self.shadow_rect = self.rect.copy()
         self.shadow_rect.topleft = self.shadow_rect.topleft + pygame.Vector2(-15, 15)
         self.frame += 1
+        if self.frame >= len(self.animation):
+            self.frame = 0
         self.bullets.update(t)
 
     def draw(self, window: pygame.Surface) -> None:
