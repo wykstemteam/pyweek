@@ -143,7 +143,7 @@ class Shop:
         self.game = game
         self.running = False
         self.coin_gui = CoinGUI((960, 36), self.game)
-        self.hp_manager = HPManager((380, 25), self.game)
+        self.hp_manager = HPManager(pygame.Vector2(380, 25), self.game)
         self.hp_manager.at_shop = True
         self.inventory = Inventory(
             [
@@ -167,7 +167,7 @@ class Shop:
                         button = event.ui_element
                         if button == self.button_exit:
                             self.running = False
-                        elif button in (self.button_cancel, self.button_confirm):
+                        elif button in (self.button_cancel, self.button_confirm) and confirmation:
                             if button == self.button_confirm:
                                 assets_manager.play_sound("select2")
                                 self.game.coins -= int(self.price_count)
@@ -177,7 +177,7 @@ class Shop:
                             for i in range(6):
                                 self.price_tag_button[i].enable()
                             confirmation = False
-                        elif button in self.price_tag_button:
+                        elif button in self.price_tag_button and not confirmation:
                             assets_manager.play_sound("select1")
                             print(f'selected{self.button_number+1}')
                             self.button_number = self.price_tag_button.index(button)
