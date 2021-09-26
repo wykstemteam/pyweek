@@ -207,6 +207,7 @@ class Game:
             self.obstacle_manager.reached_checkpoint = False
             self.bomber.__init__(self.player_collision_group)
             self.beach_rect.topleft = (0, 0)
+        self.comets = [c for c in self.comets if c.remaining_time > 100000]
 
     def event_process(self, window: pygame.Surface):
         for event in pygame.event.get():
