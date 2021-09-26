@@ -35,11 +35,9 @@ class Game:
         self.arrow = Arrow(assets_manager.images['arrow'], self.player)
         self.inventory = Inventory(
             [
-                assets_manager.images[f'{item_name}_inventory'] for item_name in ('item_healpotion', 'item_shield', 'item_star', 'item_clock', 'item_missile', 'item_earthquake')
-            ]
+                assets_manager.images[f'{item_name}_inventory'] for item_name in ('item_blank', 'item_healpotion', 'item_shield', 'item_star', 'item_clock', 'item_missile', 'item_earthquake')
+            ], self
         )
-        self.inventory.add(0)
-        self.inventory.add(3)
 
         self.distance_manager = DistanceManager()
         self.screen_shake_manager = ScreenShakeManager()

@@ -11,12 +11,9 @@ def _get_location(i) -> pygame.Rect:
 
 
 class Inventory:
-    def __init__(self, images: List[pygame.Surface]) -> None:
+    def __init__(self, images: List[pygame.Surface], game) -> None:
         self.images = images
-        self.current_items = []
-
-    def add(self, index: int) -> None:
-        self.current_items.append(index)
+        self.game = game
 
     def draw(self, window: pygame.Surface) -> None:
         for i in range(2):
@@ -25,5 +22,5 @@ class Inventory:
                 _get_location(i),
                 INVENTORY_BOX_THICKNESS,
             )
-        for i, j in enumerate(self.current_items):
-            window.blit(self.images[j], _get_location(i))
+        for i, j in self.game.player.items.items():
+            window.blit(self.images[j], _get_location(i-1))
