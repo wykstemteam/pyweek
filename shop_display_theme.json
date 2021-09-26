@@ -49,7 +49,7 @@
     "#button_2": {
         "images": {
             "normal_image": {
-                "path": "assets/images/item_shield.png"
+                "path": "assets/images/item_shield_troll.png"
             }
         },
         "misc": {
@@ -89,7 +89,7 @@
     "#button_6": {
         "images": {
             "normal_image": {
-                "path": "assets/images/item_earthquake.png"
+                "path": "assets/images/item_earthquake_new.png"
             }
         },
         "misc": {
@@ -132,13 +132,20 @@
             "shape_corner_radius": "18"
         }
     },
+    "#button_confirm":
+    {
+      "misc": {
+          "tool_tip_delay": "0"
+      }
+    },
     "tool_tip": {
         "misc": {
-            "rect_width": "250"
+            "rect_width": "320"
         }
     },
     "tool_tip.text_box": {
         "colours": {
+            "normal_text": "#000000",
             "dark_bg": "#6c757d"
         },
         "misc": {

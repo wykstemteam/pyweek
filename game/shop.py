@@ -33,7 +33,7 @@ class Shop:
             pygame.Rect((212, 97), (104, 110)),
             pygame.Rect((691, 98), (104, 110)),
             pygame.Rect((1172, 97), (104, 110)),
-            pygame.Rect((212, 351), (104, 110)),
+            pygame.Rect((209, 351), (104, 110)),
             pygame.Rect((691, 351), (104, 110)),
             pygame.Rect((1172, 351), (104, 110)),
         ]
@@ -123,6 +123,11 @@ class Shop:
         self.button_confirm = pygame_gui.elements.UIButton(
             relative_rect=pygame.Rect((555, 301), (200, 60)),
             text='Confirm',
+            tool_tip_text="<font face=fira_code color=#8e1b1b size=6>"
+                "<b><u>WARNING:</u></b>"
+                "<br><br>"
+                "<font color=#000000 size=5><i>Your current selected item might be overwritten.</i></font>",
+            object_id = "#button_confirm",
             manager=self.confirm_screen
         )
         self.button_cancel = pygame_gui.elements.UIButton(
@@ -221,3 +226,5 @@ class Shop:
                 self.price_tag_button[i].disable()
             else:
                 self.price_tag_button[i].enable()
+
+    
