@@ -66,6 +66,8 @@ class Bomber(pygame.sprite.Sprite):
             self.shadow_rect = self.rect.copy()
             self.shadow_rect.topleft = self.shadow_rect.topleft + pygame.Vector2(-15, 15)
             self.frame += 1
+            if self.frame >= len(self.animation):
+                self.frame = 0
             self.bullets.update(t)
             self.temp_activated_t -= t
             if self.temp_activated_t <= 0:

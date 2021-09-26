@@ -269,7 +269,7 @@ class Game:
                 self.player.vy = 0
 
             self.coin_manager.update(t)
-            self.arrow.update(self.player)
+            self.arrow.update()
             self.distance_manager.update(t)
             self.score_manager.update(t)
             self.coin_gui.update(t)
