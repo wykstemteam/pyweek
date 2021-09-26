@@ -9,6 +9,7 @@ from game.settings import settings
 from game.sprites import *
 
 title_font = pygame.font.Font(FONT_PATH, 60)
+score_font = pygame.font.Font(FONT_PATH, 40)
 instruction_font = pygame.font.Font(FONT_PATH, 30)
 instruction_height = instruction_font.render("test", True, (0, 0, 0)).get_height()
 
@@ -42,7 +43,7 @@ def blit_outlined_text(
     window.blit(actual, (x, y))
 
 
-def menu(window: pygame.Surface):
+def menu(window: pygame.Surface, highscore):
     assets_manager.play_music("tanukichis_adventure")
     if assets_manager.play_quotes:
         assets_manager.play_sound("hi")
@@ -124,6 +125,20 @@ def menu(window: pygame.Surface):
                 y=SCREEN_HEIGHT - 50 - instruction_height * (len(instructions) - i - 1)
             )
         screen.draw_ui(window)
+        score_image = score_font.render(f'Highscore: {highscore}', True, (255, 255, 255))
+        score_rect = score_image.get_rect()
+        score_rect.center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT - 100)
+        window.blit(score_image, score_rect)
+        blit_outlined_text(
+            window=window,
+            font=score_font,
+            text=f'Highscore: {highscore}',
+            outline_size=2,
+            outline_color=(0, 0, 0),
+            color=(255, 255, 255),
+            x=score_rect.left,
+            y=score_rect.top
+        )
 
         pygame.display.flip()
         cock.tick(60)

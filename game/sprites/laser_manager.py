@@ -49,3 +49,7 @@ class LaserManager:
         self.lasers.draw(window)
         for missile in self.missiles:
             missile.draw(window)
+
+    def kill(self):
+        self.lasers.empty()
+        self.missiles.empty()

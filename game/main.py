@@ -2,24 +2,25 @@ import pygame
 
 pygame.init()
 
-import pygame_gui
+import os
 
-from game.assets_manager import assets_manager
 from game.constants import *
 from game.game import Game
 from game.menu import menu
-from game.settings import settings
 
 window = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Rock: The Criminal")
 
-
-def gaming() -> None:
-    game = Game()
-    game.run(window)
-
-
 def main() -> None:
+    highscore = 0
+    if not os.path.isfile('highscore.txt'):
+        open("highscore.txt", "x")
+    else:
+        with open("highscore.txt", 'r') as f:
+            highscore = int(f.read())
     while True:
-        menu(window)
-        gaming()
+        menu(window, highscore)
+        game = Game(highscore)
+        highscore = game.run(window)
+        with open("highscore.txt", 'w') as f:
+            f.write(str(highscore))
