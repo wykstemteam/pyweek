@@ -387,7 +387,7 @@ class Game:
             darken_image.fill((0, 0, 0))
             darken_image.set_alpha(self.darken_alpha)
             window.blit(darken_image, pygame.Rect(0, 0, 0, 0))
-            self.darken_alpha = min(self.darken_alpha + 2, 255)
+            self.darken_alpha = min(self.darken_alpha + 3, 255)
             if self.darken_alpha == 255:
                 self.stage2 = True
 
