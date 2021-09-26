@@ -58,6 +58,9 @@ class Bomber(pygame.sprite.Sprite):
             self.activated = True
 
     def update(self, t: float, difficulty) -> None:
+        if self.frame >= len(self.animation):
+            self.frame = 0
+
         if self.temp_deactivated:
             self.x = max(SCREEN_WIDTH, self.x + 400 * t)
             self.image = self.animation[self.frame]
