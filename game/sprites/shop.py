@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 
 class Shop:
     confirm_button = assets_manager.images['confirm_button']
-    main_menu = assets_manager.images['main_menu']
+    main_menu = assets_manager.images['main_menu_final']
     darken = assets_manager.images['darken']
 
     def __init__(self, game: "Game") -> None:
@@ -29,20 +29,20 @@ class Shop:
             ]
         )
         self.button_positions = [
-            pygame.Rect((218, 125), (104, 110)),
-            pygame.Rect((697, 125), (104, 110)),
-            pygame.Rect((1178, 125), (104, 110)),
-            pygame.Rect((218, 391), (104, 110)),
-            pygame.Rect((698, 391), (104, 110)),
-            pygame.Rect((1178, 391), (104, 110)),
+            pygame.Rect((212, 97), (104, 110)),
+            pygame.Rect((691, 98), (104, 110)),
+            pygame.Rect((1172, 97), (104, 110)),
+            pygame.Rect((212, 351), (104, 110)),
+            pygame.Rect((691, 351), (104, 110)),
+            pygame.Rect((1172, 351), (104, 110)),
         ]
         self.price_tag_position = [
-            pygame.Rect((191, 252), (160, 47)),
-            pygame.Rect((670, 252), (160, 47)),
-            pygame.Rect((1149, 252), (160, 47)),
-            pygame.Rect((191, 520), (160, 47)),
-            pygame.Rect((670, 520), (160, 47)),
-            pygame.Rect((1149, 520), (160, 47)),
+            pygame.Rect((184, 225), (160, 47)),
+            pygame.Rect((663, 225), (160, 47)),
+            pygame.Rect((1142, 225), (160, 47)),
+            pygame.Rect((184, 475), (160, 47)),
+            pygame.Rect((663, 475), (160, 47)),
+            pygame.Rect((1142, 475), (160, 47)),
         ]
         self.price = ["$10", "$15", "$20", "$25", "$30", "$35"]
         self.button_text = [
