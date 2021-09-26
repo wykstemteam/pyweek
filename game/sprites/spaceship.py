@@ -121,6 +121,8 @@ class Spaceship(pygame.sprite.Sprite):
         if not self.activated:
             self.x = min(1600, self.x + 5)
             self.activated_dur = 0.0
+            self.is_shoot = False
+            self.is_charge = False
         else:
             self.activated_dur -= t
             if self.activated_dur <= 0:

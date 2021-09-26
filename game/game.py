@@ -317,9 +317,9 @@ class Game:
         # objects in scene.SPACE:
         if self.cur_scene == Scenes.SPACE and not self.lose:
             if self.distance_manager.dist_to_next_country > 30:
-                if not self.spaceship.activated:
+                if not self.spaceship.activated and not self.space_temp_deactivated_enemies:
                     self.ufo.random_activate(self.difficulty)
-                if not self.ufo.activated:
+                if not self.ufo.activated and not self.space_temp_deactivated_enemies:
                     self.spaceship.random_activate(self.difficulty)
 
                 if (
