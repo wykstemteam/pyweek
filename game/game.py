@@ -9,11 +9,8 @@ from game.assets_manager import assets_manager
 from game.constants import *
 from game.screen_shake_manager import ScreenShakeManager
 from game.settings import get_audio_controls
+from game.shop import Shop
 from game.sprites import *
-from game.sprites.coin_gui import CoinGUI
-from game.sprites.hp_manager import HPManager
-from game.sprites.inventory import Inventory
-from game.sprites.comet_manager import CometManager
 
 
 class Scenes(Enum):
@@ -162,7 +159,7 @@ class Game:
         self.stage2 = False
         self.dimming = False
         self.darken_alpha = 0
-        self.coin_manager.reached_checkpoint = False
+        self.coin_manager.__init__(self.player_collision_group)
         self.player.inputtable = True
         self.player.vx = -BACKGROUND_VELOCITY
         self.player.vy = 0.0
