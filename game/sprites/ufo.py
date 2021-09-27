@@ -69,29 +69,23 @@ class UFO(pygame.sprite.Sprite):
             for i in range(1, 16, 2):
                 new_bullet.append(
                     self.bullet(
-                        UFO_BULLET_SPEED *
-                        np.cos(self.rotate_rad + (i * 2 * np.pi / 16)),
-                        UFO_BULLET_SPEED *
-                        np.sin(self.rotate_rad + (i * 2 * np.pi / 16))
+                        UFO_BULLET_SPEED * np.cos(self.rotate_rad + (i * 2 * np.pi / 16)),
+                        UFO_BULLET_SPEED * np.sin(self.rotate_rad + (i * 2 * np.pi / 16))
                     )
                 )
         elif self.bullet_pattern == 3:  # double spiral
             for i in range(1, 16, 2):
                 new_bullet.append(
                     self.bullet(
-                        UFO_BULLET_SPEED *
-                        np.cos(self.rotate_rad + (i * 2 * np.pi / 16)),
-                        UFO_BULLET_SPEED *
-                        np.sin(self.rotate_rad + (i * 2 * np.pi / 16))
+                        UFO_BULLET_SPEED * np.cos(self.rotate_rad + (i * 2 * np.pi / 16)),
+                        UFO_BULLET_SPEED * np.sin(self.rotate_rad + (i * 2 * np.pi / 16))
                     )
                 )
             for i in range(1, 16, 2):
                 new_bullet.append(
                     self.bullet(
-                        UFO_BULLET_SPEED *
-                        np.cos(np.pi - (self.rotate_rad + (i * 2 * np.pi / 16))),
-                        UFO_BULLET_SPEED *
-                        np.sin(np.pi - (self.rotate_rad + (i * 2 * np.pi / 16)))
+                        UFO_BULLET_SPEED * np.cos(np.pi - (self.rotate_rad + (i * 2 * np.pi / 16))),
+                        UFO_BULLET_SPEED * np.sin(np.pi - (self.rotate_rad + (i * 2 * np.pi / 16)))
                     )
                 )
         elif self.bullet_pattern == 2:  # sun
@@ -146,8 +140,7 @@ class UFO(pygame.sprite.Sprite):
         if self.rotate_deg <= -360:
             self.rotate_deg = 0.0
         self.rotate_rad = (self.rotate_deg / 360.0) * 2 * np.pi
-        self.image = pygame.transform.rotate(
-            assets_manager.images['UFO'], self.rotate_deg)
+        self.image = pygame.transform.rotate(assets_manager.images['UFO'], self.rotate_deg)
         self.rect = self.image.get_rect(
             center=self.image.get_rect(center=(self.cenx, self.ceny)).center
         )
